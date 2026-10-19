@@ -1,14 +1,14 @@
 <div align="center">
 
 <!-- AYUSHCRAFT WORLD BANNER -->
-<a href="https://ayush20-lex.github.io/Ayush20-lex/ayushcraft/">
+<a href="https://ayush20-lex.github.io/Ayush20-lex/ayushcraft/index.html">
   <img src="assets/ayushcraft-banner.svg" alt="AYUSHCRAFT — Interactive Developer World Banner" width="100%" />
 </a>
 
 # ⛏️ AYUSHCRAFT — A Tiny Developer World
 ### *Build. Explore. Discover.*
 
-[![Launch AyushCraft 2D World](https://img.shields.io/badge/%E2%96%B6%EF%B8%8F_PLAY_AYUSHCRAFT-Interactive_2D_World-2563eb?style=for-the-badge&logoColor=white)](https://ayush20-lex.github.io/Ayush20-lex/ayushcraft/)
+[![Launch AyushCraft 2D World](https://img.shields.io/badge/%E2%96%B6%EF%B8%8F_PLAY_AYUSHCRAFT-Interactive_2D_World-2563eb?style=for-the-badge&logoColor=white)](https://ayush20-lex.github.io/Ayush20-lex/ayushcraft/index.html)
 [![AirLytics Live Demo](https://img.shields.io/badge/%F0%9F%8C%8D_AIRLYTICS_DEMO-airlytics--ncr.vercel.app-0284c7?style=for-the-badge)](https://airlytics-ncr.vercel.app/)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Ayush_Kumar-0a66c2?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/ayush-kumar-942081322/)
 [![Email](https://img.shields.io/badge/Email-ayushkumargbp%40gmail.com-ea4335?style=for-the-badge&logo=gmail)](mailto:ayushkumargbp@gmail.com)
@@ -38,7 +38,7 @@ Instead of a generic flat portfolio, you can explore my projects, technical stac
 
 <div align="center">
   <br />
-  <a href="https://ayush20-lex.github.io/Ayush20-lex/ayushcraft/">
+  <a href="https://ayush20-lex.github.io/Ayush20-lex/ayushcraft/index.html">
     <img src="https://img.shields.io/badge/%E2%96%B6%EF%B8%8F_CLICK_TO_PLAY_AYUSHCRAFT-Direct_in_Browser-2563eb?style=for-the-badge&logo=googlechrome&logoColor=white" height="38" alt="Click to Play AyushCraft in Browser" />
   </a>
 </div>
