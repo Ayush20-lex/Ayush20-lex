@@ -1,0 +1,391 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 320" width="100%" height="auto" shape-rendering="crispEdges">
+  <defs>
+    <style>
+      .pixel-text {
+        font-family: 'Courier New', monospace, 'Lucida Console', sans-serif;
+        font-weight: 800;
+        image-rendering: pixelated;
+      }
+      .title { font-size: 30px; fill: #fcd34d; filter: drop-shadow(3px 3px 0px #78350f); letter-spacing: 2px; }
+      .tagline { font-size: 13px; fill: #fef08a; letter-spacing: 3px; font-weight: 700; filter: drop-shadow(1px 1px 0px #451a03); }
+      .badge-text { font-size: 11px; fill: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-weight: 600; }
+      .badge-highlight { fill: #38bdf8; font-weight: 700; }
+      .sign-title { font-size: 10px; fill: #3e2723; font-weight: 800; }
+      .sign-body { font-size: 8px; fill: #5d4037; font-weight: 700; }
+      @keyframes floatCloud {
+        0% { transform: translateX(0px); }
+        50% { transform: translateX(12px); }
+        100% { transform: translateX(0px); }
+      }
+      @keyframes lanternPulse {
+        0%, 100% { opacity: 0.85; filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.6)); }
+        50% { opacity: 1; filter: drop-shadow(0 0 14px rgba(251, 191, 36, 0.9)); }
+      }
+      .cloud-group { animation: floatCloud 14s ease-in-out infinite; }
+      .lantern-core { animation: lanternPulse 3s ease-in-out infinite; }
+    </style>
+  </defs>
+  <rect x="0" y="0" width="880" height="40" fill="#192841" />
+  <rect x="0" y="40" width="880" height="40" fill="#233d60" />
+  <rect x="0" y="80" width="880" height="40" fill="#2e527d" />
+  <rect x="0" y="120" width="880" height="35" fill="#3b6998" />
+  <rect x="0" y="155" width="880" height="30" fill="#5284b0" />
+  <rect x="0" y="185" width="880" height="30" fill="#7ea7cb" />
+  <rect x="0" y="215" width="880" height="25" fill="#c5a47e" />
+  <!-- Pixel Sun -->
+  <rect x="680" y="55" width="48" height="48" fill="#fef08a" />
+  <rect x="684" y="59" width="40" height="40" fill="#fffbeb" />
+  <rect x="676" y="59" width="4" height="40" fill="#fde047" opacity="0.6" />
+  <rect x="728" y="59" width="4" height="40" fill="#fde047" opacity="0.6" />
+  <rect x="684" y="51" width="40" height="4" fill="#fde047" opacity="0.6" />
+  <rect x="684" y="103" width="40" height="4" fill="#fde047" opacity="0.6" />
+  <!-- Blocky Clouds -->
+  <g class="cloud-group">
+    <rect x="60" y="60" width="120" height="24" fill="#e2e8f0" />
+    <rect x="90" y="44" width="70" height="16" fill="#f8fafc" />
+    <rect x="60" y="78" width="120" height="6" fill="#cbd5e1" />
+
+    <rect x="340" y="75" width="160" height="28" fill="#e2e8f0" />
+    <rect x="380" y="55" width="90" height="20" fill="#f8fafc" />
+    <rect x="340" y="96" width="160" height="7" fill="#cbd5e1" />
+
+    <rect x="740" y="80" width="110" height="22" fill="#e2e8f0" />
+    <rect x="765" y="65" width="60" height="15" fill="#f8fafc" />
+    <rect x="740" y="96" width="110" height="6" fill="#cbd5e1" />
+  </g>
+  <!-- Distant Mountain Ridge -->
+  <rect x="0" y="160" width="90" height="80" fill="#2e4860" />
+  <rect x="90" y="140" width="70" height="100" fill="#2e4860" />
+  <rect x="160" y="170" width="80" height="70" fill="#2e4860" />
+  <rect x="240" y="130" width="110" height="110" fill="#2e4860" />
+  <rect x="250" y="130" width="90" height="12" fill="#e2e8f0" />
+  <rect x="260" y="142" width="70" height="6" fill="#cbd5e1" />
+  <rect x="350" y="150" width="80" height="90" fill="#2e4860" />
+  <rect x="430" y="120" width="120" height="120" fill="#2e4860" />
+  <rect x="440" y="120" width="100" height="12" fill="#e2e8f0" />
+  <rect x="450" y="132" width="80" height="6" fill="#cbd5e1" />
+  <rect x="550" y="145" width="90" height="95" fill="#2e4860" />
+  <rect x="640" y="115" width="140" height="125" fill="#2e4860" />
+  <rect x="650" y="115" width="120" height="12" fill="#e2e8f0" />
+  <rect x="660" y="127" width="100" height="6" fill="#cbd5e1" />
+  <rect x="780" y="150" width="100" height="90" fill="#2e4860" />
+  <!-- Mid Mountain Ridge -->
+  <rect x="0" y="185" width="130" height="70" fill="#395872" />
+  <rect x="130" y="165" width="110" height="90" fill="#395872" />
+  <rect x="240" y="190" width="140" height="65" fill="#395872" />
+  <rect x="380" y="170" width="100" height="85" fill="#395872" />
+  <rect x="480" y="185" width="120" height="70" fill="#395872" />
+  <rect x="600" y="155" width="130" height="100" fill="#395872" />
+  <rect x="730" y="175" width="150" height="80" fill="#395872" />
+  <!-- Distant Observatory at Mountain Peak -->
+  <rect x="655" y="115" width="30" height="40" fill="#475569" />
+  <rect x="652" y="112" width="36" height="5" fill="#334155" />
+  <rect x="658" y="98" width="24" height="14" fill="#0284c7" />
+  <rect x="660" y="94" width="20" height="4" fill="#38bdf8" />
+  <rect x="674" y="90" width="12" height="4" fill="#d97706" transform="rotate(-25 674 90)" />
+  <rect x="668" y="45" width="4" height="49" fill="#38bdf8" opacity="0.3" />
+  <!-- Midground Hills & Trees -->
+  <rect x="0" y="215" width="880" height="45" fill="#2d6e32" />
+  <rect x="0" y="222" width="880" height="38" fill="#255a29" />
+  <rect x="10" y="193" width="28" height="22" fill="#1e4620" />
+  <rect x="14" y="187" width="20" height="6" fill="#2d6e32" />
+  <rect x="55" y="193" width="28" height="22" fill="#1e4620" />
+  <rect x="59" y="187" width="20" height="6" fill="#2d6e32" />
+  <rect x="100" y="193" width="28" height="22" fill="#1e4620" />
+  <rect x="104" y="187" width="20" height="6" fill="#2d6e32" />
+  <rect x="145" y="193" width="28" height="22" fill="#1e4620" />
+  <rect x="149" y="187" width="20" height="6" fill="#2d6e32" />
+  <rect x="190" y="193" width="28" height="22" fill="#1e4620" />
+  <rect x="194" y="187" width="20" height="6" fill="#2d6e32" />
+  <rect x="235" y="193" width="28" height="22" fill="#1e4620" />
+  <rect x="239" y="187" width="20" height="6" fill="#2d6e32" />
+  <rect x="280" y="193" width="28" height="22" fill="#1e4620" />
+  <rect x="284" y="187" width="20" height="6" fill="#2d6e32" />
+  <rect x="325" y="193" width="28" height="22" fill="#1e4620" />
+  <rect x="329" y="187" width="20" height="6" fill="#2d6e32" />
+  <rect x="370" y="193" width="28" height="22" fill="#1e4620" />
+  <rect x="374" y="187" width="20" height="6" fill="#2d6e32" />
+  <rect x="415" y="193" width="28" height="22" fill="#1e4620" />
+  <rect x="419" y="187" width="20" height="6" fill="#2d6e32" />
+  <rect x="460" y="193" width="28" height="22" fill="#1e4620" />
+  <rect x="464" y="187" width="20" height="6" fill="#2d6e32" />
+  <rect x="505" y="193" width="28" height="22" fill="#1e4620" />
+  <rect x="509" y="187" width="20" height="6" fill="#2d6e32" />
+  <rect x="550" y="193" width="28" height="22" fill="#1e4620" />
+  <rect x="554" y="187" width="20" height="6" fill="#2d6e32" />
+  <rect x="595" y="193" width="28" height="22" fill="#1e4620" />
+  <rect x="599" y="187" width="20" height="6" fill="#2d6e32" />
+  <rect x="640" y="193" width="28" height="22" fill="#1e4620" />
+  <rect x="644" y="187" width="20" height="6" fill="#2d6e32" />
+  <rect x="685" y="193" width="28" height="22" fill="#1e4620" />
+  <rect x="689" y="187" width="20" height="6" fill="#2d6e32" />
+  <rect x="730" y="193" width="28" height="22" fill="#1e4620" />
+  <rect x="734" y="187" width="20" height="6" fill="#2d6e32" />
+  <rect x="775" y="193" width="28" height="22" fill="#1e4620" />
+  <rect x="779" y="187" width="20" height="6" fill="#2d6e32" />
+  <rect x="820" y="193" width="28" height="22" fill="#1e4620" />
+  <rect x="824" y="187" width="20" height="6" fill="#2d6e32" />
+  <rect x="865" y="193" width="28" height="22" fill="#1e4620" />
+  <rect x="869" y="187" width="20" height="6" fill="#2d6e32" />
+  <!-- Foreground Meadow & Soil -->
+  <rect x="0" y="252" width="880" height="68" fill="#6d492b" />
+  <rect x="0" y="275" width="880" height="45" fill="#54371e" />
+  <rect x="40" y="280" width="8" height="6" fill="#8c6239" />
+  <rect x="44" y="282" width="4" height="4" fill="#3d2714" />
+  <rect x="120" y="295" width="8" height="6" fill="#8c6239" />
+  <rect x="124" y="297" width="4" height="4" fill="#3d2714" />
+  <rect x="230" y="285" width="8" height="6" fill="#8c6239" />
+  <rect x="234" y="287" width="4" height="4" fill="#3d2714" />
+  <rect x="550" y="290" width="8" height="6" fill="#8c6239" />
+  <rect x="554" y="292" width="4" height="4" fill="#3d2714" />
+  <rect x="670" y="280" width="8" height="6" fill="#8c6239" />
+  <rect x="674" y="282" width="4" height="4" fill="#3d2714" />
+  <rect x="820" y="295" width="8" height="6" fill="#8c6239" />
+  <rect x="824" y="297" width="4" height="4" fill="#3d2714" />
+  <rect x="340" y="298" width="8" height="6" fill="#8c6239" />
+  <rect x="344" y="300" width="4" height="4" fill="#3d2714" />
+  <rect x="480" y="285" width="8" height="6" fill="#8c6239" />
+  <rect x="484" y="287" width="4" height="4" fill="#3d2714" />
+  <rect x="0" y="244" width="880" height="12" fill="#489c3b" />
+  <rect x="0" y="244" width="880" height="4" fill="#5cb84d" />
+  <rect x="0" y="256" width="8" height="4" fill="#3c8531" />
+  <rect x="16" y="256" width="8" height="8" fill="#3c8531" />
+  <rect x="32" y="256" width="8" height="4" fill="#3c8531" />
+  <rect x="48" y="256" width="8" height="8" fill="#3c8531" />
+  <rect x="64" y="256" width="8" height="4" fill="#3c8531" />
+  <rect x="80" y="256" width="8" height="8" fill="#3c8531" />
+  <rect x="96" y="256" width="8" height="4" fill="#3c8531" />
+  <rect x="112" y="256" width="8" height="8" fill="#3c8531" />
+  <rect x="128" y="256" width="8" height="4" fill="#3c8531" />
+  <rect x="144" y="256" width="8" height="8" fill="#3c8531" />
+  <rect x="160" y="256" width="8" height="4" fill="#3c8531" />
+  <rect x="176" y="256" width="8" height="8" fill="#3c8531" />
+  <rect x="192" y="256" width="8" height="4" fill="#3c8531" />
+  <rect x="208" y="256" width="8" height="8" fill="#3c8531" />
+  <rect x="224" y="256" width="8" height="4" fill="#3c8531" />
+  <rect x="240" y="256" width="8" height="8" fill="#3c8531" />
+  <rect x="256" y="256" width="8" height="4" fill="#3c8531" />
+  <rect x="272" y="256" width="8" height="8" fill="#3c8531" />
+  <rect x="288" y="256" width="8" height="4" fill="#3c8531" />
+  <rect x="304" y="256" width="8" height="8" fill="#3c8531" />
+  <rect x="320" y="256" width="8" height="4" fill="#3c8531" />
+  <rect x="336" y="256" width="8" height="8" fill="#3c8531" />
+  <rect x="352" y="256" width="8" height="4" fill="#3c8531" />
+  <rect x="368" y="256" width="8" height="8" fill="#3c8531" />
+  <rect x="384" y="256" width="8" height="4" fill="#3c8531" />
+  <rect x="400" y="256" width="8" height="8" fill="#3c8531" />
+  <rect x="416" y="256" width="8" height="4" fill="#3c8531" />
+  <rect x="432" y="256" width="8" height="8" fill="#3c8531" />
+  <rect x="448" y="256" width="8" height="4" fill="#3c8531" />
+  <rect x="464" y="256" width="8" height="8" fill="#3c8531" />
+  <rect x="480" y="256" width="8" height="4" fill="#3c8531" />
+  <rect x="496" y="256" width="8" height="8" fill="#3c8531" />
+  <rect x="512" y="256" width="8" height="4" fill="#3c8531" />
+  <rect x="528" y="256" width="8" height="8" fill="#3c8531" />
+  <rect x="544" y="256" width="8" height="4" fill="#3c8531" />
+  <rect x="560" y="256" width="8" height="8" fill="#3c8531" />
+  <rect x="576" y="256" width="8" height="4" fill="#3c8531" />
+  <rect x="592" y="256" width="8" height="8" fill="#3c8531" />
+  <rect x="608" y="256" width="8" height="4" fill="#3c8531" />
+  <rect x="624" y="256" width="8" height="8" fill="#3c8531" />
+  <rect x="640" y="256" width="8" height="4" fill="#3c8531" />
+  <rect x="656" y="256" width="8" height="8" fill="#3c8531" />
+  <rect x="672" y="256" width="8" height="4" fill="#3c8531" />
+  <rect x="688" y="256" width="8" height="8" fill="#3c8531" />
+  <rect x="704" y="256" width="8" height="4" fill="#3c8531" />
+  <rect x="720" y="256" width="8" height="8" fill="#3c8531" />
+  <rect x="736" y="256" width="8" height="4" fill="#3c8531" />
+  <rect x="752" y="256" width="8" height="8" fill="#3c8531" />
+  <rect x="768" y="256" width="8" height="4" fill="#3c8531" />
+  <rect x="784" y="256" width="8" height="8" fill="#3c8531" />
+  <rect x="800" y="256" width="8" height="4" fill="#3c8531" />
+  <rect x="816" y="256" width="8" height="8" fill="#3c8531" />
+  <rect x="832" y="256" width="8" height="4" fill="#3c8531" />
+  <rect x="848" y="256" width="8" height="8" fill="#3c8531" />
+  <rect x="864" y="256" width="8" height="4" fill="#3c8531" />
+  <!-- Cobblestone Path -->
+  <rect x="420" y="280" width="24" height="16" fill="#78716c" />
+  <rect x="420" y="280" width="24" height="2" fill="#d6d3d1" opacity="0.4" />
+  <rect x="420" y="294" width="24" height="2" fill="#292524" opacity="0.5" />
+  <rect x="448" y="285" width="20" height="14" fill="#57534e" />
+  <rect x="448" y="285" width="20" height="2" fill="#d6d3d1" opacity="0.4" />
+  <rect x="448" y="297" width="20" height="2" fill="#292524" opacity="0.5" />
+  <rect x="410" y="298" width="28" height="18" fill="#78716c" />
+  <rect x="410" y="298" width="28" height="2" fill="#d6d3d1" opacity="0.4" />
+  <rect x="410" y="314" width="28" height="2" fill="#292524" opacity="0.5" />
+  <rect x="444" y="302" width="26" height="16" fill="#a8a29e" />
+  <rect x="444" y="302" width="26" height="2" fill="#d6d3d1" opacity="0.4" />
+  <rect x="444" y="316" width="26" height="2" fill="#292524" opacity="0.5" />
+  <rect x="474" y="290" width="22" height="15" fill="#57534e" />
+  <rect x="474" y="290" width="22" height="2" fill="#d6d3d1" opacity="0.4" />
+  <rect x="474" y="303" width="22" height="2" fill="#292524" opacity="0.5" />
+  <rect x="435" y="265" width="20" height="12" fill="#78716c" />
+  <rect x="435" y="265" width="20" height="2" fill="#d6d3d1" opacity="0.4" />
+  <rect x="435" y="275" width="20" height="2" fill="#292524" opacity="0.5" />
+  <rect x="460" y="268" width="22" height="14" fill="#a8a29e" />
+  <rect x="460" y="268" width="22" height="2" fill="#d6d3d1" opacity="0.4" />
+  <rect x="460" y="280" width="22" height="2" fill="#292524" opacity="0.5" />
+  <rect x="450" y="252" width="18" height="10" fill="#57534e" />
+  <rect x="450" y="252" width="18" height="2" fill="#d6d3d1" opacity="0.4" />
+  <rect x="450" y="260" width="18" height="2" fill="#292524" opacity="0.5" />
+  <rect x="472" y="255" width="16" height="10" fill="#78716c" />
+  <rect x="472" y="255" width="16" height="2" fill="#d6d3d1" opacity="0.4" />
+  <rect x="472" y="263" width="16" height="2" fill="#292524" opacity="0.5" />
+  <rect x="465" y="245" width="18" height="8" fill="#a8a29e" />
+  <rect x="465" y="245" width="18" height="2" fill="#d6d3d1" opacity="0.4" />
+  <rect x="465" y="251" width="18" height="2" fill="#292524" opacity="0.5" />
+  <rect x="485" y="246" width="16" height="8" fill="#57534e" />
+  <rect x="485" y="246" width="16" height="2" fill="#d6d3d1" opacity="0.4" />
+  <rect x="485" y="252" width="16" height="2" fill="#292524" opacity="0.5" />
+  <!-- Tree at 60,150 -->
+  <rect x="84" y="190" width="16" height="65" fill="#583c22" />
+  <rect x="88" y="190" width="6" height="65" fill="#755130" />
+  <rect x="84" y="248" width="6" height="7" fill="#3b2715" />
+  <rect x="94" y="248" width="6" height="7" fill="#3b2715" />
+  <rect x="60" y="170" width="64" height="32" fill="#2b6b21" />
+  <rect x="64" y="174" width="56" height="24" fill="#38852c" />
+  <rect x="68" y="154" width="48" height="26" fill="#38852c" />
+  <rect x="72" y="158" width="40" height="18" fill="#4ca83d" />
+  <rect x="76" y="142" width="32" height="16" fill="#4ca83d" />
+  <rect x="80" y="144" width="24" height="10" fill="#65c754" />
+  <!-- Tree at 770,145 -->
+  <rect x="794" y="185" width="16" height="65" fill="#583c22" />
+  <rect x="798" y="185" width="6" height="65" fill="#755130" />
+  <rect x="794" y="243" width="6" height="7" fill="#3b2715" />
+  <rect x="804" y="243" width="6" height="7" fill="#3b2715" />
+  <rect x="770" y="165" width="64" height="32" fill="#2b6b21" />
+  <rect x="774" y="169" width="56" height="24" fill="#38852c" />
+  <rect x="778" y="149" width="48" height="26" fill="#38852c" />
+  <rect x="782" y="153" width="40" height="18" fill="#4ca83d" />
+  <rect x="786" y="137" width="32" height="16" fill="#4ca83d" />
+  <rect x="790" y="139" width="24" height="10" fill="#65c754" />
+  <!-- Tree at 820,160 -->
+  <rect x="844" y="200" width="16" height="65" fill="#583c22" />
+  <rect x="848" y="200" width="6" height="65" fill="#755130" />
+  <rect x="844" y="258" width="6" height="7" fill="#3b2715" />
+  <rect x="854" y="258" width="6" height="7" fill="#3b2715" />
+  <rect x="820" y="180" width="64" height="32" fill="#2b6b21" />
+  <rect x="824" y="184" width="56" height="24" fill="#38852c" />
+  <rect x="828" y="164" width="48" height="26" fill="#38852c" />
+  <rect x="832" y="168" width="40" height="18" fill="#4ca83d" />
+  <rect x="836" y="152" width="32" height="16" fill="#4ca83d" />
+  <rect x="840" y="154" width="24" height="10" fill="#65c754" />
+  <rect x="152" y="242" width="2" height="6" fill="#2e7d32" />
+  <rect x="150" y="240" width="6" height="4" fill="#ef4444" />
+  <rect x="152" y="241" width="2" height="2" fill="#ffffff" />
+  <rect x="182" y="244" width="2" height="6" fill="#2e7d32" />
+  <rect x="180" y="242" width="6" height="4" fill="#38bdf8" />
+  <rect x="182" y="243" width="2" height="2" fill="#ffffff" />
+  <rect x="212" y="241" width="2" height="6" fill="#2e7d32" />
+  <rect x="210" y="239" width="6" height="4" fill="#facc15" />
+  <rect x="212" y="240" width="2" height="2" fill="#ffffff" />
+  <rect x="382" y="244" width="2" height="6" fill="#2e7d32" />
+  <rect x="380" y="242" width="6" height="4" fill="#ef4444" />
+  <rect x="382" y="243" width="2" height="2" fill="#ffffff" />
+  <rect x="532" y="243" width="2" height="6" fill="#2e7d32" />
+  <rect x="530" y="241" width="6" height="4" fill="#38bdf8" />
+  <rect x="532" y="242" width="2" height="2" fill="#ffffff" />
+  <rect x="562" y="245" width="2" height="6" fill="#2e7d32" />
+  <rect x="560" y="243" width="6" height="4" fill="#facc15" />
+  <rect x="562" y="244" width="2" height="2" fill="#ffffff" />
+  <rect x="722" y="242" width="2" height="6" fill="#2e7d32" />
+  <rect x="720" y="240" width="6" height="4" fill="#ef4444" />
+  <rect x="722" y="241" width="2" height="2" fill="#ffffff" />
+  <rect x="752" y="244" width="2" height="6" fill="#2e7d32" />
+  <rect x="750" y="242" width="6" height="4" fill="#a855f7" />
+  <rect x="752" y="243" width="2" height="2" fill="#ffffff" />
+  <!-- Wooden World Signpost -->
+  <rect x="296" y="228" width="8" height="45" fill="#4e342e" />
+  <rect x="298" y="228" width="4" height="45" fill="#6d4c41" />
+  <rect x="245" y="200" width="110" height="34" fill="#8d6e63" stroke="#3e2723" stroke-width="2" />
+  <rect x="247" y="202" width="106" height="30" fill="#bcaaa4" />
+  <rect x="249" y="204" width="102" height="26" fill="#d7ccc8" />
+  <line x1="247" y1="217" x2="353" y2="217" stroke="#8d6e63" stroke-width="1" />
+  <rect x="248" y="203" width="2" height="2" fill="#3e2723" />
+  <rect x="350" y="203" width="2" height="2" fill="#3e2723" />
+  <rect x="248" y="229" width="2" height="2" fill="#3e2723" />
+  <rect x="350" y="229" width="2" height="2" fill="#3e2723" />
+  <text x="300" y="213" text-anchor="middle" class="pixel-text sign-title">SPAWN MEADOW</text>
+  <text x="300" y="225" text-anchor="middle" class="pixel-text sign-body">OBSERVATORY &#x2794;</text>
+  <!-- Lantern Post -->
+  <rect x="518" y="222" width="6" height="38" fill="#4e342e" />
+  <rect x="515" y="218" width="12" height="4" fill="#3e2723" />
+  <rect x="522" y="208" width="12" height="3" fill="#1e293b" />
+  <rect x="531" y="211" width="3" height="4" fill="#1e293b" />
+  <rect x="527" y="215" width="11" height="15" fill="#0f172a" />
+  <rect x="529" y="217" width="7" height="11" fill="#f59e0b" class="lantern-core" />
+  <rect x="531" y="219" width="3" height="7" fill="#fef08a" />
+  <rect x="525" y="214" width="15" height="2" fill="#334155" />
+  <rect x="528" y="212" width="9" height="2" fill="#1e293b" />
+  <!-- Ayush Character Sprite (Original Blue Hoodie Pixel Model) -->
+  <ellipse cx="413" cy="250" rx="16" ry="5" fill="#000000" opacity="0.35" />
+  <!-- Shoes -->
+  <rect x="401" y="245" width="10" height="5" fill="#18181b" />
+  <rect x="415" y="245" width="10" height="5" fill="#18181b" />
+  <rect x="401" y="248" width="10" height="2" fill="#ffffff" />
+  <rect x="415" y="248" width="10" height="2" fill="#ffffff" />
+  <!-- Denim Pants -->
+  <rect x="403" y="231" width="8" height="15" fill="#273444" />
+  <rect x="415" y="231" width="8" height="15" fill="#1f2937" />
+  <!-- Blue Hoodie Torso -->
+  <rect x="400" y="216" width="26" height="17" fill="#2563eb" />
+  <rect x="400" y="229" width="26" height="4" fill="#1d4ed8" />
+  <rect x="405" y="225" width="16" height="6" fill="#1e40af" />
+  <rect x="409" y="217" width="2" height="7" fill="#ffffff" />
+  <rect x="415" y="217" width="2" height="7" fill="#ffffff" />
+  <!-- Arms & Hands -->
+  <rect x="396" y="216" width="5" height="15" fill="#1d4ed8" />
+  <rect x="425" y="216" width="5" height="15" fill="#1d4ed8" />
+  <rect x="396" y="230" width="5" height="5" fill="#f8b688" />
+  <rect x="425" y="230" width="5" height="5" fill="#f8b688" />
+  <!-- Head & Face -->
+  <rect x="408" y="214" width="10" height="3" fill="#f19f6a" />
+  <rect x="402" y="200" width="22" height="15" fill="#f8b688" />
+  <rect x="403" y="209" width="3" height="2" fill="#f49d80" opacity="0.8" />
+  <rect x="420" y="209" width="3" height="2" fill="#f49d80" opacity="0.8" />
+  <rect x="406" y="205" width="4" height="4" fill="#1e293b" />
+  <rect x="416" y="205" width="4" height="4" fill="#1e293b" />
+  <rect x="406" y="205" width="2" height="2" fill="#ffffff" />
+  <rect x="416" y="205" width="2" height="2" fill="#ffffff" />
+  <rect x="411" y="211" width="4" height="2" fill="#9f4d36" />
+  <!-- Hair -->
+  <rect x="401" y="195" width="24" height="7" fill="#1c1917" />
+  <rect x="400" y="199" width="4" height="8" fill="#1c1917" />
+  <rect x="422" y="199" width="4" height="8" fill="#1c1917" />
+  <rect x="404" y="202" width="5" height="3" fill="#292524" />
+  <rect x="413" y="202" width="4" height="2" fill="#292524" />
+  <!-- Interaction Dialogue Bubble -->
+  <g>
+    <rect x="330" y="145" width="170" height="34" rx="4" fill="#0f172a" stroke="#38bdf8" stroke-width="2" />
+    <polygon points="410,179 418,179 414,187" fill="#0f172a" />
+    <polygon points="410,179 414,187 418,179" stroke="#38bdf8" stroke-width="2" fill="#0f172a" />
+    <line x1="410" y1="179" x2="418" y2="179" stroke="#0f172a" stroke-width="3" />
+    <text x="415" y="161" text-anchor="middle" class="pixel-text" font-size="10" fill="#38bdf8" font-weight="700">PRESS [E] TO EXPLORE</text>
+    <text x="415" y="172" text-anchor="middle" class="pixel-text" font-size="8" fill="#94a3b8">Welcome to AyushCraft World!</text>
+  </g>
+  <!-- Header Hero Plaque (Minecraft Stone & Gold Style) -->
+  <g>
+    <rect x="25" y="20" width="375" height="85" fill="#1e293b" stroke="#0f172a" stroke-width="3" rx="4" />
+    <rect x="28" y="23" width="369" height="79" fill="#0f172a" stroke="#475569" stroke-width="2" rx="2" />
+    <rect x="33" y="28" width="359" height="69" fill="#182234" stroke="#d97706" stroke-width="1.5" />
+    <rect x="35" y="30" width="5" height="5" fill="#f59e0b" />
+    <rect x="385" y="30" width="5" height="5" fill="#f59e0b" />
+    <rect x="35" y="90" width="5" height="5" fill="#f59e0b" />
+    <rect x="385" y="90" width="5" height="5" fill="#f59e0b" />
+    <text x="48" y="60" class="pixel-text title">AYUSHCRAFT</text>
+    <text x="49" y="80" class="pixel-text tagline">BUILD &#x2022; EXPLORE &#x2022; DISCOVER</text>
+    <rect x="245" y="38" width="138" height="20" fill="#0f172a" stroke="#334155" stroke-width="1" />
+    <circle cx="255" cy="48" r="3" fill="#22c55e" />
+    <text x="264" y="52" class="pixel-text" font-size="9" fill="#94a3b8">SPAWN [X:19, Y:14]</text>
+  </g>
+  <!-- Teleport & Status Dock -->
+  <g>
+    <rect x="580" y="260" width="275" height="42" fill="#0f172a" stroke="#334155" stroke-width="2" rx="4" opacity="0.95" />
+    <circle cx="600" cy="281" r="5" fill="#38bdf8" />
+    <text x="615" y="278" class="badge-text">Interactive 2D World</text>
+    <text x="615" y="293" class="badge-text" font-size="10"><tspan class="badge-highlight">5 Biomes</tspan> &#x2022; AirLytics &#x2022; AI Lab</text>
+    <rect x="795" y="268" width="50" height="26" fill="#0284c7" stroke="#38bdf8" stroke-width="1" rx="2" />
+    <text x="820" y="285" text-anchor="middle" class="pixel-text" font-size="10" fill="#ffffff" font-weight="700">ENTER</text>
+  </g>
+</svg>
+

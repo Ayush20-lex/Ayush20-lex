@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>AYUSHCRAFT — A Tiny Developer World</title>
+  <meta name="description" content="An original, Minecraft-inspired interactive developer world built by Ayush Kumar. Explore projects, technical skills, and personal lore in an explorable 2D pixel world." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="game-container">
+    <!-- Game Canvas -->
+    <canvas id="game-canvas"></canvas>
+
+    <!-- HUD Overlay -->
+    <div id="hud-overlay">
+      <!-- Top Navigation Bar -->
+      <div class="hud-top-bar">
+        <div class="brand-badge">
+          <span class="brand-icon"></span>
+          <div>
+            <div class="brand-title">AYUSHCRAFT</div>
+            <div class="brand-sub">Build. Explore. Discover.</div>
+          </div>
+        </div>
+
+        <div class="hud-actions">
+          <button id="sound-toggle-btn" class="pixel-btn secondary" title="Toggle Sound">🔇 Sound: Off</button>
+          <button id="journal-btn" class="pixel-btn" title="Open Explorer's Journal">📖 Journal [J]</button>
+        </div>
+      </div>
+
+      <!-- Current Location Pill -->
+      <div id="location-pill">
+        <span class="loc-dot"></span>
+        <span id="location-text">Spawn Meadow</span>
+      </div>
+
+      <!-- Proximity Interaction Prompt -->
+      <div id="interact-prompt">
+        <span class="key-badge">E</span>
+        <span id="prompt-text">Interact</span>
+      </div>
+
+      <!-- Bottom Controls Hint (Desktop) -->
+      <div class="hud-bottom-bar">
+        <div class="controls-legend">
+          <span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or <kbd>Arrows</kbd> Move</span>
+          <span><kbd>E</kbd> or <kbd>Enter</kbd> Interact</span>
+          <span><kbd>J</kbd> Journal</span>
+          <span><kbd>Esc</kbd> Close</span>
+          <span>🖱️ Click to Walk / Tap Objects</span>
+        </div>
+      </div>
+
+      <!-- Mobile Virtual Touch Controls -->
+      <div id="touch-controls">
+        <div class="dpad">
+          <button id="dpad-up" class="dpad-btn dpad-up" aria-label="Up">▲</button>
+          <button id="dpad-down" class="dpad-btn dpad-down" aria-label="Down">▼</button>
+          <button id="dpad-left" class="dpad-btn dpad-left" aria-label="Left">◀</button>
+          <button id="dpad-right" class="dpad-btn dpad-right" aria-label="Right">▶</button>
+          <div class="dpad-center"></div>
+        </div>
+
+        <div class="touch-actions">
+          <button id="touch-action-btn" class="action-circle-btn" aria-label="Interact">E</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modals & Dialogue Backdrop -->
+    <div id="modal-backdrop" class="modal-backdrop" role="dialog" aria-modal="true">
+      <div class="pixel-panel">
+        <div class="panel-header">
+          <h2 id="modal-title">Information</h2>
+          <button id="modal-close-btn" class="panel-close-btn" aria-label="Close modal">✕</button>
+        </div>
+        <div id="modal-body" class="panel-body">
+          <!-- Content dynamically injected -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Script -->
+  <script type="module" src="src/main.js"></script>
+  <script src="bundle.js" defer></script>
+</body>
+</html>
