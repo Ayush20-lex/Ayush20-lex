@@ -1,5 +1,6 @@
 /**
  * AYUSHCRAFT — Core Game Engine & Canvas Renderer
+ * Second-Pass Viewport, Rendering & Environmental Storytelling
  */
 
 import { TILE_SIZE, generateTileAtlas, generatePlayerAtlas } from './tiles.js';
@@ -14,9 +15,9 @@ export class Game {
     this.ctx = this.canvas.getContext('2d');
     this.ctx.imageSmoothingEnabled = false;
 
-    // Viewport & Scale
-    this.viewWidth = 640;  // Virtual resolution width
-    this.viewHeight = 440; // Virtual resolution height
+    // Viewport & Adaptive Scale
+    this.viewWidth = 640;
+    this.viewHeight = 360;
     this.camera = { x: 0, y: 0 };
 
     // Atlases
@@ -39,10 +40,10 @@ export class Game {
     this.input = { up: false, down: false, left: false, right: false };
     this.lastTime = performance.now();
 
-    // Water animation timer
+    // Environmental Animation Clocks
     this.animClock = 0;
 
-    // Mobile / Touch controls setup
+    // Setup input & responsive canvas
     this.initInput();
     this.resizeCanvas();
     window.addEventListener('resize', () => this.resizeCanvas());
@@ -51,21 +52,35 @@ export class Game {
     requestAnimationFrame((t) => this.loop(t));
   }
 
+  // Priority 2: Responsive Full-Screen Sizing & Sharp Integer/Proportional Scaling
   resizeCanvas() {
-    const dpr = window.devicePixelRatio || 1;
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
 
-    // Scale pixel canvas maintaining aspect ratio
-    const scale = Math.min(windowWidth / this.viewWidth, windowHeight / this.viewHeight);
-    const canvasWidth = Math.floor(this.viewWidth * Math.max(1, Math.floor(scale)));
-    const canvasHeight = Math.floor(this.viewHeight * Math.max(1, Math.floor(scale)));
+    // Choose optimal pixel zoom
+    // 2.0x on standard desktop for crisp 64px virtual tile scale
+    // 1.5x on mid laptops/tablets
+    // 1.25x on small mobile screens
+    let zoom = 2.0;
+    if (windowWidth < 600 || windowHeight < 460) {
+      zoom = 1.25;
+    } else if (windowWidth < 1000 || windowHeight < 640) {
+      zoom = 1.5;
+    } else if (windowWidth > 1920) {
+      zoom = 2.5;
+    } else {
+      zoom = 2.0;
+    }
+
+    // Set internal canvas resolution so it fills the screen cleanly
+    this.viewWidth = Math.ceil(windowWidth / zoom);
+    this.viewHeight = Math.ceil(windowHeight / zoom);
 
     this.canvas.width = this.viewWidth;
     this.canvas.height = this.viewHeight;
 
-    this.canvas.style.width = `${canvasWidth}px`;
-    this.canvas.style.height = `${canvasHeight}px`;
+    this.canvas.style.width = '100vw';
+    this.canvas.style.height = '100vh';
 
     this.ctx.imageSmoothingEnabled = false;
   }
@@ -92,7 +107,7 @@ export class Game {
       if (e.key === 'd' || e.key === 'D' || e.key === 'ArrowRight') this.input.right = false;
     });
 
-    // Canvas click / tap to move
+    // Canvas click / tap to move or interact
     this.canvas.addEventListener('click', (e) => {
       if (this.ui.isModalOpen()) return;
 
@@ -117,9 +132,11 @@ export class Game {
       });
 
       if (clickedObj) {
-        // If nearby, interact directly; otherwise walk toward it and trigger on arrival
-        const dist = Math.hypot(this.player.x + 16 - (clickedObj.tileX * 32 + 16), this.player.y + 20 - (clickedObj.tileY * 32 + 16));
-        if (dist < 50) {
+        const dist = Math.hypot(
+          this.player.x + 16 - (clickedObj.tileX * 32 + 16),
+          this.player.y + 20 - (clickedObj.tileY * 32 + 16)
+        );
+        if (dist < 52) {
           this.triggerObject(clickedObj);
           return;
         }
@@ -131,7 +148,7 @@ export class Game {
       }
     });
 
-    // Mobile Virtual D-Pad buttons
+    // Mobile Virtual Touch D-Pad bindings
     const bindTouch = (id, dir) => {
       const btn = document.getElementById(id);
       if (!btn) return;
@@ -143,8 +160,17 @@ export class Game {
         e.preventDefault();
         this.input[dir] = false;
       });
-      btn.addEventListener('mousedown', () => this.input[dir] = true);
-      btn.addEventListener('mouseup', () => this.input[dir] = false);
+      btn.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        this.input[dir] = true;
+      });
+      btn.addEventListener('mouseup', (e) => {
+        e.preventDefault();
+        this.input[dir] = false;
+      });
+      btn.addEventListener('mouseleave', () => {
+        this.input[dir] = false;
+      });
     };
 
     bindTouch('dpad-up', 'up');
@@ -175,11 +201,17 @@ export class Game {
     } else if (obj.type === 'modal') {
       this.ui.openModal(obj.data);
     } else if (obj.type === 'toggle') {
-      // Toggle Redstone lamp logic
+      // Toggle Redstone lamp logic with live wire feedback
       obj.isOn = !obj.isOn;
       obj.tileType = obj.isOn ? 'LAMP_ON' : 'LAMP_OFF';
+
+      // Update connected floor wire tiles in Redstone Lab
+      const wireTile = obj.isOn ? 'REDSTONE_WIRE_ON' : 'REDSTONE_WIRE_OFF';
+      this.baseMap[19][30] = wireTile;
+      this.baseMap[20][30] = wireTile;
+
       audio.playToggle();
-      this.ui.updateLocation(obj.isOn ? 'Redstone Circuit: Active ⚡' : 'Redstone Circuit: Inactive');
+      this.ui.updateLocation(obj.isOn ? 'Redstone Circuit: Active ⚡ (15V Signal)' : 'Redstone Circuit: Inactive');
     }
   }
 
@@ -195,7 +227,7 @@ export class Game {
           this.player.x + 16 - (this.pendingClickedObject.tileX * 32 + 16),
           this.player.y + 20 - (this.pendingClickedObject.tileY * 32 + 16)
         );
-        if (dist < 50) {
+        if (dist < 52) {
           const obj = this.pendingClickedObject;
           this.pendingClickedObject = null;
           this.player.targetPos = null;
@@ -210,8 +242,18 @@ export class Game {
 
     const maxCamX = MAP_WIDTH * TILE_SIZE - this.viewWidth;
     const maxCamY = MAP_HEIGHT * TILE_SIZE - this.viewHeight;
-    this.camera.x = Math.max(0, Math.min(this.camera.x, maxCamX));
-    this.camera.y = Math.max(0, Math.min(this.camera.y, maxCamY));
+
+    if (maxCamX > 0) {
+      this.camera.x = Math.max(0, Math.min(this.camera.x, maxCamX));
+    } else {
+      this.camera.x = Math.round(maxCamX / 2);
+    }
+
+    if (maxCamY > 0) {
+      this.camera.y = Math.max(0, Math.min(this.camera.y, maxCamY));
+    } else {
+      this.camera.y = Math.round(maxCamY / 2);
+    }
 
     // Update Proximity HUD Prompt
     if (this.player.nearbyObject) {
@@ -247,16 +289,26 @@ export class Game {
           this.ctx.drawImage(tileImg, x * TILE_SIZE, y * TILE_SIZE);
         }
 
-        // Animated water highlights
+        // Priority 5: Handcrafted River Flow Animation & Foam
         if (tileType === 'WATER') {
-          const waveShift = Math.sin(this.animClock * 3 + x + y) * 2;
-          this.ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
-          this.ctx.fillRect(x * TILE_SIZE + 6 + waveShift, y * TILE_SIZE + 10, 8, 2);
+          const waveShift = Math.sin(this.animClock * 2.8 + x * 0.7 + y * 0.9) * 3;
+          this.ctx.fillStyle = 'rgba(255, 255, 255, 0.22)';
+          this.ctx.fillRect(x * TILE_SIZE + 6 + waveShift, y * TILE_SIZE + 8, 7, 2);
+          this.ctx.fillRect(x * TILE_SIZE + 16 - waveShift, y * TILE_SIZE + 20, 8, 2);
         }
 
-        // Animated portal swirls
+        // Priority 5: Active Redstone Sparks
+        if (tileType === 'REDSTONE_WIRE_ON') {
+          const spark = Math.sin(this.animClock * 12 + x + y) > 0.4;
+          if (spark) {
+            this.ctx.fillStyle = '#fef08a';
+            this.ctx.fillRect(x * TILE_SIZE + 15, y * TILE_SIZE + 15, 2, 2);
+          }
+        }
+
+        // Portal swirling mystical energy
         if (tileType === 'PORTAL') {
-          const shimmer = (Math.sin(this.animClock * 4 + x * 2) + 1) * 0.15;
+          const shimmer = (Math.sin(this.animClock * 3.5 + x * 1.5 + y) + 1) * 0.18;
           this.ctx.fillStyle = `rgba(192, 132, 252, ${shimmer})`;
           this.ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
         }
@@ -270,13 +322,59 @@ export class Game {
         this.ctx.drawImage(tileImg, obj.tileX * TILE_SIZE, obj.tileY * TILE_SIZE);
       }
 
-      // If nearby, draw a little floating highlight indicator
+      // Priority 5: Handcrafted Storytelling Details
+      // A: Save Room Lantern gentle amber breathing flicker
+      if (obj.id === 'save_room_lantern') {
+        const flicker = Math.sin(this.animClock * 4.5) * 0.08 + Math.sin(this.animClock * 11) * 0.04;
+        const rad = 28 + Math.sin(this.animClock * 2) * 2;
+        const grad = this.ctx.createRadialGradient(
+          obj.tileX * TILE_SIZE + 16, obj.tileY * TILE_SIZE + 16, 4,
+          obj.tileX * TILE_SIZE + 16, obj.tileY * TILE_SIZE + 16, rad
+        );
+        grad.addColorStop(0, `rgba(245, 158, 11, ${0.28 + flicker})`);
+        grad.addColorStop(1, 'rgba(245, 158, 11, 0)');
+        this.ctx.fillStyle = grad;
+        this.ctx.beginPath();
+        this.ctx.arc(obj.tileX * TILE_SIZE + 16, obj.tileY * TILE_SIZE + 16, rad, 0, Math.PI * 2);
+        this.ctx.fill();
+      }
+
+      // B: Hollow Knight Nail Relic Soul Shimmer
+      if (obj.id === 'save_room_relic') {
+        const distToPlayer = Math.hypot(
+          this.player.x + 16 - (obj.tileX * 32 + 16),
+          this.player.y + 20 - (obj.tileY * 32 + 16)
+        );
+        if (distToPlayer < 65) {
+          const soulPulse = (Math.sin(this.animClock * 4) + 1) * 0.15;
+          this.ctx.fillStyle = `rgba(56, 189, 248, ${0.15 + soulPulse})`;
+          this.ctx.beginPath();
+          this.ctx.arc(obj.tileX * TILE_SIZE + 16, obj.tileY * TILE_SIZE + 12, 16, 0, Math.PI * 2);
+          this.ctx.fill();
+        }
+      }
+
+      // C: Active Redstone Lamp Light Bloom
+      if (obj.id === 'redstone_lamp_1' && obj.isOn) {
+        const lampGrad = this.ctx.createRadialGradient(
+          obj.tileX * TILE_SIZE + 16, obj.tileY * TILE_SIZE + 16, 6,
+          obj.tileX * TILE_SIZE + 16, obj.tileY * TILE_SIZE + 16, 42
+        );
+        lampGrad.addColorStop(0, 'rgba(254, 240, 138, 0.45)');
+        lampGrad.addColorStop(1, 'rgba(234, 179, 8, 0)');
+        this.ctx.fillStyle = lampGrad;
+        this.ctx.beginPath();
+        this.ctx.arc(obj.tileX * TILE_SIZE + 16, obj.tileY * TILE_SIZE + 16, 42, 0, Math.PI * 2);
+        this.ctx.fill();
+      }
+
+      // Proximity pointer bob
       if (this.player.nearbyObject === obj) {
-        const hoverBob = Math.sin(this.animClock * 6) * 3;
+        const hoverBob = Math.sin(this.animClock * 6.5) * 3;
         this.ctx.fillStyle = '#fde047';
         this.ctx.beginPath();
         const px = obj.tileX * TILE_SIZE + 16;
-        const py = obj.tileY * TILE_SIZE - 6 + hoverBob;
+        const py = obj.tileY * TILE_SIZE - 7 + hoverBob;
         this.ctx.moveTo(px - 5, py);
         this.ctx.lineTo(px + 5, py);
         this.ctx.lineTo(px, py + 5);
@@ -284,38 +382,49 @@ export class Game {
       }
     });
 
-    // 3. Render Trees (Foliage canopy)
-    const treeLocations = [
-      [15, 14], [22, 14], [14, 22], [22, 22],
-      [1, 1], [2, 1], [35, 1], [36, 1],
-      [12, 6], [24, 6], [12, 18], [24, 18]
+    // 3. Render Tree Groves (Natural Oak & Evergreen Clusters)
+    const oakTrees = [
+      [15, 13], [22, 13], [14, 22], [22, 22],
+      [1, 1], [36, 1], [11, 7], [24, 7],
+      [11, 24], [24, 24]
     ];
-    treeLocations.forEach(([tx, ty]) => {
-      const treeImg = this.tiles['TREE_TOP'];
-      if (treeImg) {
-        this.ctx.drawImage(treeImg, tx * TILE_SIZE - 16, ty * TILE_SIZE - 28);
+    oakTrees.forEach(([tx, ty]) => {
+      const oakImg = this.tiles['TREE_TOP'];
+      if (oakImg) {
+        this.ctx.drawImage(oakImg, tx * TILE_SIZE - 16, ty * TILE_SIZE - 28);
       }
     });
 
-    // 4. Render Player
+    const pineTrees = [
+      [2, 12], [2, 13], [35, 12], [35, 13],
+      [11, 12], [16, 26]
+    ];
+    pineTrees.forEach(([tx, ty]) => {
+      const pineImg = this.tiles['TREE_PINE'];
+      if (pineImg) {
+        this.ctx.drawImage(pineImg, tx * TILE_SIZE - 16, ty * TILE_SIZE - 28);
+      }
+    });
+
+    // 4. Render Player Character
     this.player.render(this.ctx, this.playerAtlas);
 
     // 5. Restore camera
     this.ctx.restore();
 
-    // 6. Vignette overlay for atmosphere
+    // 6. Restrained Atmospheric Vignette
     const grad = this.ctx.createRadialGradient(
-      this.viewWidth / 2, this.viewHeight / 2, this.viewWidth * 0.4,
-      this.viewWidth / 2, this.viewHeight / 2, this.viewWidth * 0.75
+      this.viewWidth / 2, this.viewHeight / 2, this.viewWidth * 0.42,
+      this.viewWidth / 2, this.viewHeight / 2, this.viewWidth * 0.85
     );
     grad.addColorStop(0, 'rgba(0,0,0,0)');
-    grad.addColorStop(1, 'rgba(0,0,0,0.45)');
+    grad.addColorStop(1, 'rgba(0,0,0,0.38)');
     this.ctx.fillStyle = grad;
     this.ctx.fillRect(0, 0, this.viewWidth, this.viewHeight);
   }
 
   loop(timestamp) {
-    const dt = Math.min((timestamp - this.lastTime) / 1000, 0.05); // clamp max dt to prevent jumps
+    const dt = Math.min((timestamp - this.lastTime) / 1000, 0.05);
     this.lastTime = timestamp;
 
     this.update(dt);

@@ -1,6 +1,6 @@
 /**
  * AYUSHCRAFT — Tile and Sprite Generator
- * Procedural Pixel-Art Graphics Engine
+ * Procedural Pixel-Art Graphics Engine (Second-Pass Polish)
  */
 
 export const TILE_SIZE = 32;
@@ -19,83 +19,234 @@ function createTileCanvas(width = TILE_SIZE, height = TILE_SIZE) {
 export function generateTileAtlas() {
   const tiles = {};
 
-  // 1. GRASS
+  // 1. GRASS — Natural Meadow Base
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = '#489c3b';
+    ctx.fillStyle = '#499a39';
     ctx.fillRect(0, 0, 32, 32);
-    // Darker patches
-    ctx.fillStyle = '#3c8531';
-    ctx.fillRect(4, 6, 8, 8);
-    ctx.fillRect(20, 18, 6, 8);
-    ctx.fillRect(14, 2, 6, 4);
-    // Lighter highlights
-    ctx.fillStyle = '#5cb84d';
-    ctx.fillRect(8, 4, 4, 4);
-    ctx.fillRect(18, 12, 4, 6);
-    ctx.fillRect(2, 22, 4, 4);
-    ctx.fillRect(24, 24, 4, 4);
+    // Darker soil & shade specks
+    ctx.fillStyle = '#3c852e';
+    ctx.fillRect(4, 6, 4, 4);
+    ctx.fillRect(18, 16, 5, 4);
+    ctx.fillRect(24, 6, 4, 3);
+    ctx.fillRect(8, 22, 5, 4);
+    // Lighter blade highlights
+    ctx.fillStyle = '#5cba48';
+    ctx.fillRect(6, 4, 3, 3);
+    ctx.fillRect(16, 12, 3, 3);
+    ctx.fillRect(2, 18, 3, 3);
+    ctx.fillRect(26, 22, 3, 3);
+    ctx.fillRect(12, 26, 3, 3);
     tiles['GRASS'] = canvas;
   }
 
-  // 2. DIRT PATH
+  // 1B. GRASS_FLOWERS — Wild Meadow Poppies & Buttercups
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = '#8f633d';
-    ctx.fillRect(0, 0, 32, 32);
-    // Dirt variation
-    ctx.fillStyle = '#78502f';
-    ctx.fillRect(2, 6, 12, 8);
-    ctx.fillRect(18, 18, 10, 8);
-    ctx.fillRect(8, 24, 6, 6);
-    // Pebbles / gravel
-    ctx.fillStyle = '#aa825b';
+    ctx.drawImage(tiles['GRASS'], 0, 0);
+    // Red Poppies
+    ctx.fillStyle = '#dc2626';
     ctx.fillRect(6, 8, 4, 4);
-    ctx.fillRect(22, 6, 4, 4);
-    ctx.fillRect(16, 14, 6, 4);
-    ctx.fillRect(12, 26, 4, 4);
+    ctx.fillRect(22, 18, 4, 4);
+    ctx.fillStyle = '#fef08a'; // Pollen center
+    ctx.fillRect(7, 9, 2, 2);
+    ctx.fillRect(23, 19, 2, 2);
+    // Yellow Buttercup
+    ctx.fillStyle = '#eab308';
+    ctx.fillRect(14, 22, 4, 4);
+    ctx.fillStyle = '#f97316';
+    ctx.fillRect(15, 23, 2, 2);
+    tiles['GRASS_FLOWERS'] = canvas;
+  }
+
+  // 1C. GRASS_FLOWERS_WHITE — Chamomile / White Daisies
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.drawImage(tiles['GRASS'], 0, 0);
+    // White Daisies
+    ctx.fillStyle = '#f8fafc';
+    ctx.fillRect(8, 14, 4, 4);
+    ctx.fillRect(20, 6, 4, 4);
+    ctx.fillRect(24, 24, 3, 3);
+    ctx.fillStyle = '#f59e0b'; // Gold center
+    ctx.fillRect(9, 15, 2, 2);
+    ctx.fillRect(21, 7, 2, 2);
+    ctx.fillRect(25, 25, 1, 1);
+    tiles['GRASS_FLOWERS_WHITE'] = canvas;
+  }
+
+  // 1D. GRASS_TALL — Bushy Grass Tufts
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.drawImage(tiles['GRASS'], 0, 0);
+    ctx.fillStyle = '#2d6a22';
+    // Tall blades
+    ctx.fillRect(10, 10, 2, 12);
+    ctx.fillRect(14, 8, 2, 14);
+    ctx.fillRect(18, 11, 2, 11);
+    ctx.fillStyle = '#6ee755';
+    ctx.fillRect(11, 8, 1, 6);
+    ctx.fillRect(15, 6, 1, 7);
+    ctx.fillRect(19, 9, 1, 5);
+    tiles['GRASS_TALL'] = canvas;
+  }
+
+  // 1E. GRASS_PEBBLE — Meadow with Natural Field Stones
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.drawImage(tiles['GRASS'], 0, 0);
+    // River pebbles
+    ctx.fillStyle = '#64748b';
+    ctx.fillRect(8, 16, 5, 4);
+    ctx.fillRect(20, 10, 4, 3);
+    ctx.fillStyle = '#94a3b8';
+    ctx.fillRect(9, 16, 3, 2);
+    ctx.fillRect(21, 10, 2, 1);
+    tiles['GRASS_PEBBLE'] = canvas;
+  }
+
+  // 1F. GRASS_MOSSY — Shaded Forest Floor
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#37772b';
+    ctx.fillRect(0, 0, 32, 32);
+    ctx.fillStyle = '#295b20';
+    ctx.fillRect(2, 4, 12, 10);
+    ctx.fillRect(16, 14, 14, 12);
+    ctx.fillStyle = '#4d993e';
+    ctx.fillRect(6, 18, 6, 6);
+    tiles['GRASS_MOSSY'] = canvas;
+  }
+
+  // 2. DIRT PATH — Warm Beaten Trail
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#92653d';
+    ctx.fillRect(0, 0, 32, 32);
+    // Subtle earth grain
+    ctx.fillStyle = '#7a512d';
+    ctx.fillRect(2, 4, 14, 10);
+    ctx.fillRect(16, 16, 14, 12);
+    ctx.fillRect(4, 20, 8, 8);
+    // Sand & tiny stone flecks
+    ctx.fillStyle = '#b08253';
+    ctx.fillRect(6, 6, 3, 3);
+    ctx.fillRect(22, 8, 4, 3);
+    ctx.fillRect(14, 18, 3, 3);
+    ctx.fillRect(24, 24, 3, 2);
+    // Edging shadow
+    ctx.fillStyle = '#654122';
+    ctx.fillRect(0, 0, 32, 1);
+    ctx.fillRect(0, 31, 32, 1);
     tiles['DIRT_PATH'] = canvas;
   }
 
-  // 3. COBBLESTONE
+  // 2B. WOOD_BRIDGE — Wooden Footbridge over Water
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = '#636573';
+    ctx.fillStyle = '#784627';
     ctx.fillRect(0, 0, 32, 32);
-    ctx.fillStyle = '#41424d'; // Mortar
+    // Plank splits
+    ctx.fillStyle = '#452513';
+    ctx.fillRect(0, 7, 32, 2);
+    ctx.fillRect(0, 15, 32, 2);
+    ctx.fillRect(0, 23, 32, 2);
+    ctx.fillRect(0, 31, 32, 1);
+    // Plank highlights
+    ctx.fillStyle = '#9c5f37';
+    ctx.fillRect(2, 1, 28, 2);
+    ctx.fillRect(2, 9, 28, 2);
+    ctx.fillRect(2, 17, 28, 2);
+    ctx.fillRect(2, 25, 28, 2);
+    // Iron bolts
+    ctx.fillStyle = '#1e293b';
+    ctx.fillRect(3, 4, 2, 2);
+    ctx.fillRect(27, 4, 2, 2);
+    ctx.fillRect(3, 12, 2, 2);
+    ctx.fillRect(27, 12, 2, 2);
+    ctx.fillRect(3, 20, 2, 2);
+    ctx.fillRect(27, 20, 2, 2);
+    tiles['WOOD_BRIDGE'] = canvas;
+  }
+
+  // 3. COBBLESTONE — Chiseled Stone Pathway
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#646675';
+    ctx.fillRect(0, 0, 32, 32);
+    ctx.fillStyle = '#3c3d47'; // Mortar grooves
     ctx.fillRect(0, 15, 32, 2);
     ctx.fillRect(0, 31, 32, 1);
     ctx.fillRect(15, 0, 2, 15);
     ctx.fillRect(23, 16, 2, 16);
-    // Stone highlights & cracks
-    ctx.fillStyle = '#7a7d8c';
+    // Highlighted stone faces
+    ctx.fillStyle = '#7f8294';
     ctx.fillRect(2, 2, 11, 4);
     ctx.fillRect(18, 2, 12, 4);
     ctx.fillRect(2, 18, 19, 4);
     ctx.fillRect(26, 18, 5, 4);
+    // Shadow bevels
+    ctx.fillStyle = '#4c4e59';
+    ctx.fillRect(2, 11, 11, 3);
+    ctx.fillRect(18, 11, 12, 3);
+    ctx.fillRect(2, 27, 19, 3);
     tiles['COBBLESTONE'] = canvas;
   }
 
-  // 4. WATER (Base frame)
+  // 3B. COBBLE_MOSSY — Weathered Mossy Cobblestone
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = '#2563eb';
+    ctx.drawImage(tiles['COBBLESTONE'], 0, 0);
+    ctx.fillStyle = '#3c852e';
+    ctx.fillRect(4, 12, 8, 4);
+    ctx.fillRect(14, 2, 5, 6);
+    ctx.fillRect(20, 22, 8, 5);
+    ctx.fillStyle = '#5cba48';
+    ctx.fillRect(6, 13, 4, 2);
+    ctx.fillRect(22, 23, 4, 2);
+    tiles['COBBLE_MOSSY'] = canvas;
+  }
+
+  // 4. WATER — Dynamic Crystal Blue River
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#1d5ec9';
     ctx.fillRect(0, 0, 32, 32);
-    ctx.fillStyle = '#3b82f6';
-    ctx.fillRect(4, 8, 14, 4);
-    ctx.fillRect(14, 20, 12, 4);
+    // Secondary flow wave
+    ctx.fillStyle = '#256ee8';
+    ctx.fillRect(2, 6, 16, 5);
+    ctx.fillRect(14, 18, 16, 5);
+    // Surface highlights
     ctx.fillStyle = '#60a5fa';
-    ctx.fillRect(6, 10, 8, 2);
-    ctx.fillRect(18, 22, 6, 2);
+    ctx.fillRect(4, 8, 10, 2);
+    ctx.fillRect(18, 20, 10, 2);
+    ctx.fillStyle = '#93c5fd';
+    ctx.fillRect(6, 9, 4, 1);
+    ctx.fillRect(20, 21, 4, 1);
     tiles['WATER'] = canvas;
   }
 
-  // 5. WOOD PLANKS
+  // 4B. WATER_SHORE — Water with Gentle Sandy Bank
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = '#8f563b';
+    ctx.drawImage(tiles['WATER'], 0, 0);
+    // Sandy fringe on top
+    ctx.fillStyle = '#8f633d';
+    ctx.fillRect(0, 0, 32, 4);
+    ctx.fillStyle = '#b08253';
+    ctx.fillRect(0, 4, 32, 2);
+    // Foam line
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+    ctx.fillRect(2, 6, 28, 2);
+    tiles['WATER_SHORE'] = canvas;
+  }
+
+  // 5. WOOD PLANKS — Warm Timber Lodge Floor
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#8a5336';
     ctx.fillRect(0, 0, 32, 32);
-    ctx.fillStyle = '#4d2e1f'; // Grain gaps
+    ctx.fillStyle = '#4d2b1a'; // Gaps
     ctx.fillRect(0, 7, 32, 2);
     ctx.fillRect(0, 15, 32, 2);
     ctx.fillRect(0, 23, 32, 2);
@@ -104,25 +255,45 @@ export function generateTileAtlas() {
     ctx.fillRect(24, 8, 2, 7);
     ctx.fillRect(8, 16, 2, 7);
     ctx.fillRect(20, 24, 2, 7);
-    // Planks highlight
-    ctx.fillStyle = '#aa6f4c';
+    // Highlights
+    ctx.fillStyle = '#a86a47';
     ctx.fillRect(2, 1, 10, 2);
     ctx.fillRect(18, 1, 12, 2);
     ctx.fillRect(2, 9, 20, 2);
+    ctx.fillRect(12, 17, 18, 2);
     tiles['WOOD_PLANKS'] = canvas;
   }
 
-  // 6. STONE BRICK
+  // 5B. WORKSHOP_FLOOR — Polished Parquet Tiles
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = '#565969';
+    ctx.fillStyle = '#9e6442';
     ctx.fillRect(0, 0, 32, 32);
-    ctx.fillStyle = '#363842';
+    ctx.fillStyle = '#5c351f';
+    ctx.strokeRect(0, 0, 32, 32);
+    ctx.fillRect(15, 0, 2, 32);
+    ctx.fillRect(0, 15, 32, 2);
+    // Inlaid diamond grain
+    ctx.fillStyle = '#bf825e';
+    ctx.fillRect(2, 2, 12, 12);
+    ctx.fillRect(18, 18, 12, 12);
+    ctx.fillStyle = '#7d4527';
+    ctx.fillRect(18, 2, 12, 12);
+    ctx.fillRect(2, 18, 12, 12);
+    tiles['WORKSHOP_FLOOR'] = canvas;
+  }
+
+  // 6. STONE BRICK — Classic Castle Masonry
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#555866';
+    ctx.fillRect(0, 0, 32, 32);
+    ctx.fillStyle = '#343640';
     ctx.strokeRect(0, 0, 32, 32);
     ctx.fillRect(0, 15, 32, 2);
     ctx.fillRect(15, 0, 2, 15);
     ctx.fillRect(15, 16, 2, 16);
-    ctx.fillStyle = '#71758a';
+    ctx.fillStyle = '#717588';
     ctx.fillRect(2, 2, 11, 2);
     ctx.fillRect(18, 2, 12, 2);
     ctx.fillRect(2, 18, 11, 2);
@@ -130,136 +301,263 @@ export function generateTileAtlas() {
     tiles['STONE_BRICK'] = canvas;
   }
 
-  // 7. OBSIDIAN
+  // 6B. OBSERVATORY_FLOOR — Midnight Celestial Slate with Brass Inlay
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = '#171424';
+    ctx.fillStyle = '#1e2438';
     ctx.fillRect(0, 0, 32, 32);
-    ctx.fillStyle = '#30264d';
+    ctx.fillStyle = '#141829';
+    ctx.strokeRect(0, 0, 32, 32);
+    // Brass quadrant circle
+    ctx.strokeStyle = '#d97706';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(16, 16, 10, 0, Math.PI * 2);
+    ctx.stroke();
+    // Starry cyan core
+    ctx.fillStyle = '#38bdf8';
+    ctx.fillRect(15, 15, 2, 2);
+    ctx.fillStyle = '#ca8a04';
+    ctx.fillRect(15, 5, 2, 2);
+    ctx.fillRect(15, 25, 2, 2);
+    ctx.fillRect(5, 15, 2, 2);
+    ctx.fillRect(25, 15, 2, 2);
+    tiles['OBSERVATORY_FLOOR'] = canvas;
+  }
+
+  // 6C. LAB_FLOOR — Deep Basalt Conduit Flooring
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#1c1c24';
+    ctx.fillRect(0, 0, 32, 32);
+    ctx.fillStyle = '#101017';
+    ctx.strokeRect(0, 0, 32, 32);
+    // Conduit recessed channels
+    ctx.fillStyle = '#2b2b36';
+    ctx.fillRect(14, 0, 4, 32);
+    ctx.fillRect(0, 14, 32, 4);
+    // Circuit trace nodes
+    ctx.fillStyle = '#7f1d1d';
+    ctx.fillRect(15, 15, 2, 2);
+    tiles['LAB_FLOOR'] = canvas;
+  }
+
+  // 6D. SAVEROOM_RUG — Royal Blue Velvet Carpet
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#1e3a8a';
+    ctx.fillRect(0, 0, 32, 32);
+    // Silver / Gold embroidered border
+    ctx.fillStyle = '#cbd5e1';
+    ctx.fillRect(2, 2, 28, 2);
+    ctx.fillRect(2, 28, 28, 2);
+    ctx.fillRect(2, 2, 2, 28);
+    ctx.fillRect(28, 2, 2, 28);
+    // Inner velvet field
+    ctx.fillStyle = '#172554';
+    ctx.fillRect(6, 6, 20, 20);
+    // Hollow Knight soul symbol or geometric diamond
+    ctx.fillStyle = '#93c5fd';
+    ctx.beginPath();
+    ctx.moveTo(16, 8);
+    ctx.lineTo(24, 16);
+    ctx.lineTo(16, 24);
+    ctx.lineTo(8, 16);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = '#1e3a8a';
+    ctx.fillRect(14, 14, 4, 4);
+    tiles['SAVEROOM_RUG'] = canvas;
+  }
+
+  // 7. OBSIDIAN — Nether Portal Framing
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#141121';
+    ctx.fillRect(0, 0, 32, 32);
+    ctx.fillStyle = '#2a1f47';
     ctx.fillRect(4, 4, 10, 10);
     ctx.fillRect(18, 16, 10, 12);
     ctx.fillStyle = '#6b3ea8';
     ctx.fillRect(6, 6, 4, 4);
     ctx.fillRect(22, 20, 4, 4);
+    ctx.fillStyle = '#a855f7';
+    ctx.fillRect(7, 7, 2, 2);
     tiles['OBSIDIAN'] = canvas;
   }
 
-  // 8. PORTAL FIELD (Runic energy)
+  // 8. PORTAL FIELD — Interdimensional Swirl
   {
     const { canvas, ctx } = createTileCanvas();
     ctx.fillStyle = '#4c1d95';
     ctx.fillRect(0, 0, 32, 32);
-    ctx.fillStyle = '#7c3aed';
-    ctx.fillRect(6, 4, 8, 12);
-    ctx.fillRect(18, 14, 10, 14);
-    ctx.fillStyle = '#c084fc';
-    ctx.fillRect(8, 8, 4, 4);
-    ctx.fillRect(20, 18, 4, 4);
+    ctx.fillStyle = '#6d28d9';
+    ctx.fillRect(4, 4, 10, 12);
+    ctx.fillRect(16, 14, 12, 14);
+    ctx.fillStyle = '#a855f7';
+    ctx.fillRect(8, 8, 6, 6);
+    ctx.fillRect(20, 18, 6, 6);
+    ctx.fillStyle = '#e9d5ff';
+    ctx.fillRect(10, 10, 2, 2);
+    ctx.fillRect(22, 20, 2, 2);
     tiles['PORTAL'] = canvas;
   }
 
-  // 9. TREE TOP (Foliage 64x64)
+  // 9. TREE OAK TOP (Canopy 64x64)
   {
     const { canvas, ctx } = createTileCanvas(64, 64);
-    // Tree leaves shadow
-    ctx.fillStyle = '#1e5e22';
-    ctx.fillRect(8, 8, 48, 48);
-    // Main foliage
-    ctx.fillStyle = '#2e8b34';
-    ctx.fillRect(12, 12, 40, 40);
-    // Highlights
-    ctx.fillStyle = '#48b850';
-    ctx.fillRect(16, 16, 16, 14);
-    ctx.fillRect(36, 24, 12, 12);
-    ctx.fillRect(20, 36, 16, 10);
+    // Leaf shadow
+    ctx.fillStyle = '#1b521e';
+    ctx.beginPath();
+    ctx.arc(32, 34, 26, 0, Math.PI * 2);
+    ctx.fill();
+    // Mid foliage body
+    ctx.fillStyle = '#2d8033';
+    ctx.beginPath();
+    ctx.arc(32, 30, 24, 0, Math.PI * 2);
+    ctx.fill();
+    // Clustered leafy highlights
+    ctx.fillStyle = '#42a84a';
+    ctx.beginPath();
+    ctx.arc(24, 22, 12, 0, Math.PI * 2);
+    ctx.arc(40, 24, 11, 0, Math.PI * 2);
+    ctx.arc(30, 36, 11, 0, Math.PI * 2);
+    ctx.fill();
+    // Sunlit bright tips
+    ctx.fillStyle = '#6be374';
+    ctx.fillRect(20, 16, 6, 4);
+    ctx.fillRect(36, 18, 6, 4);
+    ctx.fillRect(26, 28, 5, 4);
     tiles['TREE_TOP'] = canvas;
+  }
+
+  // 9B. TREE PINE TOP (Canopy 64x64)
+  {
+    const { canvas, ctx } = createTileCanvas(64, 64);
+    // Dark spruce silhouette
+    ctx.fillStyle = '#143d22';
+    // Tier 3 (bottom)
+    ctx.beginPath();
+    ctx.moveTo(32, 16); ctx.lineTo(10, 56); ctx.lineTo(54, 56); ctx.closePath();
+    ctx.fill();
+    // Tier 2 (mid)
+    ctx.fillStyle = '#1c542f';
+    ctx.beginPath();
+    ctx.moveTo(32, 10); ctx.lineTo(14, 40); ctx.lineTo(50, 40); ctx.closePath();
+    ctx.fill();
+    // Tier 1 (top)
+    ctx.fillStyle = '#2b7844';
+    ctx.beginPath();
+    ctx.moveTo(32, 4); ctx.lineTo(20, 24); ctx.lineTo(44, 24); ctx.closePath();
+    ctx.fill();
+    // Needle highlights
+    ctx.fillStyle = '#4ade80';
+    ctx.fillRect(31, 8, 2, 4);
+    ctx.fillRect(25, 22, 3, 2);
+    ctx.fillRect(36, 22, 3, 2);
+    ctx.fillRect(20, 38, 4, 2);
+    ctx.fillRect(40, 38, 4, 2);
+    tiles['TREE_PINE'] = canvas;
   }
 
   // 10. TREE TRUNK
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = '#489c3b'; // grass underneath
-    ctx.fillRect(0, 0, 32, 32);
-    ctx.fillStyle = '#54341b';
+    ctx.drawImage(tiles['GRASS'], 0, 0);
+    // Dark sturdy bark
+    ctx.fillStyle = '#452613';
     ctx.fillRect(10, 0, 12, 32);
-    ctx.fillStyle = '#3a2211';
+    // Tree shadow edge
+    ctx.fillStyle = '#2b160a';
     ctx.fillRect(10, 0, 3, 32);
-    ctx.fillStyle = '#714624';
+    // Light grain
+    ctx.fillStyle = '#663b1d';
     ctx.fillRect(15, 0, 4, 32);
+    // Root flare at ground
+    ctx.fillStyle = '#452613';
+    ctx.fillRect(7, 24, 3, 8);
+    ctx.fillRect(22, 24, 3, 8);
     tiles['TREE_TRUNK'] = canvas;
   }
 
   // 11. REDSTONE WIRE (Unpowered)
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = 'transparent';
-    ctx.fillRect(0, 0, 32, 32);
+    ctx.drawImage(tiles['LAB_FLOOR'], 0, 0);
     ctx.fillStyle = '#7f1d1d';
     ctx.fillRect(14, 0, 4, 32);
     ctx.fillRect(0, 14, 32, 4);
     tiles['REDSTONE_WIRE_OFF'] = canvas;
   }
 
-  // 12. REDSTONE WIRE (Powered)
+  // 12. REDSTONE WIRE (Powered & Radiant)
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = 'transparent';
-    ctx.fillRect(0, 0, 32, 32);
+    ctx.drawImage(tiles['LAB_FLOOR'], 0, 0);
+    // Glow bloom
+    ctx.fillStyle = 'rgba(239, 68, 68, 0.3)';
+    ctx.fillRect(11, 0, 10, 32);
+    ctx.fillRect(0, 11, 32, 10);
+    // Glowing wire
     ctx.fillStyle = '#ef4444';
     ctx.fillRect(14, 0, 4, 32);
     ctx.fillRect(0, 14, 32, 4);
-    ctx.fillStyle = '#fca5a5';
+    // High-energy core
+    ctx.fillStyle = '#fecaca';
     ctx.fillRect(15, 15, 2, 2);
+    ctx.fillRect(15, 4, 2, 2);
+    ctx.fillRect(15, 26, 2, 2);
+    ctx.fillRect(4, 15, 2, 2);
+    ctx.fillRect(26, 15, 2, 2);
     tiles['REDSTONE_WIRE_ON'] = canvas;
   }
 
   // 13. REDSTONE LAMP (OFF)
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = '#451a03';
+    ctx.fillStyle = '#3c1806';
     ctx.fillRect(0, 0, 32, 32);
-    ctx.fillStyle = '#78350f';
+    ctx.fillStyle = '#69300f';
     ctx.fillRect(4, 4, 24, 24);
-    ctx.fillStyle = '#92400e';
-    ctx.fillRect(6, 6, 20, 20);
-    ctx.fillStyle = '#b45309';
-    ctx.fillRect(10, 10, 12, 12);
+    ctx.fillStyle = '#853e14';
+    ctx.fillRect(7, 7, 18, 18);
+    ctx.fillStyle = '#3c1806';
+    ctx.strokeRect(1, 1, 30, 30);
     tiles['LAMP_OFF'] = canvas;
   }
 
-  // 14. REDSTONE LAMP (ON)
+  // 14. REDSTONE LAMP (ON — Brilliant Amber Glow)
   {
     const { canvas, ctx } = createTileCanvas();
     ctx.fillStyle = '#78350f';
     ctx.fillRect(0, 0, 32, 32);
     ctx.fillStyle = '#f59e0b';
-    ctx.fillRect(4, 4, 24, 24);
+    ctx.fillRect(3, 3, 26, 26);
     ctx.fillStyle = '#fde047';
-    ctx.fillRect(8, 8, 16, 16);
+    ctx.fillRect(6, 6, 20, 20);
     ctx.fillStyle = '#ffffff';
-    ctx.fillRect(12, 12, 8, 8);
+    ctx.fillRect(10, 10, 12, 12);
     tiles['LAMP_ON'] = canvas;
   }
 
-  // 15. BOOKSHELF
+  // 15. BOOKSHELF — Knowledge Grimoires
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = '#8f563b';
+    ctx.fillStyle = '#713f12';
     ctx.fillRect(0, 0, 32, 32);
-    ctx.fillStyle = '#4d2e1f';
+    ctx.fillStyle = '#451a03';
     ctx.fillRect(2, 4, 28, 10);
     ctx.fillRect(2, 18, 28, 10);
-    // Books top shelf
-    const colors = ['#dc2626', '#2563eb', '#16a34a', '#d97706', '#9333ea'];
+    // Colorful book spines
+    const bookColors = ['#dc2626', '#2563eb', '#16a34a', '#d97706', '#9333ea', '#0284c7'];
     for (let i = 0; i < 5; i++) {
-      ctx.fillStyle = colors[i % colors.length];
+      ctx.fillStyle = bookColors[i % bookColors.length];
       ctx.fillRect(4 + i * 5, 5, 4, 8);
       ctx.fillStyle = '#fef08a';
       ctx.fillRect(5 + i * 5, 7, 2, 2);
     }
-    // Books bottom shelf
     for (let i = 0; i < 5; i++) {
-      ctx.fillStyle = colors[(i + 2) % colors.length];
+      ctx.fillStyle = bookColors[(i + 3) % bookColors.length];
       ctx.fillRect(4 + i * 5, 19, 4, 8);
       ctx.fillStyle = '#fef08a';
       ctx.fillRect(5 + i * 5, 21, 2, 2);
@@ -267,106 +565,188 @@ export function generateTileAtlas() {
     tiles['BOOKSHELF'] = canvas;
   }
 
-  // 16. CRAFTING TABLE
+  // 16. CRAFTING WORKBENCH
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = '#a16207';
+    ctx.fillStyle = '#8f563b';
     ctx.fillRect(0, 0, 32, 32);
-    ctx.fillStyle = '#713f12';
+    ctx.fillStyle = '#4d2e1f';
     ctx.strokeRect(1, 1, 30, 30);
-    // Grid on top
-    ctx.fillStyle = '#ca8a04';
+    // Grid top
+    ctx.fillStyle = '#b45309';
     ctx.fillRect(4, 4, 24, 24);
-    ctx.fillStyle = '#713f12';
+    ctx.fillStyle = '#78350f';
     ctx.fillRect(11, 4, 2, 24);
     ctx.fillRect(19, 4, 2, 24);
     ctx.fillRect(4, 11, 24, 2);
     ctx.fillRect(4, 19, 24, 2);
+    // Blueprint paper & saw
+    ctx.fillStyle = '#fef3c7';
+    ctx.fillRect(6, 6, 8, 8);
+    ctx.fillStyle = '#64748b';
+    ctx.fillRect(16, 14, 8, 3);
     tiles['WORKBENCH'] = canvas;
   }
 
-  // 17. TELESCOPE / OBSERVATORY INSTRUMENT
+  // 17. TELESCOPE — AirLytics Observatory Telemetry Array
   {
     const { canvas, ctx } = createTileCanvas();
     ctx.fillStyle = 'transparent';
     ctx.fillRect(0, 0, 32, 32);
-    // Tripod legs
+    // Stone mount base
+    ctx.fillStyle = '#334155';
+    ctx.fillRect(4, 24, 24, 8);
+    // Sturdy brass tripod
     ctx.fillStyle = '#475569';
-    ctx.fillRect(6, 20, 4, 12);
-    ctx.fillRect(22, 20, 4, 12);
-    ctx.fillRect(14, 16, 4, 16);
-    // Brass barrel angled
+    ctx.fillRect(6, 16, 4, 10);
+    ctx.fillRect(22, 16, 4, 10);
+    ctx.fillRect(14, 14, 4, 12);
+    // Polished brass barrel pointed skyward
     ctx.fillStyle = '#d97706';
-    ctx.fillRect(8, 8, 18, 8);
+    ctx.fillRect(8, 6, 18, 8);
     ctx.fillStyle = '#fbbf24';
-    ctx.fillRect(10, 6, 12, 4);
-    // Lens
+    ctx.fillRect(10, 4, 14, 4);
+    // Cyan optical lens
     ctx.fillStyle = '#38bdf8';
-    ctx.fillRect(24, 6, 4, 10);
+    ctx.fillRect(24, 4, 4, 10);
+    ctx.fillStyle = '#e0f2fe';
+    ctx.fillRect(25, 6, 2, 3);
     tiles['TELESCOPE'] = canvas;
   }
 
-  // 18. SIGNPOST
+  // 18. SIGNPOST — Handcrafted Directional Post
   {
     const { canvas, ctx } = createTileCanvas();
     ctx.fillStyle = 'transparent';
     ctx.fillRect(0, 0, 32, 32);
-    // Wooden board
+    // Sturdy oak board
+    ctx.fillStyle = '#78350f';
+    ctx.fillRect(3, 4, 26, 16);
     ctx.fillStyle = '#b45309';
-    ctx.fillRect(4, 4, 24, 16);
-    ctx.fillStyle = '#d97706';
-    ctx.fillRect(6, 6, 20, 12);
-    // Text lines
-    ctx.fillStyle = '#78350f';
-    ctx.fillRect(8, 8, 16, 2);
-    ctx.fillRect(8, 12, 12, 2);
-    // Post
-    ctx.fillStyle = '#78350f';
+    ctx.fillRect(5, 6, 22, 12);
+    // Carved script lines
+    ctx.fillStyle = '#451a03';
+    ctx.fillRect(7, 8, 18, 2);
+    ctx.fillRect(7, 12, 14, 2);
+    // Signpost pillar
+    ctx.fillStyle = '#5c2d12';
     ctx.fillRect(14, 20, 4, 12);
     tiles['SIGN'] = canvas;
   }
 
-  // 19. NAIL RELIC (Hollow Knight homage)
+  // 19. NAIL RELIC — Pure Nail from Hollow Knight
   {
     const { canvas, ctx } = createTileCanvas();
     ctx.fillStyle = 'transparent';
     ctx.fillRect(0, 0, 32, 32);
-    // Stone Pedestal
-    ctx.fillStyle = '#334155';
-    ctx.fillRect(6, 20, 20, 12);
-    ctx.fillStyle = '#64748b';
-    ctx.fillRect(8, 18, 16, 4);
-    // Silver Nail blade
-    ctx.fillStyle = '#cbd5e1';
+    // Carved Hallownest stone altar
+    ctx.fillStyle = '#1e293b';
+    ctx.fillRect(4, 20, 24, 12);
+    ctx.fillStyle = '#475569';
+    ctx.fillRect(6, 18, 20, 4);
+    // Soul aura shimmer around blade
+    ctx.fillStyle = 'rgba(56, 189, 248, 0.25)';
+    ctx.fillRect(11, 2, 10, 16);
+    // Gleaming Silver Nail Blade
+    ctx.fillStyle = '#f8fafc';
     ctx.fillRect(15, 2, 2, 16);
+    ctx.fillStyle = '#cbd5e1';
     ctx.fillRect(14, 4, 4, 10);
     ctx.fillRect(13, 8, 6, 4);
-    // Crossguard & pommel
+    // Nail Crossguard & Hilt
     ctx.fillStyle = '#94a3b8';
-    ctx.fillRect(12, 14, 8, 2);
-    ctx.fillStyle = '#475569';
+    ctx.fillRect(11, 14, 10, 2);
+    ctx.fillStyle = '#334155';
     ctx.fillRect(15, 16, 2, 4);
     tiles['NAIL_RELIC'] = canvas;
   }
 
-  // 20. FENCE
+  // 20. LANTERN — Iron Hanging Warm Amber Lantern
   {
     const { canvas, ctx } = createTileCanvas();
     ctx.fillStyle = 'transparent';
     ctx.fillRect(0, 0, 32, 32);
+    // Iron post & chain
+    ctx.fillStyle = '#1e293b';
+    ctx.fillRect(15, 2, 2, 6);
+    ctx.fillRect(10, 8, 12, 3);
+    // Glass cage & warm amber flame
+    ctx.fillStyle = '#f59e0b';
+    ctx.fillRect(11, 11, 10, 10);
+    ctx.fillStyle = '#fef08a';
+    ctx.fillRect(13, 13, 6, 6);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(15, 15, 2, 2);
+    // Lantern base
+    ctx.fillStyle = '#1e293b';
+    ctx.fillRect(10, 21, 12, 3);
+    tiles['LANTERN'] = canvas;
+  }
+
+  // 21. BENCH — Warm Wooden Rest Bench
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = 'transparent';
+    ctx.fillRect(0, 0, 32, 32);
+    // Bench backrest
     ctx.fillStyle = '#78350f';
-    ctx.fillRect(4, 2, 6, 30);
-    ctx.fillRect(22, 2, 6, 30);
+    ctx.fillRect(4, 6, 24, 6);
+    ctx.fillStyle = '#9a3412';
+    ctx.fillRect(6, 8, 20, 3);
+    // Seat
     ctx.fillStyle = '#b45309';
-    ctx.fillRect(10, 8, 12, 4);
-    ctx.fillRect(10, 20, 12, 4);
-    tiles['FENCE'] = canvas;
+    ctx.fillRect(4, 14, 24, 6);
+    // Legs
+    ctx.fillStyle = '#451a03';
+    ctx.fillRect(6, 20, 4, 10);
+    ctx.fillRect(22, 20, 4, 10);
+    tiles['BENCH'] = canvas;
+  }
+
+  // 22. FLOWER_BOX — Wooden Planter Box with Blossoms
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = 'transparent';
+    ctx.fillRect(0, 0, 32, 32);
+    // Wooden box
+    ctx.fillStyle = '#78350f';
+    ctx.fillRect(4, 16, 24, 12);
+    ctx.fillStyle = '#9a3412';
+    ctx.fillRect(6, 18, 20, 8);
+    // Colorful flowers blooming
+    ctx.fillStyle = '#ef4444';
+    ctx.fillRect(6, 10, 5, 6);
+    ctx.fillStyle = '#38bdf8';
+    ctx.fillRect(14, 8, 5, 7);
+    ctx.fillStyle = '#facc15';
+    ctx.fillRect(21, 10, 5, 6);
+    tiles['FLOWER_BOX'] = canvas;
+  }
+
+  // 23. WEATHER_VANE — Meteorological Wind Array
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = 'transparent';
+    ctx.fillRect(0, 0, 32, 32);
+    // Copper finial & arrow
+    ctx.fillStyle = '#d97706';
+    ctx.fillRect(15, 2, 2, 26);
+    ctx.fillRect(6, 8, 20, 2);
+    // Cardinal points
+    ctx.fillStyle = '#f59e0b';
+    ctx.fillRect(4, 6, 4, 6);
+    ctx.fillRect(24, 7, 4, 4);
+    // Anemometer cups
+    ctx.fillStyle = '#64748b';
+    ctx.fillRect(10, 14, 4, 4);
+    ctx.fillRect(18, 14, 4, 4);
+    tiles['WEATHER_VANE'] = canvas;
   }
 
   return tiles;
 }
 
-// Generate Player Character Sprite Atlas (4 directions × 3 walk frames)
+// Generate Player Character Sprite Atlas (4 directions × 3 frames + idle breathing)
 export function generatePlayerAtlas() {
   const atlas = {};
   const dirs = ['down', 'up', 'left', 'right'];
@@ -377,99 +757,144 @@ export function generatePlayerAtlas() {
       const { canvas, ctx } = createTileCanvas(32, 32);
 
       // Shadow underneath
-      ctx.fillStyle = 'rgba(0,0,0,0.25)';
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
       ctx.beginPath();
-      ctx.ellipse(16, 30, 8, 3, 0, 0, Math.PI * 2);
+      ctx.ellipse(16, 30, 9, 3, 0, 0, Math.PI * 2);
       ctx.fill();
 
       // Foot offset for walking
       const legOffset = frame === 1 ? -2 : (frame === 2 ? 2 : 0);
+      const armOffset = frame === 1 ? 2 : (frame === 2 ? -2 : 0);
 
       if (dir === 'down') {
-        // Back hair / head
-        ctx.fillStyle = '#1e1b18';
-        ctx.fillRect(10, 4, 12, 10);
+        // Back hair silhouette
+        ctx.fillStyle = '#1c1917';
+        ctx.fillRect(10, 3, 12, 11);
         // Face skin
-        ctx.fillStyle = '#fcd34d';
-        ctx.fillRect(11, 7, 10, 7);
-        // Eyes
-        ctx.fillStyle = '#1e293b';
-        ctx.fillRect(13, 10, 2, 3);
-        ctx.fillRect(17, 10, 2, 3);
-        // Front hair bangs
+        ctx.fillStyle = '#fed7aa';
+        ctx.fillRect(11, 6, 10, 8);
+        // Eyes (focused, dark slate)
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(13, 9, 2, 3);
+        ctx.fillRect(17, 9, 2, 3);
+        // Textured bangs
         ctx.fillStyle = '#292524';
-        ctx.fillRect(10, 4, 12, 4);
-        ctx.fillRect(10, 8, 2, 3);
+        ctx.fillRect(10, 3, 12, 4);
+        ctx.fillRect(10, 7, 2, 3);
+        ctx.fillRect(20, 7, 2, 2);
 
-        // Blue Hoodie / Body
+        // Blue Hoodie Body (Rich vibrant indie contrast)
         ctx.fillStyle = '#0284c7';
         ctx.fillRect(9, 14, 14, 10);
-        ctx.fillStyle = '#38bdf8'; // Zipper / collar
-        ctx.fillRect(15, 15, 2, 8);
+        // Collar & White Zipper
+        ctx.fillStyle = '#f8fafc';
+        ctx.fillRect(15, 14, 2, 8);
+        // Hoodie pocket
+        ctx.fillStyle = '#0369a1';
+        ctx.fillRect(11, 20, 10, 3);
 
-        // Pants / Boots
+        // Arms
+        ctx.fillStyle = '#0284c7';
+        ctx.fillRect(6, 14 + armOffset, 3, 8);
+        ctx.fillRect(23, 14 - armOffset, 3, 8);
+        // Hands
+        ctx.fillStyle = '#fed7aa';
+        ctx.fillRect(6, 21 + armOffset, 3, 2);
+        ctx.fillRect(23, 21 - armOffset, 3, 2);
+
+        // Dark Cargo Joggers
         ctx.fillStyle = '#1e293b';
         ctx.fillRect(11, 24, 4, 5 + (legOffset > 0 ? legOffset : 0));
         ctx.fillRect(17, 24, 4, 5 + (legOffset < 0 ? -legOffset : 0));
+
+        // White Sneakers
+        ctx.fillStyle = '#f1f5f9';
+        ctx.fillRect(10, 28 + (legOffset > 0 ? legOffset : 0), 5, 3);
+        ctx.fillRect(17, 28 + (legOffset < 0 ? -legOffset : 0), 5, 3);
       } else if (dir === 'up') {
-        // Head back
-        ctx.fillStyle = '#1e1b18';
-        ctx.fillRect(10, 4, 12, 11);
+        // Head back with messy hair
+        ctx.fillStyle = '#1c1917';
+        ctx.fillRect(10, 3, 12, 12);
         ctx.fillStyle = '#292524';
-        ctx.fillRect(11, 5, 10, 6);
+        ctx.fillRect(11, 4, 10, 8);
 
         // Blue Hoodie Back
         ctx.fillStyle = '#0369a1';
         ctx.fillRect(9, 14, 14, 10);
-        ctx.fillStyle = '#0284c7'; // Hood
-        ctx.fillRect(11, 14, 10, 4);
+        // Folded Hood
+        ctx.fillStyle = '#0284c7';
+        ctx.fillRect(11, 13, 10, 5);
 
-        // Pants
+        // Arms swinging
+        ctx.fillStyle = '#0369a1';
+        ctx.fillRect(6, 14 - armOffset, 3, 8);
+        ctx.fillRect(23, 14 + armOffset, 3, 8);
+
+        // Joggers
         ctx.fillStyle = '#1e293b';
         ctx.fillRect(11, 24, 4, 5 + (legOffset > 0 ? legOffset : 0));
         ctx.fillRect(17, 24, 4, 5 + (legOffset < 0 ? -legOffset : 0));
-      } else if (dir === 'left') {
-        // Head side
-        ctx.fillStyle = '#1e1b18';
-        ctx.fillRect(11, 4, 10, 10);
-        ctx.fillStyle = '#fcd34d';
-        ctx.fillRect(10, 7, 7, 7);
-        // Eye
-        ctx.fillStyle = '#1e293b';
-        ctx.fillRect(11, 10, 2, 3);
 
-        // Body
+        // Shoes back
+        ctx.fillStyle = '#e2e8f0';
+        ctx.fillRect(11, 28 + (legOffset > 0 ? legOffset : 0), 4, 3);
+        ctx.fillRect(17, 28 + (legOffset < 0 ? -legOffset : 0), 4, 3);
+      } else if (dir === 'left') {
+        // Profile head
+        ctx.fillStyle = '#1c1917';
+        ctx.fillRect(11, 3, 10, 11);
+        ctx.fillStyle = '#fed7aa';
+        ctx.fillRect(10, 6, 7, 8);
+        // Eye
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(11, 9, 2, 3);
+
+        // Body profile
         ctx.fillStyle = '#0284c7';
         ctx.fillRect(11, 14, 10, 10);
-        // Arm
+        // Arm swing
         ctx.fillStyle = '#0369a1';
-        ctx.fillRect(13 + legOffset, 15, 4, 8);
+        ctx.fillRect(13 + legOffset, 14, 4, 8);
+        ctx.fillStyle = '#fed7aa';
+        ctx.fillRect(14 + legOffset, 21, 3, 2);
 
-        // Pants
+        // Pants legs
         ctx.fillStyle = '#1e293b';
         ctx.fillRect(12 + legOffset, 24, 4, 5);
         ctx.fillRect(15 - legOffset, 24, 4, 5);
-      } else if (dir === 'right') {
-        // Head side
-        ctx.fillStyle = '#1e1b18';
-        ctx.fillRect(11, 4, 10, 10);
-        ctx.fillStyle = '#fcd34d';
-        ctx.fillRect(15, 7, 7, 7);
-        // Eye
-        ctx.fillStyle = '#1e293b';
-        ctx.fillRect(19, 10, 2, 3);
 
-        // Body
+        // Sneakers
+        ctx.fillStyle = '#f1f5f9';
+        ctx.fillRect(10 + legOffset, 28, 6, 3);
+        ctx.fillRect(14 - legOffset, 28, 5, 3);
+      } else if (dir === 'right') {
+        // Profile head
+        ctx.fillStyle = '#1c1917';
+        ctx.fillRect(11, 3, 10, 11);
+        ctx.fillStyle = '#fed7aa';
+        ctx.fillRect(15, 6, 7, 8);
+        // Eye
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(19, 9, 2, 3);
+
+        // Body profile
         ctx.fillStyle = '#0284c7';
         ctx.fillRect(11, 14, 10, 10);
-        // Arm
+        // Arm swing
         ctx.fillStyle = '#0369a1';
-        ctx.fillRect(15 - legOffset, 15, 4, 8);
+        ctx.fillRect(15 - legOffset, 14, 4, 8);
+        ctx.fillStyle = '#fed7aa';
+        ctx.fillRect(15 - legOffset, 21, 3, 2);
 
-        // Pants
+        // Pants legs
         ctx.fillStyle = '#1e293b';
         ctx.fillRect(13 - legOffset, 24, 4, 5);
         ctx.fillRect(16 + legOffset, 24, 4, 5);
+
+        // Sneakers
+        ctx.fillStyle = '#f1f5f9';
+        ctx.fillRect(16 - legOffset, 28, 6, 3);
+        ctx.fillRect(13 + legOffset, 28, 5, 3);
       }
 
       atlas[dir].push(canvas);

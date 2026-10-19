@@ -1,5 +1,6 @@
 /**
  * AYUSHCRAFT — Player Entity & Controller
+ * Second-Pass Animation & Collision Refinement
  */
 
 import { TILE_SIZE } from './tiles.js';
@@ -17,6 +18,7 @@ export class Player {
     this.isMoving = false;
     this.animTimer = 0;
     this.animFrame = 0;
+    this.idleTimer = 0;
     this.stepAudioTimer = 0;
 
     // Click/tap to move destination
@@ -46,7 +48,7 @@ export class Player {
         dx = diffX / dist;
         dy = diffY / dist;
       } else {
-        this.targetPos = null; // Reached target
+        this.targetPos = null; // Reached target destination
       }
     } else if (dx !== 0 || dy !== 0) {
       // Manual input cancels pathing
@@ -73,6 +75,7 @@ export class Player {
 
     // 3. Collision Detection & Position Update
     if (this.isMoving) {
+      this.idleTimer = 0;
       const moveX = dx * this.speed * dt;
       const moveY = dy * this.speed * dt;
 
@@ -86,14 +89,14 @@ export class Player {
         this.y += moveY;
       }
 
-      // Animation Cycle
+      // Animation Cycle for walk
       this.animTimer += dt;
-      if (this.animTimer > 0.14) {
+      if (this.animTimer > 0.13) {
         this.animTimer = 0;
         this.animFrame = (this.animFrame + 1) % 4; // 0, 1, 2, 3
       }
 
-      // Step Audio Chime
+      // Footstep audio chime
       this.stepAudioTimer += dt;
       if (this.stepAudioTimer > 0.32) {
         this.stepAudioTimer = 0;
@@ -102,9 +105,10 @@ export class Player {
     } else {
       this.animFrame = 0;
       this.animTimer = 0;
+      this.idleTimer += dt;
     }
 
-    // 4. Check Proximity to Interactable Objects (within ~40 pixels)
+    // 4. Check Proximity to Interactable Objects (within ~46 pixels)
     this.updateProximity(objects);
   }
 
@@ -125,7 +129,7 @@ export class Player {
     for (let ty = minTileY; ty <= maxTileY; ty++) {
       for (let tx = minTileX; tx <= maxTileX; tx++) {
         if (!collisionMap[ty] || collisionMap[ty][tx] === true) {
-          return true; // Wall or map edge
+          return true; // Impassable wall, water, or map edge
         }
       }
     }
@@ -168,18 +172,26 @@ export class Player {
     this.nearbyObject = closest;
   }
 
-  // Render player sprite from the atlas
+  // Render player sprite with walk cycle and idle breathing bob
   render(ctx, atlas) {
     // Convert 4-frame cycle (0, 1, 2, 3) to 3 sprite frames (0, 1, 0, 2)
     let frameIdx = 0;
+    let yOffset = 0;
+
     if (this.isMoving) {
       if (this.animFrame === 1) frameIdx = 1;
       else if (this.animFrame === 3) frameIdx = 2;
+    } else {
+      // Subtle idle breathing pulse: 1 pixel bob every ~2.2s
+      const cycle = Math.sin(this.idleTimer * 2.8);
+      if (cycle > 0.8) {
+        yOffset = -1;
+      }
     }
 
     const sprite = atlas[this.direction][frameIdx];
     if (sprite) {
-      ctx.drawImage(sprite, Math.round(this.x), Math.round(this.y));
+      ctx.drawImage(sprite, Math.round(this.x), Math.round(this.y + yOffset));
     }
   }
 }

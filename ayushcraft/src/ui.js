@@ -1,5 +1,6 @@
 /**
  * AYUSHCRAFT — UI System, Dialogue Windows & Accessible Journal
+ * Native Pixel-Art Crafting Interface & Scannable Modals
  */
 
 import { audio } from './audio.js';
@@ -52,6 +53,7 @@ export class UIManager {
       this.soundToggleBtn.addEventListener('click', () => {
         const isMuted = audio.toggleMute();
         this.soundToggleBtn.innerHTML = isMuted ? '🔇 Sound: Off' : '🔊 Sound: On';
+        this.soundToggleBtn.setAttribute('title', isMuted ? 'Enable sound effects' : 'Disable sound effects');
       });
     }
 
@@ -59,13 +61,6 @@ export class UIManager {
     if (this.journalBtn) {
       this.journalBtn.addEventListener('click', () => {
         this.openJournal();
-      });
-    }
-
-    // Interact prompt click
-    if (this.interactPrompt) {
-      this.interactPrompt.addEventListener('click', () => {
-        this.game.interact();
       });
     }
 
@@ -104,73 +99,139 @@ export class UIManager {
     }
   }
 
-  // Open Notice Sign Dialogue
+  // Priority 4: Redesigned Notice Sign Dialogue (Native Wood/Parchment Plaque)
   openSign(title, text) {
     audio.playInteract();
     this.activeModal = 'sign';
 
-    this.modalTitle.innerHTML = `📜 ${title}`;
+    this.modalTitle.innerHTML = title;
+
+    // Format text lines into structured paragraphs or list items
+    const lines = text.split('\n');
+    let formattedHtml = '';
+    let inList = false;
+
+    lines.forEach(line => {
+      const trimmed = line.trim();
+      if (!trimmed) {
+        if (inList) {
+          formattedHtml += '</ul>';
+          inList = false;
+        }
+        return;
+      }
+
+      if (trimmed.startsWith('•') || trimmed.startsWith('-')) {
+        if (!inList) {
+          formattedHtml += '<ul class="dialogue-list">';
+          inList = true;
+        }
+        formattedHtml += `<li>${trimmed.replace(/^[•\-]\s*/, '')}</li>`;
+      } else {
+        if (inList) {
+          formattedHtml += '</ul>';
+          inList = false;
+        }
+        formattedHtml += `<p class="dialogue-paragraph">${trimmed}</p>`;
+      }
+    });
+    if (inList) formattedHtml += '</ul>';
+
     this.modalBody.innerHTML = `
-      <div class="dialogue-box">
-        <p class="dialogue-text">${text.replace(/\n/g, '<br/>')}</p>
-        <div style="text-align: right; margin-top: 10px;">
-          <button class="pixel-btn" id="dialogue-ok-btn">Understood [Esc]</button>
+      <div class="sign-dialogue-content">
+        ${formattedHtml}
+        <div class="dialogue-action-row">
+          <button class="pixel-btn primary" id="dialogue-ok-btn">Understood [Esc]</button>
         </div>
       </div>
     `;
 
     this.modalBackdrop.classList.add('open');
+    document.getElementById('dialogue-ok-btn')?.focus();
     document.getElementById('dialogue-ok-btn')?.addEventListener('click', () => this.closeModal());
   }
 
-  // Open Rich Modal (AirLytics, AI Assistant, Redstone, Relic, Portal)
+  // Priority 4: Redesigned Scannable Modal (AirLytics, AI Assistant, Redstone, Relic, Portal)
   openModal(data) {
     audio.playInteract();
     this.activeModal = 'info';
 
     this.modalTitle.innerHTML = data.title || 'Information';
 
+    // Stats Metric Grid (AirLytics & Key Projects)
+    let statsHtml = '';
+    if (data.stats && data.stats.length > 0) {
+      statsHtml = `<div class="panel-stats-grid">` +
+        data.stats.map(s => `
+          <div class="stat-card">
+            <div class="stat-value">${s.value}</div>
+            <div class="stat-label">${s.label}</div>
+          </div>
+        `).join('') +
+        `</div>`;
+    }
+
+    // Category Badges (Shown when no stats grid is present to avoid redundancy)
     let badgesHtml = '';
-    if (data.badges) {
+    if (data.badges && (!data.stats || data.stats.length === 0)) {
       badgesHtml = `<div class="panel-badge-row">` +
         data.badges.map(b => `<span class="meta-chip highlight">${b}</span>`).join('') +
         `</div>`;
     }
 
+    // Key Architectural Highlights
     let highlightsHtml = '';
     if (data.highlights) {
-      highlightsHtml = `<h3>Key Architectural Highlights</h3><ul>` +
-        data.highlights.map(h => `<li style="margin-left: 18px; margin-bottom: 6px;">${h}</li>`).join('') +
-        `</ul>`;
+      highlightsHtml = `
+        <div class="panel-section">
+          <h3 class="section-heading">Key Architectural Highlights</h3>
+          <ul class="highlights-list">
+            ${data.highlights.map(h => `<li><span class="bullet-gem">◆</span> <div class="highlight-text">${h}</div></li>`).join('')}
+          </ul>
+        </div>
+      `;
     }
 
+    // Verified Stack
     let stackHtml = '';
     if (data.stack) {
-      stackHtml = `<div style="margin-top: 12px; font-family: var(--font-mono); font-size: 12px; color: #57412e;">
-        <strong>Verified Stack:</strong> ${data.stack.join(' · ')}
-      </div>`;
+      stackHtml = `
+        <div class="stack-row">
+          <span class="stack-label">Verified Stack:</span>
+          <div class="stack-chips">
+            ${data.stack.map(tech => `<span class="stack-chip">${tech}</span>`).join('')}
+          </div>
+        </div>
+      `;
     }
 
+    // Action Links
     let linksHtml = '';
     if (data.links && data.links.length > 0) {
       linksHtml = `<div class="link-buttons">` +
-        data.links.map(l => `<a href="${l.url}" target="_blank" rel="noopener noreferrer" class="ext-btn ${l.primary ? '' : 'secondary'}">${l.text}</a>`).join('') +
+        data.links.map(l => `
+          <a href="${l.url}" target="_blank" rel="noopener noreferrer" class="ext-btn ${l.primary ? 'primary' : 'secondary'}">
+            ${l.text}
+          </a>
+        `).join('') +
         `</div>`;
     }
 
     this.modalBody.innerHTML = `
-      ${data.subtitle ? `<p style="font-family: var(--font-mono); font-size: 12px; color: #78350f; font-weight: 700; margin-bottom: 4px;">${data.subtitle}</p>` : ''}
+      ${data.subtitle ? `<div class="panel-subtitle">${data.subtitle}</div>` : ''}
       ${badgesHtml}
-      <p style="font-size: 14.5px; line-height: 1.6; margin-top: 8px;">${data.description}</p>
+      ${statsHtml}
+      <p class="panel-description">${data.description}</p>
       ${highlightsHtml}
       ${stackHtml}
       ${linksHtml}
     `;
 
     this.modalBackdrop.classList.add('open');
+    this.modalCloseBtn?.focus();
   }
 
-  // Open Accessible Explorer's Journal
+  // Priority 4: Redesigned Accessible Explorer's Journal & Fast Travel
   openJournal() {
     audio.playInteract();
     this.activeModal = 'journal';
@@ -187,10 +248,11 @@ export class UIManager {
         <button class="journal-tab" data-tab="tab-contact">Contact & Warp</button>
       </div>
 
-      <div id="journal-tab-content" style="padding-top: 14px;">
+      <div id="journal-tab-content" class="journal-tab-pane">
         <!-- Default: Overview -->
         <p><strong>Ayush Kumar</strong> — Computer Science & Engineering undergraduate based in India.</p>
-        <p>I build data-driven software, environmental intelligence systems, and developer tooling. My focus is mathematical and provenance-driven code: creating systems where every prediction, forecast, and output can be verified back to valid measurements.</p>
+        <p>I build data-driven software, environmental intelligence systems, and developer tooling. My focus is mathematical and provenance-driven engineering: creating systems where every prediction, forecast, and output can be verified back to valid measurements.</p>
+        
         <div class="panel-badge-row">
           <span class="meta-chip">Machine Learning</span>
           <span class="meta-chip">Environmental Forecasting</span>
@@ -198,9 +260,10 @@ export class UIManager {
           <span class="meta-chip">Metroidvania Gamer</span>
           <span class="meta-chip">Calisthenics</span>
         </div>
-        <p style="margin-top: 14px; font-family: var(--font-mono); font-size: 12px; color: #78350f;">
-          <em>Tip: Select any tab above to inspect project details without having to steer the character, or click "Fast Travel" to warp your player directly to that biome!</em>
-        </p>
+
+        <div class="journal-hint-card">
+          💡 <strong>Fast Travel Tip:</strong> Select any tab above to inspect project field notes directly, or click <em>Fast Travel</em> to warp your character to that biome!
+        </div>
       </div>
     `;
 
@@ -219,62 +282,98 @@ export class UIManager {
           <span class="meta-chip">Metroidvania Gamer</span>
           <span class="meta-chip">Calisthenics</span>
         </div>
+        <div class="journal-hint-card">
+          💡 <strong>Fast Travel Tip:</strong> Select any tab above to inspect project field notes directly, or click <em>Fast Travel</em> to warp your character to that biome!
+        </div>
       `,
       'tab-airlytics': `
-        <h3>🛰️ AirLytics NCR (Smart India Hackathon SIH26082)</h3>
-        <p>A 72-hour air quality forecast for Delhi NCR that proves where every figure came from—traceable to individual monitoring stations and CPCB 2014 arithmetic rules.</p>
-        <ul>
-          <li><strong>68-Station CPCB Mesh:</strong> Strictly audited 24-hour rolling windows with dominant pollutant criteria.</li>
-          <li><strong>61.12 µg/m³ RMSE:</strong> Blend baseline evaluated over 4M+ observations across an annual cycle.</li>
-          <li><strong>API-Grounded AI Assistant:</strong> Strictly bounded to 8 read-only API endpoints with verifiable tool calls.</li>
-          <li><strong>NASA VIIRS:</strong> Fire corridor tracking aligned with meteorological wind fields.</li>
+        <h3 class="section-heading">🛰️ AirLytics NCR (Smart India Hackathon SIH26082)</h3>
+        <p>A 72-hour air quality forecast for Delhi NCR designed with absolute data provenance—traceable to individual monitoring stations and CPCB 2014 arithmetic rules.</p>
+        
+        <div class="panel-stats-grid">
+          <div class="stat-card">
+            <div class="stat-value">68 Stations</div>
+            <div class="stat-label">CPCB Mesh</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">72 Hours</div>
+            <div class="stat-label">Predictive Horizon</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">61.12 µg/m³</div>
+            <div class="stat-label">RMSE Baseline</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">8 Endpoints</div>
+            <div class="stat-label">Grounded Assistant</div>
+          </div>
+        </div>
+
+        <ul class="highlights-list">
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>68-Station CPCB Mesh:</strong> Strictly audited 24-hour rolling windows with dominant pollutant criteria.</div></li>
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>61.12 µg/m³ RMSE:</strong> ML blend baseline evaluated over 4M+ observations across an annual cycle.</div></li>
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>API-Grounded AI Assistant:</strong> Strictly bounded to 8 read-only API endpoints with verifiable tool calls.</div></li>
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>NASA VIIRS:</strong> Fire corridor tracking aligned with meteorological wind vector transport.</div></li>
         </ul>
-        <div class="link-buttons" style="margin-top: 12px;">
-          <a href="https://airlytics-ncr.vercel.app/" target="_blank" class="ext-btn">Live Platform ↗</a>
-          <a href="https://github.com/Ayush20-lex/airlytics-ncr" target="_blank" class="ext-btn secondary">GitHub Repo ↗</a>
+
+        <div class="link-buttons">
+          <a href="https://airlytics-ncr.vercel.app/" target="_blank" class="ext-btn primary">🌐 Live Platform ↗</a>
+          <a href="https://github.com/Ayush20-lex/airlytics-ncr" target="_blank" class="ext-btn secondary">📦 GitHub Repo ↗</a>
           <button class="pixel-btn" id="warp-observatory">⚡ Fast Travel to Observatory</button>
         </div>
       `,
       'tab-ai': `
-        <h3>⚡ Autonomous Developer Assistant</h3>
+        <h3 class="section-heading">⚡ Autonomous Developer Assistant</h3>
         <p>A personal software engineering assistant designed for terminal-first developer environments.</p>
-        <ul>
-          <li>Context-driven task execution and workspace management.</li>
-          <li>Grounded execution boundary preventing unauthorized actions and data leakage.</li>
-          <li>Strict zero-credential leakage architecture.</li>
+        
+        <ul class="highlights-list">
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>Context-Driven Orchestration:</strong> Terminal workflow automation and project indexing.</div></li>
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>Grounded Execution Contract:</strong> Strict workspace boundaries preventing unauthorized operations.</div></li>
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>Confidentiality First:</strong> Zero credential leakage architecture and local-first execution.</div></li>
         </ul>
-        <div class="link-buttons" style="margin-top: 12px;">
+
+        <div class="link-buttons">
           <button class="pixel-btn" id="warp-workshop">⚡ Fast Travel to Workshop</button>
         </div>
       `,
       'tab-stack': `
-        <h3>🛠️ Verified Technical Arsenal</h3>
-        <p>Technologies supported by real codebases and verified engineering work:</p>
-        <p><strong>Languages:</strong> Python, TypeScript, Java, Bash / Shell, SQL</p>
-        <p><strong>Data & AI:</strong> FastAPI, React 19, Pandas, NumPy, Scikit-Learn</p>
-        <p><strong>Systems & Tools:</strong> Linux, Git, GitHub, VS Code, Vite, Vercel</p>
-        <div class="link-buttons" style="margin-top: 12px;">
-          <a href="https://github.com/Ayush20-lex?tab=repositories" target="_blank" class="ext-btn">Browse Repositories ↗</a>
+        <h3 class="section-heading">🛠️ Verified Technical Arsenal</h3>
+        <p>Technologies proven through active codebases, systems programming, and production deployments:</p>
+        
+        <ul class="highlights-list">
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>Languages:</strong> Python (primary backend/ML), TypeScript, Java, Bash / Shell, SQL.</div></li>
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>Frameworks:</strong> FastAPI, React 19, Pandas, NumPy, Scikit-Learn.</div></li>
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>Systems & Tools:</strong> Linux (daily driver), Git, GitHub, VS Code, Vite, Vercel.</div></li>
+        </ul>
+
+        <div class="link-buttons">
+          <a href="https://github.com/Ayush20-lex?tab=repositories" target="_blank" class="ext-btn primary">🐙 View Repositories ↗</a>
           <button class="pixel-btn" id="warp-redstone">⚡ Fast Travel to Redstone Lab</button>
         </div>
       `,
       'tab-lore': `
-        <h3>🗡️ Outside the Terminal (Gaming & Personal Lore)</h3>
-        <p><strong>Metroidvanias:</strong> Deep appreciation for non-linear exploration, atmospheric lore, and precision combat (<em>Hollow Knight</em>, <em>Castlevania</em>, <em>Ori</em>).</p>
-        <p><strong>Anime & Light Novels:</strong> Passionate about intricate power systems, strategy, and rich worldbuilding.</p>
-        <p><strong>Calisthenics:</strong> Progressive bodyweight training and physical discipline.</p>
-        <div class="link-buttons" style="margin-top: 12px;">
+        <h3 class="section-heading">🗡️ Outside the Terminal (Gaming & Personal Lore)</h3>
+        <p>Where challenge, exploration, and discipline meet outside the terminal:</p>
+        
+        <ul class="highlights-list">
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>Metroidvanias:</strong> Deep appreciation for non-linear exploration, atmospheric lore, and precision combat (<em>Hollow Knight</em>, <em>Castlevania</em>, <em>Ori</em>).</div></li>
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>Anime & Light Novels:</strong> Expansive worldbuilding, strategic tension, and progression narratives.</div></li>
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>Calisthenics:</strong> Progressive bodyweight strength and physical discipline.</div></li>
+        </ul>
+
+        <div class="link-buttons">
           <button class="pixel-btn" id="warp-saveroom">⚡ Fast Travel to Save Room</button>
         </div>
       `,
       'tab-contact': `
-        <h3>🌌 Coordinates & Contact</h3>
-        <p>Open for software engineering collaborations, AI systems development, internships, and tech/gaming chats.</p>
+        <h3 class="section-heading">🌌 Coordinates & Contact</h3>
+        <p>Open for software engineering collaborations, environmental data projects, AI tooling, and technical chats.</p>
+        
         <div class="link-buttons">
-          <a href="https://github.com/Ayush20-lex" target="_blank" class="ext-btn">GitHub Profile ↗</a>
-          <a href="https://www.linkedin.com/in/ayush-kumar-942081322/" target="_blank" class="ext-btn">LinkedIn Profile ↗</a>
-          <a href="mailto:ayushkumargbp@gmail.com" class="ext-btn secondary">Email: ayushkumargbp@gmail.com ↗</a>
-          <button class="pixel-btn" id="warp-portal">⚡ Fast Travel to Exit Portal</button>
+          <a href="https://github.com/Ayush20-lex" target="_blank" class="ext-btn primary">🐙 GitHub Profile ↗</a>
+          <a href="https://www.linkedin.com/in/ayush-kumar-942081322/" target="_blank" class="ext-btn primary">💼 LinkedIn Profile ↗</a>
+          <a href="mailto:ayushkumargbp@gmail.com" class="ext-btn secondary">✉️ Email: ayushkumargbp@gmail.com ↗</a>
+          <button class="pixel-btn" id="warp-portal">⚡ Fast Travel to Nether Gate</button>
         </div>
       `
     };
@@ -295,32 +394,32 @@ export class UIManager {
 
   bindWarpButtons() {
     document.getElementById('warp-observatory')?.addEventListener('click', () => {
-      this.game.player.x = 7 * 32;
+      this.game.player.x = 8 * 32;
       this.game.player.y = 7 * 32;
       this.game.player.direction = 'up';
       this.closeModal();
     });
     document.getElementById('warp-workshop')?.addEventListener('click', () => {
       this.game.player.x = 30 * 32;
-      this.game.player.y = 6 * 32;
+      this.game.player.y = 7 * 32;
       this.game.player.direction = 'up';
       this.closeModal();
     });
     document.getElementById('warp-redstone')?.addEventListener('click', () => {
       this.game.player.x = 30 * 32;
-      this.game.player.y = 19 * 32;
+      this.game.player.y = 20 * 32;
       this.game.player.direction = 'up';
       this.closeModal();
     });
     document.getElementById('warp-saveroom')?.addEventListener('click', () => {
-      this.game.player.x = 7 * 32;
+      this.game.player.x = 8 * 32;
       this.game.player.y = 20 * 32;
       this.game.player.direction = 'up';
       this.closeModal();
     });
     document.getElementById('warp-portal')?.addEventListener('click', () => {
       this.game.player.x = 18 * 32;
-      this.game.player.y = 4 * 32;
+      this.game.player.y = 5 * 32;
       this.game.player.direction = 'up';
       this.closeModal();
     });

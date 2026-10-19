@@ -4,7 +4,7 @@
 
   /**
  * AYUSHCRAFT — Tile and Sprite Generator
- * Procedural Pixel-Art Graphics Engine
+ * Procedural Pixel-Art Graphics Engine (Second-Pass Polish)
  */
 
 const TILE_SIZE = 32;
@@ -23,83 +23,234 @@ function createTileCanvas(width = TILE_SIZE, height = TILE_SIZE) {
 function generateTileAtlas() {
   const tiles = {};
 
-  // 1. GRASS
+  // 1. GRASS — Natural Meadow Base
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = '#489c3b';
+    ctx.fillStyle = '#499a39';
     ctx.fillRect(0, 0, 32, 32);
-    // Darker patches
-    ctx.fillStyle = '#3c8531';
-    ctx.fillRect(4, 6, 8, 8);
-    ctx.fillRect(20, 18, 6, 8);
-    ctx.fillRect(14, 2, 6, 4);
-    // Lighter highlights
-    ctx.fillStyle = '#5cb84d';
-    ctx.fillRect(8, 4, 4, 4);
-    ctx.fillRect(18, 12, 4, 6);
-    ctx.fillRect(2, 22, 4, 4);
-    ctx.fillRect(24, 24, 4, 4);
+    // Darker soil & shade specks
+    ctx.fillStyle = '#3c852e';
+    ctx.fillRect(4, 6, 4, 4);
+    ctx.fillRect(18, 16, 5, 4);
+    ctx.fillRect(24, 6, 4, 3);
+    ctx.fillRect(8, 22, 5, 4);
+    // Lighter blade highlights
+    ctx.fillStyle = '#5cba48';
+    ctx.fillRect(6, 4, 3, 3);
+    ctx.fillRect(16, 12, 3, 3);
+    ctx.fillRect(2, 18, 3, 3);
+    ctx.fillRect(26, 22, 3, 3);
+    ctx.fillRect(12, 26, 3, 3);
     tiles['GRASS'] = canvas;
   }
 
-  // 2. DIRT PATH
+  // 1B. GRASS_FLOWERS — Wild Meadow Poppies & Buttercups
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = '#8f633d';
-    ctx.fillRect(0, 0, 32, 32);
-    // Dirt variation
-    ctx.fillStyle = '#78502f';
-    ctx.fillRect(2, 6, 12, 8);
-    ctx.fillRect(18, 18, 10, 8);
-    ctx.fillRect(8, 24, 6, 6);
-    // Pebbles / gravel
-    ctx.fillStyle = '#aa825b';
+    ctx.drawImage(tiles['GRASS'], 0, 0);
+    // Red Poppies
+    ctx.fillStyle = '#dc2626';
     ctx.fillRect(6, 8, 4, 4);
-    ctx.fillRect(22, 6, 4, 4);
-    ctx.fillRect(16, 14, 6, 4);
-    ctx.fillRect(12, 26, 4, 4);
+    ctx.fillRect(22, 18, 4, 4);
+    ctx.fillStyle = '#fef08a'; // Pollen center
+    ctx.fillRect(7, 9, 2, 2);
+    ctx.fillRect(23, 19, 2, 2);
+    // Yellow Buttercup
+    ctx.fillStyle = '#eab308';
+    ctx.fillRect(14, 22, 4, 4);
+    ctx.fillStyle = '#f97316';
+    ctx.fillRect(15, 23, 2, 2);
+    tiles['GRASS_FLOWERS'] = canvas;
+  }
+
+  // 1C. GRASS_FLOWERS_WHITE — Chamomile / White Daisies
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.drawImage(tiles['GRASS'], 0, 0);
+    // White Daisies
+    ctx.fillStyle = '#f8fafc';
+    ctx.fillRect(8, 14, 4, 4);
+    ctx.fillRect(20, 6, 4, 4);
+    ctx.fillRect(24, 24, 3, 3);
+    ctx.fillStyle = '#f59e0b'; // Gold center
+    ctx.fillRect(9, 15, 2, 2);
+    ctx.fillRect(21, 7, 2, 2);
+    ctx.fillRect(25, 25, 1, 1);
+    tiles['GRASS_FLOWERS_WHITE'] = canvas;
+  }
+
+  // 1D. GRASS_TALL — Bushy Grass Tufts
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.drawImage(tiles['GRASS'], 0, 0);
+    ctx.fillStyle = '#2d6a22';
+    // Tall blades
+    ctx.fillRect(10, 10, 2, 12);
+    ctx.fillRect(14, 8, 2, 14);
+    ctx.fillRect(18, 11, 2, 11);
+    ctx.fillStyle = '#6ee755';
+    ctx.fillRect(11, 8, 1, 6);
+    ctx.fillRect(15, 6, 1, 7);
+    ctx.fillRect(19, 9, 1, 5);
+    tiles['GRASS_TALL'] = canvas;
+  }
+
+  // 1E. GRASS_PEBBLE — Meadow with Natural Field Stones
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.drawImage(tiles['GRASS'], 0, 0);
+    // River pebbles
+    ctx.fillStyle = '#64748b';
+    ctx.fillRect(8, 16, 5, 4);
+    ctx.fillRect(20, 10, 4, 3);
+    ctx.fillStyle = '#94a3b8';
+    ctx.fillRect(9, 16, 3, 2);
+    ctx.fillRect(21, 10, 2, 1);
+    tiles['GRASS_PEBBLE'] = canvas;
+  }
+
+  // 1F. GRASS_MOSSY — Shaded Forest Floor
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#37772b';
+    ctx.fillRect(0, 0, 32, 32);
+    ctx.fillStyle = '#295b20';
+    ctx.fillRect(2, 4, 12, 10);
+    ctx.fillRect(16, 14, 14, 12);
+    ctx.fillStyle = '#4d993e';
+    ctx.fillRect(6, 18, 6, 6);
+    tiles['GRASS_MOSSY'] = canvas;
+  }
+
+  // 2. DIRT PATH — Warm Beaten Trail
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#92653d';
+    ctx.fillRect(0, 0, 32, 32);
+    // Subtle earth grain
+    ctx.fillStyle = '#7a512d';
+    ctx.fillRect(2, 4, 14, 10);
+    ctx.fillRect(16, 16, 14, 12);
+    ctx.fillRect(4, 20, 8, 8);
+    // Sand & tiny stone flecks
+    ctx.fillStyle = '#b08253';
+    ctx.fillRect(6, 6, 3, 3);
+    ctx.fillRect(22, 8, 4, 3);
+    ctx.fillRect(14, 18, 3, 3);
+    ctx.fillRect(24, 24, 3, 2);
+    // Edging shadow
+    ctx.fillStyle = '#654122';
+    ctx.fillRect(0, 0, 32, 1);
+    ctx.fillRect(0, 31, 32, 1);
     tiles['DIRT_PATH'] = canvas;
   }
 
-  // 3. COBBLESTONE
+  // 2B. WOOD_BRIDGE — Wooden Footbridge over Water
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = '#636573';
+    ctx.fillStyle = '#784627';
     ctx.fillRect(0, 0, 32, 32);
-    ctx.fillStyle = '#41424d'; // Mortar
+    // Plank splits
+    ctx.fillStyle = '#452513';
+    ctx.fillRect(0, 7, 32, 2);
+    ctx.fillRect(0, 15, 32, 2);
+    ctx.fillRect(0, 23, 32, 2);
+    ctx.fillRect(0, 31, 32, 1);
+    // Plank highlights
+    ctx.fillStyle = '#9c5f37';
+    ctx.fillRect(2, 1, 28, 2);
+    ctx.fillRect(2, 9, 28, 2);
+    ctx.fillRect(2, 17, 28, 2);
+    ctx.fillRect(2, 25, 28, 2);
+    // Iron bolts
+    ctx.fillStyle = '#1e293b';
+    ctx.fillRect(3, 4, 2, 2);
+    ctx.fillRect(27, 4, 2, 2);
+    ctx.fillRect(3, 12, 2, 2);
+    ctx.fillRect(27, 12, 2, 2);
+    ctx.fillRect(3, 20, 2, 2);
+    ctx.fillRect(27, 20, 2, 2);
+    tiles['WOOD_BRIDGE'] = canvas;
+  }
+
+  // 3. COBBLESTONE — Chiseled Stone Pathway
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#646675';
+    ctx.fillRect(0, 0, 32, 32);
+    ctx.fillStyle = '#3c3d47'; // Mortar grooves
     ctx.fillRect(0, 15, 32, 2);
     ctx.fillRect(0, 31, 32, 1);
     ctx.fillRect(15, 0, 2, 15);
     ctx.fillRect(23, 16, 2, 16);
-    // Stone highlights & cracks
-    ctx.fillStyle = '#7a7d8c';
+    // Highlighted stone faces
+    ctx.fillStyle = '#7f8294';
     ctx.fillRect(2, 2, 11, 4);
     ctx.fillRect(18, 2, 12, 4);
     ctx.fillRect(2, 18, 19, 4);
     ctx.fillRect(26, 18, 5, 4);
+    // Shadow bevels
+    ctx.fillStyle = '#4c4e59';
+    ctx.fillRect(2, 11, 11, 3);
+    ctx.fillRect(18, 11, 12, 3);
+    ctx.fillRect(2, 27, 19, 3);
     tiles['COBBLESTONE'] = canvas;
   }
 
-  // 4. WATER (Base frame)
+  // 3B. COBBLE_MOSSY — Weathered Mossy Cobblestone
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = '#2563eb';
+    ctx.drawImage(tiles['COBBLESTONE'], 0, 0);
+    ctx.fillStyle = '#3c852e';
+    ctx.fillRect(4, 12, 8, 4);
+    ctx.fillRect(14, 2, 5, 6);
+    ctx.fillRect(20, 22, 8, 5);
+    ctx.fillStyle = '#5cba48';
+    ctx.fillRect(6, 13, 4, 2);
+    ctx.fillRect(22, 23, 4, 2);
+    tiles['COBBLE_MOSSY'] = canvas;
+  }
+
+  // 4. WATER — Dynamic Crystal Blue River
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#1d5ec9';
     ctx.fillRect(0, 0, 32, 32);
-    ctx.fillStyle = '#3b82f6';
-    ctx.fillRect(4, 8, 14, 4);
-    ctx.fillRect(14, 20, 12, 4);
+    // Secondary flow wave
+    ctx.fillStyle = '#256ee8';
+    ctx.fillRect(2, 6, 16, 5);
+    ctx.fillRect(14, 18, 16, 5);
+    // Surface highlights
     ctx.fillStyle = '#60a5fa';
-    ctx.fillRect(6, 10, 8, 2);
-    ctx.fillRect(18, 22, 6, 2);
+    ctx.fillRect(4, 8, 10, 2);
+    ctx.fillRect(18, 20, 10, 2);
+    ctx.fillStyle = '#93c5fd';
+    ctx.fillRect(6, 9, 4, 1);
+    ctx.fillRect(20, 21, 4, 1);
     tiles['WATER'] = canvas;
   }
 
-  // 5. WOOD PLANKS
+  // 4B. WATER_SHORE — Water with Gentle Sandy Bank
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = '#8f563b';
+    ctx.drawImage(tiles['WATER'], 0, 0);
+    // Sandy fringe on top
+    ctx.fillStyle = '#8f633d';
+    ctx.fillRect(0, 0, 32, 4);
+    ctx.fillStyle = '#b08253';
+    ctx.fillRect(0, 4, 32, 2);
+    // Foam line
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+    ctx.fillRect(2, 6, 28, 2);
+    tiles['WATER_SHORE'] = canvas;
+  }
+
+  // 5. WOOD PLANKS — Warm Timber Lodge Floor
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#8a5336';
     ctx.fillRect(0, 0, 32, 32);
-    ctx.fillStyle = '#4d2e1f'; // Grain gaps
+    ctx.fillStyle = '#4d2b1a'; // Gaps
     ctx.fillRect(0, 7, 32, 2);
     ctx.fillRect(0, 15, 32, 2);
     ctx.fillRect(0, 23, 32, 2);
@@ -108,25 +259,45 @@ function generateTileAtlas() {
     ctx.fillRect(24, 8, 2, 7);
     ctx.fillRect(8, 16, 2, 7);
     ctx.fillRect(20, 24, 2, 7);
-    // Planks highlight
-    ctx.fillStyle = '#aa6f4c';
+    // Highlights
+    ctx.fillStyle = '#a86a47';
     ctx.fillRect(2, 1, 10, 2);
     ctx.fillRect(18, 1, 12, 2);
     ctx.fillRect(2, 9, 20, 2);
+    ctx.fillRect(12, 17, 18, 2);
     tiles['WOOD_PLANKS'] = canvas;
   }
 
-  // 6. STONE BRICK
+  // 5B. WORKSHOP_FLOOR — Polished Parquet Tiles
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = '#565969';
+    ctx.fillStyle = '#9e6442';
     ctx.fillRect(0, 0, 32, 32);
-    ctx.fillStyle = '#363842';
+    ctx.fillStyle = '#5c351f';
+    ctx.strokeRect(0, 0, 32, 32);
+    ctx.fillRect(15, 0, 2, 32);
+    ctx.fillRect(0, 15, 32, 2);
+    // Inlaid diamond grain
+    ctx.fillStyle = '#bf825e';
+    ctx.fillRect(2, 2, 12, 12);
+    ctx.fillRect(18, 18, 12, 12);
+    ctx.fillStyle = '#7d4527';
+    ctx.fillRect(18, 2, 12, 12);
+    ctx.fillRect(2, 18, 12, 12);
+    tiles['WORKSHOP_FLOOR'] = canvas;
+  }
+
+  // 6. STONE BRICK — Classic Castle Masonry
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#555866';
+    ctx.fillRect(0, 0, 32, 32);
+    ctx.fillStyle = '#343640';
     ctx.strokeRect(0, 0, 32, 32);
     ctx.fillRect(0, 15, 32, 2);
     ctx.fillRect(15, 0, 2, 15);
     ctx.fillRect(15, 16, 2, 16);
-    ctx.fillStyle = '#71758a';
+    ctx.fillStyle = '#717588';
     ctx.fillRect(2, 2, 11, 2);
     ctx.fillRect(18, 2, 12, 2);
     ctx.fillRect(2, 18, 11, 2);
@@ -134,136 +305,263 @@ function generateTileAtlas() {
     tiles['STONE_BRICK'] = canvas;
   }
 
-  // 7. OBSIDIAN
+  // 6B. OBSERVATORY_FLOOR — Midnight Celestial Slate with Brass Inlay
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = '#171424';
+    ctx.fillStyle = '#1e2438';
     ctx.fillRect(0, 0, 32, 32);
-    ctx.fillStyle = '#30264d';
+    ctx.fillStyle = '#141829';
+    ctx.strokeRect(0, 0, 32, 32);
+    // Brass quadrant circle
+    ctx.strokeStyle = '#d97706';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(16, 16, 10, 0, Math.PI * 2);
+    ctx.stroke();
+    // Starry cyan core
+    ctx.fillStyle = '#38bdf8';
+    ctx.fillRect(15, 15, 2, 2);
+    ctx.fillStyle = '#ca8a04';
+    ctx.fillRect(15, 5, 2, 2);
+    ctx.fillRect(15, 25, 2, 2);
+    ctx.fillRect(5, 15, 2, 2);
+    ctx.fillRect(25, 15, 2, 2);
+    tiles['OBSERVATORY_FLOOR'] = canvas;
+  }
+
+  // 6C. LAB_FLOOR — Deep Basalt Conduit Flooring
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#1c1c24';
+    ctx.fillRect(0, 0, 32, 32);
+    ctx.fillStyle = '#101017';
+    ctx.strokeRect(0, 0, 32, 32);
+    // Conduit recessed channels
+    ctx.fillStyle = '#2b2b36';
+    ctx.fillRect(14, 0, 4, 32);
+    ctx.fillRect(0, 14, 32, 4);
+    // Circuit trace nodes
+    ctx.fillStyle = '#7f1d1d';
+    ctx.fillRect(15, 15, 2, 2);
+    tiles['LAB_FLOOR'] = canvas;
+  }
+
+  // 6D. SAVEROOM_RUG — Royal Blue Velvet Carpet
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#1e3a8a';
+    ctx.fillRect(0, 0, 32, 32);
+    // Silver / Gold embroidered border
+    ctx.fillStyle = '#cbd5e1';
+    ctx.fillRect(2, 2, 28, 2);
+    ctx.fillRect(2, 28, 28, 2);
+    ctx.fillRect(2, 2, 2, 28);
+    ctx.fillRect(28, 2, 2, 28);
+    // Inner velvet field
+    ctx.fillStyle = '#172554';
+    ctx.fillRect(6, 6, 20, 20);
+    // Hollow Knight soul symbol or geometric diamond
+    ctx.fillStyle = '#93c5fd';
+    ctx.beginPath();
+    ctx.moveTo(16, 8);
+    ctx.lineTo(24, 16);
+    ctx.lineTo(16, 24);
+    ctx.lineTo(8, 16);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = '#1e3a8a';
+    ctx.fillRect(14, 14, 4, 4);
+    tiles['SAVEROOM_RUG'] = canvas;
+  }
+
+  // 7. OBSIDIAN — Nether Portal Framing
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#141121';
+    ctx.fillRect(0, 0, 32, 32);
+    ctx.fillStyle = '#2a1f47';
     ctx.fillRect(4, 4, 10, 10);
     ctx.fillRect(18, 16, 10, 12);
     ctx.fillStyle = '#6b3ea8';
     ctx.fillRect(6, 6, 4, 4);
     ctx.fillRect(22, 20, 4, 4);
+    ctx.fillStyle = '#a855f7';
+    ctx.fillRect(7, 7, 2, 2);
     tiles['OBSIDIAN'] = canvas;
   }
 
-  // 8. PORTAL FIELD (Runic energy)
+  // 8. PORTAL FIELD — Interdimensional Swirl
   {
     const { canvas, ctx } = createTileCanvas();
     ctx.fillStyle = '#4c1d95';
     ctx.fillRect(0, 0, 32, 32);
-    ctx.fillStyle = '#7c3aed';
-    ctx.fillRect(6, 4, 8, 12);
-    ctx.fillRect(18, 14, 10, 14);
-    ctx.fillStyle = '#c084fc';
-    ctx.fillRect(8, 8, 4, 4);
-    ctx.fillRect(20, 18, 4, 4);
+    ctx.fillStyle = '#6d28d9';
+    ctx.fillRect(4, 4, 10, 12);
+    ctx.fillRect(16, 14, 12, 14);
+    ctx.fillStyle = '#a855f7';
+    ctx.fillRect(8, 8, 6, 6);
+    ctx.fillRect(20, 18, 6, 6);
+    ctx.fillStyle = '#e9d5ff';
+    ctx.fillRect(10, 10, 2, 2);
+    ctx.fillRect(22, 20, 2, 2);
     tiles['PORTAL'] = canvas;
   }
 
-  // 9. TREE TOP (Foliage 64x64)
+  // 9. TREE OAK TOP (Canopy 64x64)
   {
     const { canvas, ctx } = createTileCanvas(64, 64);
-    // Tree leaves shadow
-    ctx.fillStyle = '#1e5e22';
-    ctx.fillRect(8, 8, 48, 48);
-    // Main foliage
-    ctx.fillStyle = '#2e8b34';
-    ctx.fillRect(12, 12, 40, 40);
-    // Highlights
-    ctx.fillStyle = '#48b850';
-    ctx.fillRect(16, 16, 16, 14);
-    ctx.fillRect(36, 24, 12, 12);
-    ctx.fillRect(20, 36, 16, 10);
+    // Leaf shadow
+    ctx.fillStyle = '#1b521e';
+    ctx.beginPath();
+    ctx.arc(32, 34, 26, 0, Math.PI * 2);
+    ctx.fill();
+    // Mid foliage body
+    ctx.fillStyle = '#2d8033';
+    ctx.beginPath();
+    ctx.arc(32, 30, 24, 0, Math.PI * 2);
+    ctx.fill();
+    // Clustered leafy highlights
+    ctx.fillStyle = '#42a84a';
+    ctx.beginPath();
+    ctx.arc(24, 22, 12, 0, Math.PI * 2);
+    ctx.arc(40, 24, 11, 0, Math.PI * 2);
+    ctx.arc(30, 36, 11, 0, Math.PI * 2);
+    ctx.fill();
+    // Sunlit bright tips
+    ctx.fillStyle = '#6be374';
+    ctx.fillRect(20, 16, 6, 4);
+    ctx.fillRect(36, 18, 6, 4);
+    ctx.fillRect(26, 28, 5, 4);
     tiles['TREE_TOP'] = canvas;
+  }
+
+  // 9B. TREE PINE TOP (Canopy 64x64)
+  {
+    const { canvas, ctx } = createTileCanvas(64, 64);
+    // Dark spruce silhouette
+    ctx.fillStyle = '#143d22';
+    // Tier 3 (bottom)
+    ctx.beginPath();
+    ctx.moveTo(32, 16); ctx.lineTo(10, 56); ctx.lineTo(54, 56); ctx.closePath();
+    ctx.fill();
+    // Tier 2 (mid)
+    ctx.fillStyle = '#1c542f';
+    ctx.beginPath();
+    ctx.moveTo(32, 10); ctx.lineTo(14, 40); ctx.lineTo(50, 40); ctx.closePath();
+    ctx.fill();
+    // Tier 1 (top)
+    ctx.fillStyle = '#2b7844';
+    ctx.beginPath();
+    ctx.moveTo(32, 4); ctx.lineTo(20, 24); ctx.lineTo(44, 24); ctx.closePath();
+    ctx.fill();
+    // Needle highlights
+    ctx.fillStyle = '#4ade80';
+    ctx.fillRect(31, 8, 2, 4);
+    ctx.fillRect(25, 22, 3, 2);
+    ctx.fillRect(36, 22, 3, 2);
+    ctx.fillRect(20, 38, 4, 2);
+    ctx.fillRect(40, 38, 4, 2);
+    tiles['TREE_PINE'] = canvas;
   }
 
   // 10. TREE TRUNK
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = '#489c3b'; // grass underneath
-    ctx.fillRect(0, 0, 32, 32);
-    ctx.fillStyle = '#54341b';
+    ctx.drawImage(tiles['GRASS'], 0, 0);
+    // Dark sturdy bark
+    ctx.fillStyle = '#452613';
     ctx.fillRect(10, 0, 12, 32);
-    ctx.fillStyle = '#3a2211';
+    // Tree shadow edge
+    ctx.fillStyle = '#2b160a';
     ctx.fillRect(10, 0, 3, 32);
-    ctx.fillStyle = '#714624';
+    // Light grain
+    ctx.fillStyle = '#663b1d';
     ctx.fillRect(15, 0, 4, 32);
+    // Root flare at ground
+    ctx.fillStyle = '#452613';
+    ctx.fillRect(7, 24, 3, 8);
+    ctx.fillRect(22, 24, 3, 8);
     tiles['TREE_TRUNK'] = canvas;
   }
 
   // 11. REDSTONE WIRE (Unpowered)
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = 'transparent';
-    ctx.fillRect(0, 0, 32, 32);
+    ctx.drawImage(tiles['LAB_FLOOR'], 0, 0);
     ctx.fillStyle = '#7f1d1d';
     ctx.fillRect(14, 0, 4, 32);
     ctx.fillRect(0, 14, 32, 4);
     tiles['REDSTONE_WIRE_OFF'] = canvas;
   }
 
-  // 12. REDSTONE WIRE (Powered)
+  // 12. REDSTONE WIRE (Powered & Radiant)
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = 'transparent';
-    ctx.fillRect(0, 0, 32, 32);
+    ctx.drawImage(tiles['LAB_FLOOR'], 0, 0);
+    // Glow bloom
+    ctx.fillStyle = 'rgba(239, 68, 68, 0.3)';
+    ctx.fillRect(11, 0, 10, 32);
+    ctx.fillRect(0, 11, 32, 10);
+    // Glowing wire
     ctx.fillStyle = '#ef4444';
     ctx.fillRect(14, 0, 4, 32);
     ctx.fillRect(0, 14, 32, 4);
-    ctx.fillStyle = '#fca5a5';
+    // High-energy core
+    ctx.fillStyle = '#fecaca';
     ctx.fillRect(15, 15, 2, 2);
+    ctx.fillRect(15, 4, 2, 2);
+    ctx.fillRect(15, 26, 2, 2);
+    ctx.fillRect(4, 15, 2, 2);
+    ctx.fillRect(26, 15, 2, 2);
     tiles['REDSTONE_WIRE_ON'] = canvas;
   }
 
   // 13. REDSTONE LAMP (OFF)
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = '#451a03';
+    ctx.fillStyle = '#3c1806';
     ctx.fillRect(0, 0, 32, 32);
-    ctx.fillStyle = '#78350f';
+    ctx.fillStyle = '#69300f';
     ctx.fillRect(4, 4, 24, 24);
-    ctx.fillStyle = '#92400e';
-    ctx.fillRect(6, 6, 20, 20);
-    ctx.fillStyle = '#b45309';
-    ctx.fillRect(10, 10, 12, 12);
+    ctx.fillStyle = '#853e14';
+    ctx.fillRect(7, 7, 18, 18);
+    ctx.fillStyle = '#3c1806';
+    ctx.strokeRect(1, 1, 30, 30);
     tiles['LAMP_OFF'] = canvas;
   }
 
-  // 14. REDSTONE LAMP (ON)
+  // 14. REDSTONE LAMP (ON — Brilliant Amber Glow)
   {
     const { canvas, ctx } = createTileCanvas();
     ctx.fillStyle = '#78350f';
     ctx.fillRect(0, 0, 32, 32);
     ctx.fillStyle = '#f59e0b';
-    ctx.fillRect(4, 4, 24, 24);
+    ctx.fillRect(3, 3, 26, 26);
     ctx.fillStyle = '#fde047';
-    ctx.fillRect(8, 8, 16, 16);
+    ctx.fillRect(6, 6, 20, 20);
     ctx.fillStyle = '#ffffff';
-    ctx.fillRect(12, 12, 8, 8);
+    ctx.fillRect(10, 10, 12, 12);
     tiles['LAMP_ON'] = canvas;
   }
 
-  // 15. BOOKSHELF
+  // 15. BOOKSHELF — Knowledge Grimoires
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = '#8f563b';
+    ctx.fillStyle = '#713f12';
     ctx.fillRect(0, 0, 32, 32);
-    ctx.fillStyle = '#4d2e1f';
+    ctx.fillStyle = '#451a03';
     ctx.fillRect(2, 4, 28, 10);
     ctx.fillRect(2, 18, 28, 10);
-    // Books top shelf
-    const colors = ['#dc2626', '#2563eb', '#16a34a', '#d97706', '#9333ea'];
+    // Colorful book spines
+    const bookColors = ['#dc2626', '#2563eb', '#16a34a', '#d97706', '#9333ea', '#0284c7'];
     for (let i = 0; i < 5; i++) {
-      ctx.fillStyle = colors[i % colors.length];
+      ctx.fillStyle = bookColors[i % bookColors.length];
       ctx.fillRect(4 + i * 5, 5, 4, 8);
       ctx.fillStyle = '#fef08a';
       ctx.fillRect(5 + i * 5, 7, 2, 2);
     }
-    // Books bottom shelf
     for (let i = 0; i < 5; i++) {
-      ctx.fillStyle = colors[(i + 2) % colors.length];
+      ctx.fillStyle = bookColors[(i + 3) % bookColors.length];
       ctx.fillRect(4 + i * 5, 19, 4, 8);
       ctx.fillStyle = '#fef08a';
       ctx.fillRect(5 + i * 5, 21, 2, 2);
@@ -271,106 +569,188 @@ function generateTileAtlas() {
     tiles['BOOKSHELF'] = canvas;
   }
 
-  // 16. CRAFTING TABLE
+  // 16. CRAFTING WORKBENCH
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = '#a16207';
+    ctx.fillStyle = '#8f563b';
     ctx.fillRect(0, 0, 32, 32);
-    ctx.fillStyle = '#713f12';
+    ctx.fillStyle = '#4d2e1f';
     ctx.strokeRect(1, 1, 30, 30);
-    // Grid on top
-    ctx.fillStyle = '#ca8a04';
+    // Grid top
+    ctx.fillStyle = '#b45309';
     ctx.fillRect(4, 4, 24, 24);
-    ctx.fillStyle = '#713f12';
+    ctx.fillStyle = '#78350f';
     ctx.fillRect(11, 4, 2, 24);
     ctx.fillRect(19, 4, 2, 24);
     ctx.fillRect(4, 11, 24, 2);
     ctx.fillRect(4, 19, 24, 2);
+    // Blueprint paper & saw
+    ctx.fillStyle = '#fef3c7';
+    ctx.fillRect(6, 6, 8, 8);
+    ctx.fillStyle = '#64748b';
+    ctx.fillRect(16, 14, 8, 3);
     tiles['WORKBENCH'] = canvas;
   }
 
-  // 17. TELESCOPE / OBSERVATORY INSTRUMENT
+  // 17. TELESCOPE — AirLytics Observatory Telemetry Array
   {
     const { canvas, ctx } = createTileCanvas();
     ctx.fillStyle = 'transparent';
     ctx.fillRect(0, 0, 32, 32);
-    // Tripod legs
+    // Stone mount base
+    ctx.fillStyle = '#334155';
+    ctx.fillRect(4, 24, 24, 8);
+    // Sturdy brass tripod
     ctx.fillStyle = '#475569';
-    ctx.fillRect(6, 20, 4, 12);
-    ctx.fillRect(22, 20, 4, 12);
-    ctx.fillRect(14, 16, 4, 16);
-    // Brass barrel angled
+    ctx.fillRect(6, 16, 4, 10);
+    ctx.fillRect(22, 16, 4, 10);
+    ctx.fillRect(14, 14, 4, 12);
+    // Polished brass barrel pointed skyward
     ctx.fillStyle = '#d97706';
-    ctx.fillRect(8, 8, 18, 8);
+    ctx.fillRect(8, 6, 18, 8);
     ctx.fillStyle = '#fbbf24';
-    ctx.fillRect(10, 6, 12, 4);
-    // Lens
+    ctx.fillRect(10, 4, 14, 4);
+    // Cyan optical lens
     ctx.fillStyle = '#38bdf8';
-    ctx.fillRect(24, 6, 4, 10);
+    ctx.fillRect(24, 4, 4, 10);
+    ctx.fillStyle = '#e0f2fe';
+    ctx.fillRect(25, 6, 2, 3);
     tiles['TELESCOPE'] = canvas;
   }
 
-  // 18. SIGNPOST
+  // 18. SIGNPOST — Handcrafted Directional Post
   {
     const { canvas, ctx } = createTileCanvas();
     ctx.fillStyle = 'transparent';
     ctx.fillRect(0, 0, 32, 32);
-    // Wooden board
+    // Sturdy oak board
+    ctx.fillStyle = '#78350f';
+    ctx.fillRect(3, 4, 26, 16);
     ctx.fillStyle = '#b45309';
-    ctx.fillRect(4, 4, 24, 16);
-    ctx.fillStyle = '#d97706';
-    ctx.fillRect(6, 6, 20, 12);
-    // Text lines
-    ctx.fillStyle = '#78350f';
-    ctx.fillRect(8, 8, 16, 2);
-    ctx.fillRect(8, 12, 12, 2);
-    // Post
-    ctx.fillStyle = '#78350f';
+    ctx.fillRect(5, 6, 22, 12);
+    // Carved script lines
+    ctx.fillStyle = '#451a03';
+    ctx.fillRect(7, 8, 18, 2);
+    ctx.fillRect(7, 12, 14, 2);
+    // Signpost pillar
+    ctx.fillStyle = '#5c2d12';
     ctx.fillRect(14, 20, 4, 12);
     tiles['SIGN'] = canvas;
   }
 
-  // 19. NAIL RELIC (Hollow Knight homage)
+  // 19. NAIL RELIC — Pure Nail from Hollow Knight
   {
     const { canvas, ctx } = createTileCanvas();
     ctx.fillStyle = 'transparent';
     ctx.fillRect(0, 0, 32, 32);
-    // Stone Pedestal
-    ctx.fillStyle = '#334155';
-    ctx.fillRect(6, 20, 20, 12);
-    ctx.fillStyle = '#64748b';
-    ctx.fillRect(8, 18, 16, 4);
-    // Silver Nail blade
-    ctx.fillStyle = '#cbd5e1';
+    // Carved Hallownest stone altar
+    ctx.fillStyle = '#1e293b';
+    ctx.fillRect(4, 20, 24, 12);
+    ctx.fillStyle = '#475569';
+    ctx.fillRect(6, 18, 20, 4);
+    // Soul aura shimmer around blade
+    ctx.fillStyle = 'rgba(56, 189, 248, 0.25)';
+    ctx.fillRect(11, 2, 10, 16);
+    // Gleaming Silver Nail Blade
+    ctx.fillStyle = '#f8fafc';
     ctx.fillRect(15, 2, 2, 16);
+    ctx.fillStyle = '#cbd5e1';
     ctx.fillRect(14, 4, 4, 10);
     ctx.fillRect(13, 8, 6, 4);
-    // Crossguard & pommel
+    // Nail Crossguard & Hilt
     ctx.fillStyle = '#94a3b8';
-    ctx.fillRect(12, 14, 8, 2);
-    ctx.fillStyle = '#475569';
+    ctx.fillRect(11, 14, 10, 2);
+    ctx.fillStyle = '#334155';
     ctx.fillRect(15, 16, 2, 4);
     tiles['NAIL_RELIC'] = canvas;
   }
 
-  // 20. FENCE
+  // 20. LANTERN — Iron Hanging Warm Amber Lantern
   {
     const { canvas, ctx } = createTileCanvas();
     ctx.fillStyle = 'transparent';
     ctx.fillRect(0, 0, 32, 32);
+    // Iron post & chain
+    ctx.fillStyle = '#1e293b';
+    ctx.fillRect(15, 2, 2, 6);
+    ctx.fillRect(10, 8, 12, 3);
+    // Glass cage & warm amber flame
+    ctx.fillStyle = '#f59e0b';
+    ctx.fillRect(11, 11, 10, 10);
+    ctx.fillStyle = '#fef08a';
+    ctx.fillRect(13, 13, 6, 6);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(15, 15, 2, 2);
+    // Lantern base
+    ctx.fillStyle = '#1e293b';
+    ctx.fillRect(10, 21, 12, 3);
+    tiles['LANTERN'] = canvas;
+  }
+
+  // 21. BENCH — Warm Wooden Rest Bench
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = 'transparent';
+    ctx.fillRect(0, 0, 32, 32);
+    // Bench backrest
     ctx.fillStyle = '#78350f';
-    ctx.fillRect(4, 2, 6, 30);
-    ctx.fillRect(22, 2, 6, 30);
+    ctx.fillRect(4, 6, 24, 6);
+    ctx.fillStyle = '#9a3412';
+    ctx.fillRect(6, 8, 20, 3);
+    // Seat
     ctx.fillStyle = '#b45309';
-    ctx.fillRect(10, 8, 12, 4);
-    ctx.fillRect(10, 20, 12, 4);
-    tiles['FENCE'] = canvas;
+    ctx.fillRect(4, 14, 24, 6);
+    // Legs
+    ctx.fillStyle = '#451a03';
+    ctx.fillRect(6, 20, 4, 10);
+    ctx.fillRect(22, 20, 4, 10);
+    tiles['BENCH'] = canvas;
+  }
+
+  // 22. FLOWER_BOX — Wooden Planter Box with Blossoms
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = 'transparent';
+    ctx.fillRect(0, 0, 32, 32);
+    // Wooden box
+    ctx.fillStyle = '#78350f';
+    ctx.fillRect(4, 16, 24, 12);
+    ctx.fillStyle = '#9a3412';
+    ctx.fillRect(6, 18, 20, 8);
+    // Colorful flowers blooming
+    ctx.fillStyle = '#ef4444';
+    ctx.fillRect(6, 10, 5, 6);
+    ctx.fillStyle = '#38bdf8';
+    ctx.fillRect(14, 8, 5, 7);
+    ctx.fillStyle = '#facc15';
+    ctx.fillRect(21, 10, 5, 6);
+    tiles['FLOWER_BOX'] = canvas;
+  }
+
+  // 23. WEATHER_VANE — Meteorological Wind Array
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = 'transparent';
+    ctx.fillRect(0, 0, 32, 32);
+    // Copper finial & arrow
+    ctx.fillStyle = '#d97706';
+    ctx.fillRect(15, 2, 2, 26);
+    ctx.fillRect(6, 8, 20, 2);
+    // Cardinal points
+    ctx.fillStyle = '#f59e0b';
+    ctx.fillRect(4, 6, 4, 6);
+    ctx.fillRect(24, 7, 4, 4);
+    // Anemometer cups
+    ctx.fillStyle = '#64748b';
+    ctx.fillRect(10, 14, 4, 4);
+    ctx.fillRect(18, 14, 4, 4);
+    tiles['WEATHER_VANE'] = canvas;
   }
 
   return tiles;
 }
 
-// Generate Player Character Sprite Atlas (4 directions × 3 walk frames)
+// Generate Player Character Sprite Atlas (4 directions × 3 frames + idle breathing)
 function generatePlayerAtlas() {
   const atlas = {};
   const dirs = ['down', 'up', 'left', 'right'];
@@ -381,99 +761,144 @@ function generatePlayerAtlas() {
       const { canvas, ctx } = createTileCanvas(32, 32);
 
       // Shadow underneath
-      ctx.fillStyle = 'rgba(0,0,0,0.25)';
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
       ctx.beginPath();
-      ctx.ellipse(16, 30, 8, 3, 0, 0, Math.PI * 2);
+      ctx.ellipse(16, 30, 9, 3, 0, 0, Math.PI * 2);
       ctx.fill();
 
       // Foot offset for walking
       const legOffset = frame === 1 ? -2 : (frame === 2 ? 2 : 0);
+      const armOffset = frame === 1 ? 2 : (frame === 2 ? -2 : 0);
 
       if (dir === 'down') {
-        // Back hair / head
-        ctx.fillStyle = '#1e1b18';
-        ctx.fillRect(10, 4, 12, 10);
+        // Back hair silhouette
+        ctx.fillStyle = '#1c1917';
+        ctx.fillRect(10, 3, 12, 11);
         // Face skin
-        ctx.fillStyle = '#fcd34d';
-        ctx.fillRect(11, 7, 10, 7);
-        // Eyes
-        ctx.fillStyle = '#1e293b';
-        ctx.fillRect(13, 10, 2, 3);
-        ctx.fillRect(17, 10, 2, 3);
-        // Front hair bangs
+        ctx.fillStyle = '#fed7aa';
+        ctx.fillRect(11, 6, 10, 8);
+        // Eyes (focused, dark slate)
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(13, 9, 2, 3);
+        ctx.fillRect(17, 9, 2, 3);
+        // Textured bangs
         ctx.fillStyle = '#292524';
-        ctx.fillRect(10, 4, 12, 4);
-        ctx.fillRect(10, 8, 2, 3);
+        ctx.fillRect(10, 3, 12, 4);
+        ctx.fillRect(10, 7, 2, 3);
+        ctx.fillRect(20, 7, 2, 2);
 
-        // Blue Hoodie / Body
+        // Blue Hoodie Body (Rich vibrant indie contrast)
         ctx.fillStyle = '#0284c7';
         ctx.fillRect(9, 14, 14, 10);
-        ctx.fillStyle = '#38bdf8'; // Zipper / collar
-        ctx.fillRect(15, 15, 2, 8);
+        // Collar & White Zipper
+        ctx.fillStyle = '#f8fafc';
+        ctx.fillRect(15, 14, 2, 8);
+        // Hoodie pocket
+        ctx.fillStyle = '#0369a1';
+        ctx.fillRect(11, 20, 10, 3);
 
-        // Pants / Boots
+        // Arms
+        ctx.fillStyle = '#0284c7';
+        ctx.fillRect(6, 14 + armOffset, 3, 8);
+        ctx.fillRect(23, 14 - armOffset, 3, 8);
+        // Hands
+        ctx.fillStyle = '#fed7aa';
+        ctx.fillRect(6, 21 + armOffset, 3, 2);
+        ctx.fillRect(23, 21 - armOffset, 3, 2);
+
+        // Dark Cargo Joggers
         ctx.fillStyle = '#1e293b';
         ctx.fillRect(11, 24, 4, 5 + (legOffset > 0 ? legOffset : 0));
         ctx.fillRect(17, 24, 4, 5 + (legOffset < 0 ? -legOffset : 0));
+
+        // White Sneakers
+        ctx.fillStyle = '#f1f5f9';
+        ctx.fillRect(10, 28 + (legOffset > 0 ? legOffset : 0), 5, 3);
+        ctx.fillRect(17, 28 + (legOffset < 0 ? -legOffset : 0), 5, 3);
       } else if (dir === 'up') {
-        // Head back
-        ctx.fillStyle = '#1e1b18';
-        ctx.fillRect(10, 4, 12, 11);
+        // Head back with messy hair
+        ctx.fillStyle = '#1c1917';
+        ctx.fillRect(10, 3, 12, 12);
         ctx.fillStyle = '#292524';
-        ctx.fillRect(11, 5, 10, 6);
+        ctx.fillRect(11, 4, 10, 8);
 
         // Blue Hoodie Back
         ctx.fillStyle = '#0369a1';
         ctx.fillRect(9, 14, 14, 10);
-        ctx.fillStyle = '#0284c7'; // Hood
-        ctx.fillRect(11, 14, 10, 4);
+        // Folded Hood
+        ctx.fillStyle = '#0284c7';
+        ctx.fillRect(11, 13, 10, 5);
 
-        // Pants
+        // Arms swinging
+        ctx.fillStyle = '#0369a1';
+        ctx.fillRect(6, 14 - armOffset, 3, 8);
+        ctx.fillRect(23, 14 + armOffset, 3, 8);
+
+        // Joggers
         ctx.fillStyle = '#1e293b';
         ctx.fillRect(11, 24, 4, 5 + (legOffset > 0 ? legOffset : 0));
         ctx.fillRect(17, 24, 4, 5 + (legOffset < 0 ? -legOffset : 0));
-      } else if (dir === 'left') {
-        // Head side
-        ctx.fillStyle = '#1e1b18';
-        ctx.fillRect(11, 4, 10, 10);
-        ctx.fillStyle = '#fcd34d';
-        ctx.fillRect(10, 7, 7, 7);
-        // Eye
-        ctx.fillStyle = '#1e293b';
-        ctx.fillRect(11, 10, 2, 3);
 
-        // Body
+        // Shoes back
+        ctx.fillStyle = '#e2e8f0';
+        ctx.fillRect(11, 28 + (legOffset > 0 ? legOffset : 0), 4, 3);
+        ctx.fillRect(17, 28 + (legOffset < 0 ? -legOffset : 0), 4, 3);
+      } else if (dir === 'left') {
+        // Profile head
+        ctx.fillStyle = '#1c1917';
+        ctx.fillRect(11, 3, 10, 11);
+        ctx.fillStyle = '#fed7aa';
+        ctx.fillRect(10, 6, 7, 8);
+        // Eye
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(11, 9, 2, 3);
+
+        // Body profile
         ctx.fillStyle = '#0284c7';
         ctx.fillRect(11, 14, 10, 10);
-        // Arm
+        // Arm swing
         ctx.fillStyle = '#0369a1';
-        ctx.fillRect(13 + legOffset, 15, 4, 8);
+        ctx.fillRect(13 + legOffset, 14, 4, 8);
+        ctx.fillStyle = '#fed7aa';
+        ctx.fillRect(14 + legOffset, 21, 3, 2);
 
-        // Pants
+        // Pants legs
         ctx.fillStyle = '#1e293b';
         ctx.fillRect(12 + legOffset, 24, 4, 5);
         ctx.fillRect(15 - legOffset, 24, 4, 5);
-      } else if (dir === 'right') {
-        // Head side
-        ctx.fillStyle = '#1e1b18';
-        ctx.fillRect(11, 4, 10, 10);
-        ctx.fillStyle = '#fcd34d';
-        ctx.fillRect(15, 7, 7, 7);
-        // Eye
-        ctx.fillStyle = '#1e293b';
-        ctx.fillRect(19, 10, 2, 3);
 
-        // Body
+        // Sneakers
+        ctx.fillStyle = '#f1f5f9';
+        ctx.fillRect(10 + legOffset, 28, 6, 3);
+        ctx.fillRect(14 - legOffset, 28, 5, 3);
+      } else if (dir === 'right') {
+        // Profile head
+        ctx.fillStyle = '#1c1917';
+        ctx.fillRect(11, 3, 10, 11);
+        ctx.fillStyle = '#fed7aa';
+        ctx.fillRect(15, 6, 7, 8);
+        // Eye
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(19, 9, 2, 3);
+
+        // Body profile
         ctx.fillStyle = '#0284c7';
         ctx.fillRect(11, 14, 10, 10);
-        // Arm
+        // Arm swing
         ctx.fillStyle = '#0369a1';
-        ctx.fillRect(15 - legOffset, 15, 4, 8);
+        ctx.fillRect(15 - legOffset, 14, 4, 8);
+        ctx.fillStyle = '#fed7aa';
+        ctx.fillRect(15 - legOffset, 21, 3, 2);
 
-        // Pants
+        // Pants legs
         ctx.fillStyle = '#1e293b';
         ctx.fillRect(13 - legOffset, 24, 4, 5);
         ctx.fillRect(16 + legOffset, 24, 4, 5);
+
+        // Sneakers
+        ctx.fillStyle = '#f1f5f9';
+        ctx.fillRect(16 - legOffset, 28, 6, 3);
+        ctx.fillRect(13 + legOffset, 28, 5, 3);
       }
 
       atlas[dir].push(canvas);
@@ -595,21 +1020,20 @@ const audio = new SoundManager();
 
   /**
  * AYUSHCRAFT — World Map, Zones, Collisions and Interactable Objects
+ * Second-Pass Environmental Composition & Destination Identity
  */
-
-
 
 const MAP_WIDTH = 38;  // in tiles (1216 px)
 const MAP_HEIGHT = 28; // in tiles (896 px)
 
 // Biome / Zone definitions for discovery HUD
 const ZONES = [
-  { id: 'observatory', name: 'The Observatory', x1: 2, y1: 2, x2: 13, y2: 12 },
-  { id: 'workshop', name: 'The AI Workshop', x1: 24, y1: 2, x2: 35, y2: 12 },
-  { id: 'spawn', name: 'Spawn Meadow', x1: 13, y1: 13, x2: 24, y2: 24 },
+  { id: 'observatory', name: 'The Observatory', x1: 2, y1: 2, x2: 13, y2: 11 },
+  { id: 'workshop', name: 'The AI Workshop', x1: 24, y1: 2, x2: 35, y2: 11 },
+  { id: 'spawn', name: 'Spawn Meadow', x1: 14, y1: 12, x2: 24, y2: 23 },
   { id: 'saveroom', name: 'The Save Room', x1: 2, y1: 14, x2: 12, y2: 26 },
   { id: 'redstone', name: 'Redstone Lab', x1: 25, y1: 14, x2: 36, y2: 26 },
-  { id: 'portal', name: 'The Exit Portal', x1: 14, y1: 1, x2: 23, y2: 7 }
+  { id: 'portal', name: 'The Nether Gate', x1: 14, y1: 1, x2: 23, y2: 7 }
 ];
 
 function getZoneAt(tileX, tileY) {
@@ -618,140 +1042,208 @@ function getZoneAt(tileX, tileY) {
       return z.name;
     }
   }
-  return 'Overworld';
+  return 'The Overworld';
 }
 
-// Generate the 2D tile matrix & collision grid
+// Generate the 2D tile matrix & collision grid with organic composition
 function buildWorldData() {
   const baseMap = [];
   const collisionMap = [];
+
+  // Deterministic pseudorandom generator for natural terrain variation
+  let seed = 42;
+  function random() {
+    seed = (seed * 9301 + 49297) % 233280;
+    return seed / 233280;
+  }
 
   for (let y = 0; y < MAP_HEIGHT; y++) {
     baseMap[y] = [];
     collisionMap[y] = [];
     for (let x = 0; x < MAP_WIDTH; x++) {
-      // Default: Grassy meadow
-      baseMap[y][x] = 'GRASS';
+      // Natural grass variation
+      const r = random();
+      if (r < 0.62) {
+        baseMap[y][x] = 'GRASS';
+      } else if (r < 0.74) {
+        baseMap[y][x] = 'GRASS_FLOWERS';
+      } else if (r < 0.83) {
+        baseMap[y][x] = 'GRASS_FLOWERS_WHITE';
+      } else if (r < 0.92) {
+        baseMap[y][x] = 'GRASS_TALL';
+      } else {
+        baseMap[y][x] = 'GRASS_PEBBLE';
+      }
       collisionMap[y][x] = false;
 
-      // Outer boundary fence/trees
+      // Outer world boundary walls (Stone Brick with moss)
       if (x === 0 || x === MAP_WIDTH - 1 || y === 0 || y === MAP_HEIGHT - 1) {
-        baseMap[y][x] = 'COBBLESTONE';
+        baseMap[y][x] = (x + y) % 3 === 0 ? 'COBBLE_MOSSY' : 'STONE_BRICK';
         collisionMap[y][x] = true;
       }
     }
   }
 
-  // --- 1. ROADS & PATHS (Dirt and Cobblestone crossroads) ---
-  // Central North-South highway (connecting Spawn to Portal)
-  for (let y = 6; y <= 22; y++) {
-    baseMap[y][18] = 'DIRT_PATH';
-    baseMap[y][19] = 'DIRT_PATH';
-  }
-  // Central East-West highway (connecting Save Room, Spawn, and Redstone Lab)
-  for (let x = 8; x <= 29; x++) {
-    baseMap[18][x] = 'DIRT_PATH';
-    baseMap[19][x] = 'DIRT_PATH';
-  }
-  // Northwest road to Observatory
-  for (let x = 10; x <= 18; x++) {
-    baseMap[10][x] = 'COBBLESTONE';
-  }
-  for (let y = 10; y <= 18; y++) {
-    baseMap[y][18] = 'COBBLESTONE';
-  }
-  // Northeast road to Workshop
-  for (let x = 19; x <= 27; x++) {
-    baseMap[10][x] = 'COBBLESTONE';
-  }
-
-  // --- 2. WATER STREAM / RIVER ---
-  // A scenic winding blue river on the western meadow
-  const riverCoords = [
-    [13, 10], [13, 11], [13, 12], [14, 12], [14, 13], [14, 14],
-    [15, 14], [15, 15], [15, 16], [16, 16], [16, 17], [16, 18],
-    [17, 18], [17, 19], [17, 20], [17, 21], [18, 21], [18, 22]
+  // --- 1. NATURAL WINDING RIVER & SHORE ---
+  // A scenic winding river separating the western sanctuaries from spawn
+  const riverTiles = [
+    // North source
+    [13, 8], [13, 9], [14, 9],
+    // Mid reach
+    [14, 10], [14, 11], [13, 11], [13, 12], [13, 13],
+    [12, 13], [12, 14], [12, 15], [13, 15], [13, 16],
+    [13, 17], // Approaching bridge
+    [13, 18], [13, 19], // Bridge crossing zone
+    [13, 20], [14, 20], [14, 21], [14, 22], [14, 23],
+    [15, 23], [15, 24], [15, 25], [16, 25], [16, 26]
   ];
-  riverCoords.forEach(([rx, ry]) => {
-    // Only place water if not on main road
-    if (rx !== 18 && rx !== 19) {
+
+  riverTiles.forEach(([rx, ry]) => {
+    // Leave room for the bridge at y: 18 and 19
+    if (ry === 18 || ry === 19) {
+      baseMap[ry][rx] = 'WOOD_BRIDGE';
+      collisionMap[ry][rx] = false; // Walkable bridge!
+    } else {
       baseMap[ry][rx] = 'WATER';
-      collisionMap[ry][rx] = true;
+      collisionMap[ry][rx] = true; // River is impassable without bridge
     }
   });
 
+  // Shoreline sand/grass edges alongside the river
+  riverTiles.forEach(([rx, ry]) => {
+    if (rx > 1 && baseMap[ry][rx - 1] === 'GRASS' && random() > 0.4) {
+      baseMap[ry][rx - 1] = 'GRASS_MOSSY';
+    }
+    if (rx < MAP_WIDTH - 2 && baseMap[ry][rx + 1] === 'GRASS' && random() > 0.4) {
+      baseMap[ry][rx + 1] = 'GRASS_MOSSY';
+    }
+  });
+
+  // --- 2. HIGHWAYS, COBBLE PATHS & CROSSROADS ---
+  // Central North-South highway (connecting Nether Gate to Spawn)
+  for (let y = 6; y <= 21; y++) {
+    baseMap[y][18] = 'DIRT_PATH';
+    baseMap[y][19] = 'DIRT_PATH';
+  }
+
+  // East-West central trail crossing the bridge
+  for (let x = 8; x <= 28; x++) {
+    if (x === 13) continue; // Kept as WOOD_BRIDGE
+    baseMap[18][x] = 'DIRT_PATH';
+    baseMap[19][x] = 'DIRT_PATH';
+  }
+
+  // Spawn plaza cobblestone compass inlay
+  for (let py = 16; py <= 20; py++) {
+    for (let px = 17; px <= 20; px++) {
+      baseMap[py][px] = 'COBBLESTONE';
+    }
+  }
+
+  // NW path branch towards Observatory
+  for (let y = 10; y <= 16; y++) {
+    baseMap[y][15] = 'COBBLESTONE';
+  }
+  for (let x = 11; x <= 15; x++) {
+    baseMap[10][x] = 'COBBLESTONE';
+  }
+
+  // NE path branch towards AI Workshop
+  for (let y = 10; y <= 16; y++) {
+    baseMap[y][22] = 'COBBLESTONE';
+  }
+  for (let x = 22; x <= 26; x++) {
+    baseMap[10][x] = 'COBBLESTONE';
+  }
+
   // --- 3. THE OBSERVATORY (NW: x: 3 to 11, y: 3 to 9) ---
-  // Floor and walls
+  // Architecture: Stately stone walls, celestial slate floor with brass inlay
   for (let oy = 3; oy <= 9; oy++) {
     for (let ox = 3; ox <= 11; ox++) {
       if (oy === 3 || oy === 9 || ox === 3 || ox === 11) {
-        baseMap[oy][ox] = 'STONE_BRICK';
+        baseMap[oy][ox] = (ox + oy) % 2 === 0 ? 'STONE_BRICK' : 'COBBLE_MOSSY';
         collisionMap[oy][ox] = true;
       } else {
-        baseMap[oy][ox] = 'COBBLESTONE';
+        baseMap[oy][ox] = 'OBSERVATORY_FLOOR';
       }
     }
   }
-  // Observatory Doorway (East entrance)
+  // Observatory doorway on East wall (facing the road)
   baseMap[6][11] = 'COBBLESTONE';
   collisionMap[6][11] = false;
   baseMap[7][11] = 'COBBLESTONE';
   collisionMap[7][11] = false;
 
   // --- 4. THE AI WORKSHOP (NE: x: 26 to 34, y: 3 to 9) ---
+  // Architecture: Warm timber log lodge with parquet parquet floor
   for (let wy = 3; wy <= 9; wy++) {
     for (let wx = 26; wx <= 34; wx++) {
       if (wy === 3 || wy === 9 || wx === 26 || wx === 34) {
         baseMap[wy][wx] = 'WOOD_PLANKS';
         collisionMap[wy][wx] = true;
       } else {
-        baseMap[wy][wx] = 'WOOD_PLANKS';
+        baseMap[wy][wx] = 'WORKSHOP_FLOOR';
       }
     }
   }
-  // Workshop Doorway (West entrance)
+  // Workshop doorway on West wall (facing the road)
   baseMap[6][26] = 'WOOD_PLANKS';
   collisionMap[6][26] = false;
   baseMap[7][26] = 'WOOD_PLANKS';
   collisionMap[7][26] = false;
 
-  // --- 5. THE SAVE ROOM (SW: x: 3 to 11, y: 16 to 22) ---
-  for (let sy = 16; sy <= 22; sy++) {
+  // --- 5. THE SAVE ROOM (SW: x: 3 to 11, y: 16 to 23) ---
+  // Architecture: Weathered stone hearth sanctuary with royal velvet runner rug
+  for (let sy = 16; sy <= 23; sy++) {
     for (let sx = 3; sx <= 11; sx++) {
-      if (sy === 16 || sy === 22 || sx === 3 || sx === 11) {
+      if (sy === 16 || sy === 23 || sx === 3 || sx === 11) {
         baseMap[sy][sx] = 'COBBLESTONE';
         collisionMap[sy][sx] = true;
       } else {
-        baseMap[sy][sx] = 'WOOD_PLANKS';
+        // Velvet runner rug down the center of the room
+        if (sx >= 6 && sx <= 8 && sy >= 18 && sy <= 21) {
+          baseMap[sy][sx] = 'SAVEROOM_RUG';
+        } else {
+          baseMap[sy][sx] = 'WOOD_PLANKS';
+        }
       }
     }
   }
-  // Save Room Doorway (East entrance)
-  baseMap[19][11] = 'WOOD_PLANKS';
+  // Save Room doorway on East wall
+  baseMap[19][11] = 'COBBLESTONE';
   collisionMap[19][11] = false;
+  baseMap[20][11] = 'COBBLESTONE';
+  collisionMap[20][11] = false;
 
   // --- 6. REDSTONE LAB (SE: x: 26 to 34, y: 16 to 23) ---
+  // Architecture: Dark basalt masonry with conduit channels and logic circuitry
   for (let ry = 16; ry <= 23; ry++) {
     for (let rx = 26; rx <= 34; rx++) {
       if (ry === 16 || ry === 23 || rx === 26 || rx === 34) {
         baseMap[ry][rx] = 'STONE_BRICK';
         collisionMap[ry][rx] = true;
       } else {
-        baseMap[ry][rx] = 'STONE_BRICK';
+        baseMap[ry][rx] = 'LAB_FLOOR';
       }
     }
   }
-  // Redstone Lab Doorway (West entrance)
+  // Redstone Lab doorway on West wall
   baseMap[19][26] = 'STONE_BRICK';
   collisionMap[19][26] = false;
+  baseMap[20][26] = 'STONE_BRICK';
+  collisionMap[20][26] = false;
 
-  // --- 7. EXIT PORTAL PLAZA (North: x: 16 to 21, y: 2 to 5) ---
+  // Redstone floor wire connecting core (30,18) to lamp (30,21)
+  baseMap[19][30] = 'REDSTONE_WIRE_OFF';
+  baseMap[20][30] = 'REDSTONE_WIRE_OFF';
+
+  // --- 7. THE NETHER GATE / EXIT PORTAL (North: x: 16 to 21, y: 2 to 5) ---
   for (let py = 2; py <= 5; py++) {
     for (let px = 16; px <= 21; px++) {
       baseMap[py][px] = 'COBBLESTONE';
     }
   }
-  // Portal structure (Obsidian arch)
+  // Imposing Obsidian Portal Arch
   baseMap[2][18] = 'OBSIDIAN';
   baseMap[2][19] = 'OBSIDIAN';
   baseMap[3][17] = 'OBSIDIAN';
@@ -762,6 +1254,7 @@ function buildWorldData() {
   baseMap[3][19] = 'PORTAL';
   baseMap[4][18] = 'PORTAL';
   baseMap[4][19] = 'PORTAL';
+
   collisionMap[2][18] = true;
   collisionMap[2][19] = true;
   collisionMap[3][17] = true;
@@ -772,29 +1265,68 @@ function buildWorldData() {
   return { baseMap, collisionMap };
 }
 
-// Interactive Objects List
+// Interactive Objects List & Rich Metadata
 function getInteractableObjects() {
   return [
-    // 1. SPAWN NOTICE BOARD
+    // 1. SPAWN NOTICE BOARD (Directional Compass & Orientation)
     {
       id: 'spawn_sign',
-      tileX: 18,
-      tileY: 17,
+      tileX: 19,
+      tileY: 16,
       name: 'Spawn Notice Board',
       tileType: 'SIGN',
       isSolid: true,
-      prompt: '[E] Read Sign',
+      prompt: '[E] Read Explorer Guide',
       type: 'sign',
       data: {
-        title: 'Welcome to AyushCraft',
-        text: '“Hey, I’m Ayush. I build software, explore machine learning, tune Linux systems, and occasionally get lost in a good game.”\n\nWalk North to discover AirLytics NCR at the Observatory, visit the AI Workshop to the East, explore the Redstone Lab, or step through the Portal for contact coordinates!'
+        title: '🧭 Welcome to AYUSHCRAFT',
+        text: '“Hey, I’m Ayush. I build software, explore machine learning, tune Linux systems, and occasionally get lost in a good game.”\n\n' +
+              '🗺️ Compass Directions from Spawn:\n' +
+              '• North ⬆️ : The Nether Gate (Exit & Contact Coordinates)\n' +
+              '• North-West ↖️ : The Observatory (AirLytics NCR Telemetry)\n' +
+              '• North-East ↗️ : The AI Workshop (Autonomous Assistant & Code)\n' +
+              '• South-West ↙️ : The Save Room (Hollow Knight Nail Relic & Gaming Lore)\n' +
+              '• South-East ↘️ : The Redstone Lab (Verified Tech Arsenal & Logic Circuit)\n\n' +
+              'Press [E] or tap any landmark to inspect it!'
+      }
+    },
+
+    // 1B. SPAWN REST BENCH
+    {
+      id: 'spawn_bench',
+      tileX: 17,
+      tileY: 17,
+      name: 'Meadow Rest Bench',
+      tileType: 'BENCH',
+      isSolid: true,
+      prompt: '[E] Sit & Rest',
+      type: 'sign',
+      data: {
+        title: 'Meadow Rest Bench',
+        text: 'A quiet carved oak bench beneath the open sky.\n\nTake your time exploring the map at your own pace, or press [J] at any time to open your Explorer’s Journal.'
+      }
+    },
+
+    // 1C. SPAWN FLOWER BOX
+    {
+      id: 'spawn_flowers',
+      tileX: 20,
+      tileY: 17,
+      name: 'Blossoming Planter Box',
+      tileType: 'FLOWER_BOX',
+      isSolid: true,
+      prompt: '[E] Admire Blossoms',
+      type: 'sign',
+      data: {
+        title: 'Meadow Flower Box',
+        text: 'Handcrafted planter box filled with vibrant red poppies and mountain buttercups. The world is built with care, pixel by pixel.'
       }
     },
 
     // 2. OBSERVATORY TERMINAL (AirLytics NCR)
     {
       id: 'observatory_terminal',
-      tileX: 7,
+      tileX: 8,
       tileY: 6,
       name: 'AirLytics NCR Telemetry Terminal',
       tileType: 'TELESCOPE',
@@ -805,17 +1337,23 @@ function getInteractableObjects() {
         title: '🛰️ AirLytics NCR — Environmental Intelligence',
         subtitle: 'Smart India Hackathon (SIH26082) · Ministry of Earth Sciences / NCMRWF',
         badges: ['72-Hour AQI Forecast', '68 CPCB Stations Mesh', '61.12 µg/m³ RMSE Baseline', 'API-Grounded AI Assistant'],
-        description: 'A 72-hour air quality forecast engine for Delhi NCR that proves where every figure came from. Designed with absolute data provenance—traceable to individual monitoring stations, valid hourly observations, and CPCB arithmetic criteria.',
+        stats: [
+          { value: '68 Stations', label: 'CPCB Mesh Coverage' },
+          { value: '72 Hours', label: 'Predictive Horizon' },
+          { value: '61.12 µg/m³', label: 'RMSE Baseline' },
+          { value: '8 Endpoints', label: 'Grounded Assistant' }
+        ],
+        description: 'A 72-hour air quality forecast engine for Delhi NCR designed with absolute data provenance—traceable to individual monitoring stations, valid hourly observations, and CPCB arithmetic criteria.',
         highlights: [
           'Live 68-station CPCB mesh adhering to strict 2014 rolling-window rules without silent neighbour interpolation.',
           'Validated ML blend baseline at 61.12 µg/m³ RMSE (27% better than raw CAMS over 4M+ observations across an annual cycle).',
-          'NASA VIIRS satellite fire corridor tracking with transport alignment against wind vector fields.',
-          'API-grounded assistant bounded to 8 read-only system endpoints with traceable tool calls and receipts.'
+          'NASA VIIRS satellite fire corridor tracking with transport alignment against meteorological wind vector fields.',
+          'API-grounded assistant strictly bounded to 8 read-only system endpoints with traceable tool calls and receipts.'
         ],
         stack: ['Python', 'FastAPI', 'TypeScript', 'React 19', 'Vite', 'Open-Meteo', 'NASA FIRMS'],
         links: [
-          { text: 'Live Platform ↗', url: 'https://airlytics-ncr.vercel.app/', primary: true },
-          { text: 'GitHub Repository ↗', url: 'https://github.com/Ayush20-lex/airlytics-ncr', primary: false }
+          { text: '🌐 Launch Live Platform ↗', url: 'https://airlytics-ncr.vercel.app/', primary: true },
+          { text: '📦 GitHub Repository ↗', url: 'https://github.com/Ayush20-lex/airlytics-ncr', primary: false }
         ]
       }
     },
@@ -826,13 +1364,13 @@ function getInteractableObjects() {
       tileX: 5,
       tileY: 4,
       name: 'Meteorological Weather Sensor',
-      tileType: 'SIGN',
+      tileType: 'WEATHER_VANE',
       isSolid: true,
       prompt: '[E] Check Atmospheric Readings',
       type: 'sign',
       data: {
         title: 'Atmospheric Sensor Array',
-        text: 'Telemetry Station Active.\nMonitoring wind vector transport, surface boundary layer inversions, and particulate matter diffusion across Delhi NCR.'
+        text: 'Telemetry Sensor Active.\n\nMonitoring boundary layer height, wind vector transport, and surface thermal inversions across Delhi-NCR. Data streams feed directly into the predictive forecasting pipeline.'
       }
     },
 
@@ -850,6 +1388,12 @@ function getInteractableObjects() {
         title: '⚡ Autonomous Developer Assistant',
         subtitle: 'Personal Software Engineering & Contextual Agent System',
         badges: ['Personal AI Project', 'Terminal-First Tooling', 'Context Architecture'],
+        stats: [
+          { value: 'Terminal-First', label: 'Developer Interface' },
+          { value: 'Local Only', label: 'Zero Telemetry Leak' },
+          { value: 'Permissioned', label: 'Human-in-the-Loop' },
+          { value: 'AsyncIO', label: 'Non-Blocking Engine' }
+        ],
         description: 'A personal software assistant designed to orchestrate local development workflows, manage project context, and automate terminal-centric tasks.',
         highlights: [
           'Grounded execution contract: strictly limits tool execution to verified local workspace boundaries.',
@@ -873,7 +1417,7 @@ function getInteractableObjects() {
       type: 'sign',
       data: {
         title: 'Engineering Library',
-        text: 'Shelves filled with volumes on Distributed Systems, Statistical Machine Learning, Linux Kernel Concepts, and Data Pipeline Architectures.'
+        text: 'Shelves filled with volumes on Distributed Systems, Statistical Machine Learning, Linux Kernel Internals, and Data Pipeline Architectures.'
       }
     },
 
@@ -891,6 +1435,12 @@ function getInteractableObjects() {
         title: '🛠️ Technical Arsenal & Environments',
         subtitle: 'Verified Technologies Supported by Real Projects & Academic Engineering',
         badges: ['Core Languages', 'Data & Backend', 'Systems & Tools'],
+        stats: [
+          { value: 'Python & TS', label: 'Primary Languages' },
+          { value: 'FastAPI', label: 'High-Throughput API' },
+          { value: 'React 19', label: 'Modern Frontend' },
+          { value: 'Linux & Git', label: 'Daily Workflows' }
+        ],
         description: 'A disciplined, verified toolkit without inflated claims. Only technologies proven by active codebases and systems are featured.',
         highlights: [
           'Core Languages: Python (primary backend/ML), TypeScript (modern web), Java, Bash / Shell, SQL.',
@@ -899,16 +1449,16 @@ function getInteractableObjects() {
         ],
         stack: ['Python', 'TypeScript', 'Java', 'Bash', 'SQL', 'FastAPI', 'React 19', 'Linux', 'Git'],
         links: [
-          { text: 'View GitHub Repositories ↗', url: 'https://github.com/Ayush20-lex?tab=repositories', primary: true }
+          { text: '🐙 View GitHub Repositories ↗', url: 'https://github.com/Ayush20-lex?tab=repositories', primary: true }
         ]
       }
     },
 
-    // 7. REDSTONE LAMP (Interactive Toggle)
+    // 7. REDSTONE LAMP (Interactive Circuit Toggle)
     {
       id: 'redstone_lamp_1',
       tileX: 30,
-      tileY: 20,
+      tileY: 21,
       name: 'Logic Gate Lamp',
       tileType: 'LAMP_OFF',
       isSolid: true,
@@ -921,7 +1471,7 @@ function getInteractableObjects() {
     // 8. THE SAVE ROOM — HOLLOW KNIGHT NAIL RELIC
     {
       id: 'save_room_relic',
-      tileX: 7,
+      tileX: 8,
       tileY: 19,
       name: 'Ancient Nail Relic',
       tileType: 'NAIL_RELIC',
@@ -932,7 +1482,13 @@ function getInteractableObjects() {
         title: '🗡️ The Save Room — Gaming & Personal Lore',
         subtitle: 'Where exploration, challenge, and discipline meet outside the terminal',
         badges: ['Metroidvanias', 'Anime & Novels', 'Calisthenics'],
-        description: 'A peaceful rest stop inspired by the atmosphere and discovery of Metroidvania classics.',
+        stats: [
+          { value: 'Hollow Knight', label: 'Favorite Mastery' },
+          { value: 'Metroidvanias', label: 'Level Design Passion' },
+          { value: 'Calisthenics', label: 'Bodyweight Discipline' },
+          { value: 'Light Novels', label: 'Expansive Lore' }
+        ],
+        description: 'A peaceful rest sanctuary inspired by the atmosphere, bench checkpoints, and discovery of Metroidvania classics.',
         highlights: [
           'Metroidvania Mastery: Captivated by non-linear world design, environmental lore, and precision combat in Hollow Knight, Castlevania, and Ori.',
           'Light Novels & Manhwa: Passionate about expansive worldbuilding, strategic tension, and progression stories.',
@@ -943,20 +1499,58 @@ function getInteractableObjects() {
       }
     },
 
-    // 9. EXIT PORTAL (Connect & Warp Coordinates)
+    // 8B. SAVE ROOM BENCH
+    {
+      id: 'save_room_bench',
+      tileX: 6,
+      tileY: 18,
+      name: 'Hallownest Rest Bench',
+      tileType: 'BENCH',
+      isSolid: true,
+      prompt: '[E] Rest on the Bench',
+      type: 'sign',
+      data: {
+        title: 'Save Room Rest Bench',
+        text: 'A quiet bench carved from dark stone, lit by the warm amber glow of a lantern.\n\nRest here to catch your breath. The world around you will stay peaceful and still.'
+      }
+    },
+
+    // 8C. SAVE ROOM LANTERN
+    {
+      id: 'save_room_lantern',
+      tileX: 10,
+      tileY: 18,
+      name: 'Amber Glow Lantern',
+      tileType: 'LANTERN',
+      isSolid: true,
+      prompt: '[E] Warm Hands by Lantern',
+      type: 'sign',
+      data: {
+        title: 'Luminescent Lantern',
+        text: 'An iron hanging lantern flickering with a gentle, warm amber light. It casts peaceful dancing shadows across the velvet carpet.'
+      }
+    },
+
+    // 9. EXIT PORTAL (Nether Gate Coordinates)
     {
       id: 'exit_portal',
       tileX: 18,
       tileY: 3,
-      name: 'Inter-Dimensional Exit Portal',
+      name: 'Inter-Dimensional Nether Gate',
       tileType: 'PORTAL',
       isSolid: true,
-      prompt: '[E] Step Through Exit Portal',
+      prompt: '[E] Step Through Nether Gate',
       type: 'modal',
       data: {
-        title: '🌌 Exit Portal — Terminal Coordinates',
+        title: '🌌 The Nether Gate — Warp Coordinates',
         subtitle: 'Connect with Ayush Kumar across cyberspace',
         badges: ['Developer Contact', 'Open to Collaborations', 'Internships & Projects'],
+        stats: [
+          { value: 'Ayush20-lex', label: 'GitHub Identity' },
+          { value: 'Open', label: 'Collaborations' },
+          { value: 'Engineering', label: 'Academic Focus' },
+          { value: 'India', label: 'Timezone (UTC+5:30)' }
+        ],
         description: 'Thank you for exploring AyushCraft! Whether you are interested in environmental intelligence, machine learning systems, or want to discuss gaming and tech, my portal coordinates are open.',
         highlights: [
           'GitHub: Explore public codebases and open-source contributions.',
@@ -965,9 +1559,9 @@ function getInteractableObjects() {
         ],
         stack: ['GitHub', 'LinkedIn', 'Gmail'],
         links: [
-          { text: 'GitHub Profile ↗', url: 'https://github.com/Ayush20-lex', primary: true },
-          { text: 'LinkedIn Profile ↗', url: 'https://www.linkedin.com/in/ayush-kumar-942081322/', primary: true },
-          { text: 'Send Email ↗', url: 'mailto:ayushkumargbp@gmail.com', primary: false }
+          { text: '🐙 GitHub Profile ↗', url: 'https://github.com/Ayush20-lex', primary: true },
+          { text: '💼 LinkedIn Profile ↗', url: 'https://www.linkedin.com/in/ayush-kumar-942081322/', primary: true },
+          { text: '✉️ Send Email ↗', url: 'mailto:ayushkumargbp@gmail.com', primary: false }
         ]
       }
     }
@@ -976,6 +1570,7 @@ function getInteractableObjects() {
 
   /**
  * AYUSHCRAFT — Player Entity & Controller
+ * Second-Pass Animation & Collision Refinement
  */
 
 
@@ -993,6 +1588,7 @@ class Player {
     this.isMoving = false;
     this.animTimer = 0;
     this.animFrame = 0;
+    this.idleTimer = 0;
     this.stepAudioTimer = 0;
 
     // Click/tap to move destination
@@ -1022,7 +1618,7 @@ class Player {
         dx = diffX / dist;
         dy = diffY / dist;
       } else {
-        this.targetPos = null; // Reached target
+        this.targetPos = null; // Reached target destination
       }
     } else if (dx !== 0 || dy !== 0) {
       // Manual input cancels pathing
@@ -1049,6 +1645,7 @@ class Player {
 
     // 3. Collision Detection & Position Update
     if (this.isMoving) {
+      this.idleTimer = 0;
       const moveX = dx * this.speed * dt;
       const moveY = dy * this.speed * dt;
 
@@ -1062,14 +1659,14 @@ class Player {
         this.y += moveY;
       }
 
-      // Animation Cycle
+      // Animation Cycle for walk
       this.animTimer += dt;
-      if (this.animTimer > 0.14) {
+      if (this.animTimer > 0.13) {
         this.animTimer = 0;
         this.animFrame = (this.animFrame + 1) % 4; // 0, 1, 2, 3
       }
 
-      // Step Audio Chime
+      // Footstep audio chime
       this.stepAudioTimer += dt;
       if (this.stepAudioTimer > 0.32) {
         this.stepAudioTimer = 0;
@@ -1078,9 +1675,10 @@ class Player {
     } else {
       this.animFrame = 0;
       this.animTimer = 0;
+      this.idleTimer += dt;
     }
 
-    // 4. Check Proximity to Interactable Objects (within ~40 pixels)
+    // 4. Check Proximity to Interactable Objects (within ~46 pixels)
     this.updateProximity(objects);
   }
 
@@ -1101,7 +1699,7 @@ class Player {
     for (let ty = minTileY; ty <= maxTileY; ty++) {
       for (let tx = minTileX; tx <= maxTileX; tx++) {
         if (!collisionMap[ty] || collisionMap[ty][tx] === true) {
-          return true; // Wall or map edge
+          return true; // Impassable wall, water, or map edge
         }
       }
     }
@@ -1144,24 +1742,33 @@ class Player {
     this.nearbyObject = closest;
   }
 
-  // Render player sprite from the atlas
+  // Render player sprite with walk cycle and idle breathing bob
   render(ctx, atlas) {
     // Convert 4-frame cycle (0, 1, 2, 3) to 3 sprite frames (0, 1, 0, 2)
     let frameIdx = 0;
+    let yOffset = 0;
+
     if (this.isMoving) {
       if (this.animFrame === 1) frameIdx = 1;
       else if (this.animFrame === 3) frameIdx = 2;
+    } else {
+      // Subtle idle breathing pulse: 1 pixel bob every ~2.2s
+      const cycle = Math.sin(this.idleTimer * 2.8);
+      if (cycle > 0.8) {
+        yOffset = -1;
+      }
     }
 
     const sprite = atlas[this.direction][frameIdx];
     if (sprite) {
-      ctx.drawImage(sprite, Math.round(this.x), Math.round(this.y));
+      ctx.drawImage(sprite, Math.round(this.x), Math.round(this.y + yOffset));
     }
   }
 }
 
   /**
  * AYUSHCRAFT — UI System, Dialogue Windows & Accessible Journal
+ * Native Pixel-Art Crafting Interface & Scannable Modals
  */
 
 
@@ -1214,6 +1821,7 @@ class UIManager {
       this.soundToggleBtn.addEventListener('click', () => {
         const isMuted = audio.toggleMute();
         this.soundToggleBtn.innerHTML = isMuted ? '🔇 Sound: Off' : '🔊 Sound: On';
+        this.soundToggleBtn.setAttribute('title', isMuted ? 'Enable sound effects' : 'Disable sound effects');
       });
     }
 
@@ -1221,13 +1829,6 @@ class UIManager {
     if (this.journalBtn) {
       this.journalBtn.addEventListener('click', () => {
         this.openJournal();
-      });
-    }
-
-    // Interact prompt click
-    if (this.interactPrompt) {
-      this.interactPrompt.addEventListener('click', () => {
-        this.game.interact();
       });
     }
 
@@ -1266,73 +1867,139 @@ class UIManager {
     }
   }
 
-  // Open Notice Sign Dialogue
+  // Priority 4: Redesigned Notice Sign Dialogue (Native Wood/Parchment Plaque)
   openSign(title, text) {
     audio.playInteract();
     this.activeModal = 'sign';
 
-    this.modalTitle.innerHTML = `📜 ${title}`;
+    this.modalTitle.innerHTML = title;
+
+    // Format text lines into structured paragraphs or list items
+    const lines = text.split('\n');
+    let formattedHtml = '';
+    let inList = false;
+
+    lines.forEach(line => {
+      const trimmed = line.trim();
+      if (!trimmed) {
+        if (inList) {
+          formattedHtml += '</ul>';
+          inList = false;
+        }
+        return;
+      }
+
+      if (trimmed.startsWith('•') || trimmed.startsWith('-')) {
+        if (!inList) {
+          formattedHtml += '<ul class="dialogue-list">';
+          inList = true;
+        }
+        formattedHtml += `<li>${trimmed.replace(/^[•\-]\s*/, '')}</li>`;
+      } else {
+        if (inList) {
+          formattedHtml += '</ul>';
+          inList = false;
+        }
+        formattedHtml += `<p class="dialogue-paragraph">${trimmed}</p>`;
+      }
+    });
+    if (inList) formattedHtml += '</ul>';
+
     this.modalBody.innerHTML = `
-      <div class="dialogue-box">
-        <p class="dialogue-text">${text.replace(/\n/g, '<br/>')}</p>
-        <div style="text-align: right; margin-top: 10px;">
-          <button class="pixel-btn" id="dialogue-ok-btn">Understood [Esc]</button>
+      <div class="sign-dialogue-content">
+        ${formattedHtml}
+        <div class="dialogue-action-row">
+          <button class="pixel-btn primary" id="dialogue-ok-btn">Understood [Esc]</button>
         </div>
       </div>
     `;
 
     this.modalBackdrop.classList.add('open');
+    document.getElementById('dialogue-ok-btn')?.focus();
     document.getElementById('dialogue-ok-btn')?.addEventListener('click', () => this.closeModal());
   }
 
-  // Open Rich Modal (AirLytics, AI Assistant, Redstone, Relic, Portal)
+  // Priority 4: Redesigned Scannable Modal (AirLytics, AI Assistant, Redstone, Relic, Portal)
   openModal(data) {
     audio.playInteract();
     this.activeModal = 'info';
 
     this.modalTitle.innerHTML = data.title || 'Information';
 
+    // Stats Metric Grid (AirLytics & Key Projects)
+    let statsHtml = '';
+    if (data.stats && data.stats.length > 0) {
+      statsHtml = `<div class="panel-stats-grid">` +
+        data.stats.map(s => `
+          <div class="stat-card">
+            <div class="stat-value">${s.value}</div>
+            <div class="stat-label">${s.label}</div>
+          </div>
+        `).join('') +
+        `</div>`;
+    }
+
+    // Category Badges (Shown when no stats grid is present to avoid redundancy)
     let badgesHtml = '';
-    if (data.badges) {
+    if (data.badges && (!data.stats || data.stats.length === 0)) {
       badgesHtml = `<div class="panel-badge-row">` +
         data.badges.map(b => `<span class="meta-chip highlight">${b}</span>`).join('') +
         `</div>`;
     }
 
+    // Key Architectural Highlights
     let highlightsHtml = '';
     if (data.highlights) {
-      highlightsHtml = `<h3>Key Architectural Highlights</h3><ul>` +
-        data.highlights.map(h => `<li style="margin-left: 18px; margin-bottom: 6px;">${h}</li>`).join('') +
-        `</ul>`;
+      highlightsHtml = `
+        <div class="panel-section">
+          <h3 class="section-heading">Key Architectural Highlights</h3>
+          <ul class="highlights-list">
+            ${data.highlights.map(h => `<li><span class="bullet-gem">◆</span> <div class="highlight-text">${h}</div></li>`).join('')}
+          </ul>
+        </div>
+      `;
     }
 
+    // Verified Stack
     let stackHtml = '';
     if (data.stack) {
-      stackHtml = `<div style="margin-top: 12px; font-family: var(--font-mono); font-size: 12px; color: #57412e;">
-        <strong>Verified Stack:</strong> ${data.stack.join(' · ')}
-      </div>`;
+      stackHtml = `
+        <div class="stack-row">
+          <span class="stack-label">Verified Stack:</span>
+          <div class="stack-chips">
+            ${data.stack.map(tech => `<span class="stack-chip">${tech}</span>`).join('')}
+          </div>
+        </div>
+      `;
     }
 
+    // Action Links
     let linksHtml = '';
     if (data.links && data.links.length > 0) {
       linksHtml = `<div class="link-buttons">` +
-        data.links.map(l => `<a href="${l.url}" target="_blank" rel="noopener noreferrer" class="ext-btn ${l.primary ? '' : 'secondary'}">${l.text}</a>`).join('') +
+        data.links.map(l => `
+          <a href="${l.url}" target="_blank" rel="noopener noreferrer" class="ext-btn ${l.primary ? 'primary' : 'secondary'}">
+            ${l.text}
+          </a>
+        `).join('') +
         `</div>`;
     }
 
     this.modalBody.innerHTML = `
-      ${data.subtitle ? `<p style="font-family: var(--font-mono); font-size: 12px; color: #78350f; font-weight: 700; margin-bottom: 4px;">${data.subtitle}</p>` : ''}
+      ${data.subtitle ? `<div class="panel-subtitle">${data.subtitle}</div>` : ''}
       ${badgesHtml}
-      <p style="font-size: 14.5px; line-height: 1.6; margin-top: 8px;">${data.description}</p>
+      ${statsHtml}
+      <p class="panel-description">${data.description}</p>
       ${highlightsHtml}
       ${stackHtml}
       ${linksHtml}
     `;
 
     this.modalBackdrop.classList.add('open');
+    this.modalCloseBtn?.focus();
   }
 
-  // Open Accessible Explorer's Journal
+  // Priority 4: Redesigned Accessible Explorer's Journal & Fast Travel
   openJournal() {
     audio.playInteract();
     this.activeModal = 'journal';
@@ -1349,10 +2016,11 @@ class UIManager {
         <button class="journal-tab" data-tab="tab-contact">Contact & Warp</button>
       </div>
 
-      <div id="journal-tab-content" style="padding-top: 14px;">
+      <div id="journal-tab-content" class="journal-tab-pane">
         <!-- Default: Overview -->
         <p><strong>Ayush Kumar</strong> — Computer Science & Engineering undergraduate based in India.</p>
-        <p>I build data-driven software, environmental intelligence systems, and developer tooling. My focus is mathematical and provenance-driven code: creating systems where every prediction, forecast, and output can be verified back to valid measurements.</p>
+        <p>I build data-driven software, environmental intelligence systems, and developer tooling. My focus is mathematical and provenance-driven engineering: creating systems where every prediction, forecast, and output can be verified back to valid measurements.</p>
+        
         <div class="panel-badge-row">
           <span class="meta-chip">Machine Learning</span>
           <span class="meta-chip">Environmental Forecasting</span>
@@ -1360,9 +2028,10 @@ class UIManager {
           <span class="meta-chip">Metroidvania Gamer</span>
           <span class="meta-chip">Calisthenics</span>
         </div>
-        <p style="margin-top: 14px; font-family: var(--font-mono); font-size: 12px; color: #78350f;">
-          <em>Tip: Select any tab above to inspect project details without having to steer the character, or click "Fast Travel" to warp your player directly to that biome!</em>
-        </p>
+
+        <div class="journal-hint-card">
+          💡 <strong>Fast Travel Tip:</strong> Select any tab above to inspect project field notes directly, or click <em>Fast Travel</em> to warp your character to that biome!
+        </div>
       </div>
     `;
 
@@ -1381,62 +2050,98 @@ class UIManager {
           <span class="meta-chip">Metroidvania Gamer</span>
           <span class="meta-chip">Calisthenics</span>
         </div>
+        <div class="journal-hint-card">
+          💡 <strong>Fast Travel Tip:</strong> Select any tab above to inspect project field notes directly, or click <em>Fast Travel</em> to warp your character to that biome!
+        </div>
       `,
       'tab-airlytics': `
-        <h3>🛰️ AirLytics NCR (Smart India Hackathon SIH26082)</h3>
-        <p>A 72-hour air quality forecast for Delhi NCR that proves where every figure came from—traceable to individual monitoring stations and CPCB 2014 arithmetic rules.</p>
-        <ul>
-          <li><strong>68-Station CPCB Mesh:</strong> Strictly audited 24-hour rolling windows with dominant pollutant criteria.</li>
-          <li><strong>61.12 µg/m³ RMSE:</strong> Blend baseline evaluated over 4M+ observations across an annual cycle.</li>
-          <li><strong>API-Grounded AI Assistant:</strong> Strictly bounded to 8 read-only API endpoints with verifiable tool calls.</li>
-          <li><strong>NASA VIIRS:</strong> Fire corridor tracking aligned with meteorological wind fields.</li>
+        <h3 class="section-heading">🛰️ AirLytics NCR (Smart India Hackathon SIH26082)</h3>
+        <p>A 72-hour air quality forecast for Delhi NCR designed with absolute data provenance—traceable to individual monitoring stations and CPCB 2014 arithmetic rules.</p>
+        
+        <div class="panel-stats-grid">
+          <div class="stat-card">
+            <div class="stat-value">68 Stations</div>
+            <div class="stat-label">CPCB Mesh</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">72 Hours</div>
+            <div class="stat-label">Predictive Horizon</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">61.12 µg/m³</div>
+            <div class="stat-label">RMSE Baseline</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">8 Endpoints</div>
+            <div class="stat-label">Grounded Assistant</div>
+          </div>
+        </div>
+
+        <ul class="highlights-list">
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>68-Station CPCB Mesh:</strong> Strictly audited 24-hour rolling windows with dominant pollutant criteria.</div></li>
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>61.12 µg/m³ RMSE:</strong> ML blend baseline evaluated over 4M+ observations across an annual cycle.</div></li>
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>API-Grounded AI Assistant:</strong> Strictly bounded to 8 read-only API endpoints with verifiable tool calls.</div></li>
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>NASA VIIRS:</strong> Fire corridor tracking aligned with meteorological wind vector transport.</div></li>
         </ul>
-        <div class="link-buttons" style="margin-top: 12px;">
-          <a href="https://airlytics-ncr.vercel.app/" target="_blank" class="ext-btn">Live Platform ↗</a>
-          <a href="https://github.com/Ayush20-lex/airlytics-ncr" target="_blank" class="ext-btn secondary">GitHub Repo ↗</a>
+
+        <div class="link-buttons">
+          <a href="https://airlytics-ncr.vercel.app/" target="_blank" class="ext-btn primary">🌐 Live Platform ↗</a>
+          <a href="https://github.com/Ayush20-lex/airlytics-ncr" target="_blank" class="ext-btn secondary">📦 GitHub Repo ↗</a>
           <button class="pixel-btn" id="warp-observatory">⚡ Fast Travel to Observatory</button>
         </div>
       `,
       'tab-ai': `
-        <h3>⚡ Autonomous Developer Assistant</h3>
+        <h3 class="section-heading">⚡ Autonomous Developer Assistant</h3>
         <p>A personal software engineering assistant designed for terminal-first developer environments.</p>
-        <ul>
-          <li>Context-driven task execution and workspace management.</li>
-          <li>Grounded execution boundary preventing unauthorized actions and data leakage.</li>
-          <li>Strict zero-credential leakage architecture.</li>
+        
+        <ul class="highlights-list">
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>Context-Driven Orchestration:</strong> Terminal workflow automation and project indexing.</div></li>
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>Grounded Execution Contract:</strong> Strict workspace boundaries preventing unauthorized operations.</div></li>
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>Confidentiality First:</strong> Zero credential leakage architecture and local-first execution.</div></li>
         </ul>
-        <div class="link-buttons" style="margin-top: 12px;">
+
+        <div class="link-buttons">
           <button class="pixel-btn" id="warp-workshop">⚡ Fast Travel to Workshop</button>
         </div>
       `,
       'tab-stack': `
-        <h3>🛠️ Verified Technical Arsenal</h3>
-        <p>Technologies supported by real codebases and verified engineering work:</p>
-        <p><strong>Languages:</strong> Python, TypeScript, Java, Bash / Shell, SQL</p>
-        <p><strong>Data & AI:</strong> FastAPI, React 19, Pandas, NumPy, Scikit-Learn</p>
-        <p><strong>Systems & Tools:</strong> Linux, Git, GitHub, VS Code, Vite, Vercel</p>
-        <div class="link-buttons" style="margin-top: 12px;">
-          <a href="https://github.com/Ayush20-lex?tab=repositories" target="_blank" class="ext-btn">Browse Repositories ↗</a>
+        <h3 class="section-heading">🛠️ Verified Technical Arsenal</h3>
+        <p>Technologies proven through active codebases, systems programming, and production deployments:</p>
+        
+        <ul class="highlights-list">
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>Languages:</strong> Python (primary backend/ML), TypeScript, Java, Bash / Shell, SQL.</div></li>
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>Frameworks:</strong> FastAPI, React 19, Pandas, NumPy, Scikit-Learn.</div></li>
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>Systems & Tools:</strong> Linux (daily driver), Git, GitHub, VS Code, Vite, Vercel.</div></li>
+        </ul>
+
+        <div class="link-buttons">
+          <a href="https://github.com/Ayush20-lex?tab=repositories" target="_blank" class="ext-btn primary">🐙 View Repositories ↗</a>
           <button class="pixel-btn" id="warp-redstone">⚡ Fast Travel to Redstone Lab</button>
         </div>
       `,
       'tab-lore': `
-        <h3>🗡️ Outside the Terminal (Gaming & Personal Lore)</h3>
-        <p><strong>Metroidvanias:</strong> Deep appreciation for non-linear exploration, atmospheric lore, and precision combat (<em>Hollow Knight</em>, <em>Castlevania</em>, <em>Ori</em>).</p>
-        <p><strong>Anime & Light Novels:</strong> Passionate about intricate power systems, strategy, and rich worldbuilding.</p>
-        <p><strong>Calisthenics:</strong> Progressive bodyweight training and physical discipline.</p>
-        <div class="link-buttons" style="margin-top: 12px;">
+        <h3 class="section-heading">🗡️ Outside the Terminal (Gaming & Personal Lore)</h3>
+        <p>Where challenge, exploration, and discipline meet outside the terminal:</p>
+        
+        <ul class="highlights-list">
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>Metroidvanias:</strong> Deep appreciation for non-linear exploration, atmospheric lore, and precision combat (<em>Hollow Knight</em>, <em>Castlevania</em>, <em>Ori</em>).</div></li>
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>Anime & Light Novels:</strong> Expansive worldbuilding, strategic tension, and progression narratives.</div></li>
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>Calisthenics:</strong> Progressive bodyweight strength and physical discipline.</div></li>
+        </ul>
+
+        <div class="link-buttons">
           <button class="pixel-btn" id="warp-saveroom">⚡ Fast Travel to Save Room</button>
         </div>
       `,
       'tab-contact': `
-        <h3>🌌 Coordinates & Contact</h3>
-        <p>Open for software engineering collaborations, AI systems development, internships, and tech/gaming chats.</p>
+        <h3 class="section-heading">🌌 Coordinates & Contact</h3>
+        <p>Open for software engineering collaborations, environmental data projects, AI tooling, and technical chats.</p>
+        
         <div class="link-buttons">
-          <a href="https://github.com/Ayush20-lex" target="_blank" class="ext-btn">GitHub Profile ↗</a>
-          <a href="https://www.linkedin.com/in/ayush-kumar-942081322/" target="_blank" class="ext-btn">LinkedIn Profile ↗</a>
-          <a href="mailto:ayushkumargbp@gmail.com" class="ext-btn secondary">Email: ayushkumargbp@gmail.com ↗</a>
-          <button class="pixel-btn" id="warp-portal">⚡ Fast Travel to Exit Portal</button>
+          <a href="https://github.com/Ayush20-lex" target="_blank" class="ext-btn primary">🐙 GitHub Profile ↗</a>
+          <a href="https://www.linkedin.com/in/ayush-kumar-942081322/" target="_blank" class="ext-btn primary">💼 LinkedIn Profile ↗</a>
+          <a href="mailto:ayushkumargbp@gmail.com" class="ext-btn secondary">✉️ Email: ayushkumargbp@gmail.com ↗</a>
+          <button class="pixel-btn" id="warp-portal">⚡ Fast Travel to Nether Gate</button>
         </div>
       `
     };
@@ -1457,32 +2162,32 @@ class UIManager {
 
   bindWarpButtons() {
     document.getElementById('warp-observatory')?.addEventListener('click', () => {
-      this.game.player.x = 7 * 32;
+      this.game.player.x = 8 * 32;
       this.game.player.y = 7 * 32;
       this.game.player.direction = 'up';
       this.closeModal();
     });
     document.getElementById('warp-workshop')?.addEventListener('click', () => {
       this.game.player.x = 30 * 32;
-      this.game.player.y = 6 * 32;
+      this.game.player.y = 7 * 32;
       this.game.player.direction = 'up';
       this.closeModal();
     });
     document.getElementById('warp-redstone')?.addEventListener('click', () => {
       this.game.player.x = 30 * 32;
-      this.game.player.y = 19 * 32;
+      this.game.player.y = 20 * 32;
       this.game.player.direction = 'up';
       this.closeModal();
     });
     document.getElementById('warp-saveroom')?.addEventListener('click', () => {
-      this.game.player.x = 7 * 32;
+      this.game.player.x = 8 * 32;
       this.game.player.y = 20 * 32;
       this.game.player.direction = 'up';
       this.closeModal();
     });
     document.getElementById('warp-portal')?.addEventListener('click', () => {
       this.game.player.x = 18 * 32;
-      this.game.player.y = 4 * 32;
+      this.game.player.y = 5 * 32;
       this.game.player.direction = 'up';
       this.closeModal();
     });
@@ -1502,6 +2207,7 @@ class UIManager {
 
   /**
  * AYUSHCRAFT — Core Game Engine & Canvas Renderer
+ * Second-Pass Viewport, Rendering & Environmental Storytelling
  */
 
 
@@ -1516,9 +2222,9 @@ class Game {
     this.ctx = this.canvas.getContext('2d');
     this.ctx.imageSmoothingEnabled = false;
 
-    // Viewport & Scale
-    this.viewWidth = 640;  // Virtual resolution width
-    this.viewHeight = 440; // Virtual resolution height
+    // Viewport & Adaptive Scale
+    this.viewWidth = 640;
+    this.viewHeight = 360;
     this.camera = { x: 0, y: 0 };
 
     // Atlases
@@ -1541,10 +2247,10 @@ class Game {
     this.input = { up: false, down: false, left: false, right: false };
     this.lastTime = performance.now();
 
-    // Water animation timer
+    // Environmental Animation Clocks
     this.animClock = 0;
 
-    // Mobile / Touch controls setup
+    // Setup input & responsive canvas
     this.initInput();
     this.resizeCanvas();
     window.addEventListener('resize', () => this.resizeCanvas());
@@ -1553,21 +2259,35 @@ class Game {
     requestAnimationFrame((t) => this.loop(t));
   }
 
+  // Priority 2: Responsive Full-Screen Sizing & Sharp Integer/Proportional Scaling
   resizeCanvas() {
-    const dpr = window.devicePixelRatio || 1;
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
 
-    // Scale pixel canvas maintaining aspect ratio
-    const scale = Math.min(windowWidth / this.viewWidth, windowHeight / this.viewHeight);
-    const canvasWidth = Math.floor(this.viewWidth * Math.max(1, Math.floor(scale)));
-    const canvasHeight = Math.floor(this.viewHeight * Math.max(1, Math.floor(scale)));
+    // Choose optimal pixel zoom
+    // 2.0x on standard desktop for crisp 64px virtual tile scale
+    // 1.5x on mid laptops/tablets
+    // 1.25x on small mobile screens
+    let zoom = 2.0;
+    if (windowWidth < 600 || windowHeight < 460) {
+      zoom = 1.25;
+    } else if (windowWidth < 1000 || windowHeight < 640) {
+      zoom = 1.5;
+    } else if (windowWidth > 1920) {
+      zoom = 2.5;
+    } else {
+      zoom = 2.0;
+    }
+
+    // Set internal canvas resolution so it fills the screen cleanly
+    this.viewWidth = Math.ceil(windowWidth / zoom);
+    this.viewHeight = Math.ceil(windowHeight / zoom);
 
     this.canvas.width = this.viewWidth;
     this.canvas.height = this.viewHeight;
 
-    this.canvas.style.width = `${canvasWidth}px`;
-    this.canvas.style.height = `${canvasHeight}px`;
+    this.canvas.style.width = '100vw';
+    this.canvas.style.height = '100vh';
 
     this.ctx.imageSmoothingEnabled = false;
   }
@@ -1594,7 +2314,7 @@ class Game {
       if (e.key === 'd' || e.key === 'D' || e.key === 'ArrowRight') this.input.right = false;
     });
 
-    // Canvas click / tap to move
+    // Canvas click / tap to move or interact
     this.canvas.addEventListener('click', (e) => {
       if (this.ui.isModalOpen()) return;
 
@@ -1619,9 +2339,11 @@ class Game {
       });
 
       if (clickedObj) {
-        // If nearby, interact directly; otherwise walk toward it and trigger on arrival
-        const dist = Math.hypot(this.player.x + 16 - (clickedObj.tileX * 32 + 16), this.player.y + 20 - (clickedObj.tileY * 32 + 16));
-        if (dist < 50) {
+        const dist = Math.hypot(
+          this.player.x + 16 - (clickedObj.tileX * 32 + 16),
+          this.player.y + 20 - (clickedObj.tileY * 32 + 16)
+        );
+        if (dist < 52) {
           this.triggerObject(clickedObj);
           return;
         }
@@ -1633,7 +2355,7 @@ class Game {
       }
     });
 
-    // Mobile Virtual D-Pad buttons
+    // Mobile Virtual Touch D-Pad bindings
     const bindTouch = (id, dir) => {
       const btn = document.getElementById(id);
       if (!btn) return;
@@ -1645,8 +2367,17 @@ class Game {
         e.preventDefault();
         this.input[dir] = false;
       });
-      btn.addEventListener('mousedown', () => this.input[dir] = true);
-      btn.addEventListener('mouseup', () => this.input[dir] = false);
+      btn.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        this.input[dir] = true;
+      });
+      btn.addEventListener('mouseup', (e) => {
+        e.preventDefault();
+        this.input[dir] = false;
+      });
+      btn.addEventListener('mouseleave', () => {
+        this.input[dir] = false;
+      });
     };
 
     bindTouch('dpad-up', 'up');
@@ -1677,11 +2408,17 @@ class Game {
     } else if (obj.type === 'modal') {
       this.ui.openModal(obj.data);
     } else if (obj.type === 'toggle') {
-      // Toggle Redstone lamp logic
+      // Toggle Redstone lamp logic with live wire feedback
       obj.isOn = !obj.isOn;
       obj.tileType = obj.isOn ? 'LAMP_ON' : 'LAMP_OFF';
+
+      // Update connected floor wire tiles in Redstone Lab
+      const wireTile = obj.isOn ? 'REDSTONE_WIRE_ON' : 'REDSTONE_WIRE_OFF';
+      this.baseMap[19][30] = wireTile;
+      this.baseMap[20][30] = wireTile;
+
       audio.playToggle();
-      this.ui.updateLocation(obj.isOn ? 'Redstone Circuit: Active ⚡' : 'Redstone Circuit: Inactive');
+      this.ui.updateLocation(obj.isOn ? 'Redstone Circuit: Active ⚡ (15V Signal)' : 'Redstone Circuit: Inactive');
     }
   }
 
@@ -1697,7 +2434,7 @@ class Game {
           this.player.x + 16 - (this.pendingClickedObject.tileX * 32 + 16),
           this.player.y + 20 - (this.pendingClickedObject.tileY * 32 + 16)
         );
-        if (dist < 50) {
+        if (dist < 52) {
           const obj = this.pendingClickedObject;
           this.pendingClickedObject = null;
           this.player.targetPos = null;
@@ -1712,8 +2449,18 @@ class Game {
 
     const maxCamX = MAP_WIDTH * TILE_SIZE - this.viewWidth;
     const maxCamY = MAP_HEIGHT * TILE_SIZE - this.viewHeight;
-    this.camera.x = Math.max(0, Math.min(this.camera.x, maxCamX));
-    this.camera.y = Math.max(0, Math.min(this.camera.y, maxCamY));
+
+    if (maxCamX > 0) {
+      this.camera.x = Math.max(0, Math.min(this.camera.x, maxCamX));
+    } else {
+      this.camera.x = Math.round(maxCamX / 2);
+    }
+
+    if (maxCamY > 0) {
+      this.camera.y = Math.max(0, Math.min(this.camera.y, maxCamY));
+    } else {
+      this.camera.y = Math.round(maxCamY / 2);
+    }
 
     // Update Proximity HUD Prompt
     if (this.player.nearbyObject) {
@@ -1749,16 +2496,26 @@ class Game {
           this.ctx.drawImage(tileImg, x * TILE_SIZE, y * TILE_SIZE);
         }
 
-        // Animated water highlights
+        // Priority 5: Handcrafted River Flow Animation & Foam
         if (tileType === 'WATER') {
-          const waveShift = Math.sin(this.animClock * 3 + x + y) * 2;
-          this.ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
-          this.ctx.fillRect(x * TILE_SIZE + 6 + waveShift, y * TILE_SIZE + 10, 8, 2);
+          const waveShift = Math.sin(this.animClock * 2.8 + x * 0.7 + y * 0.9) * 3;
+          this.ctx.fillStyle = 'rgba(255, 255, 255, 0.22)';
+          this.ctx.fillRect(x * TILE_SIZE + 6 + waveShift, y * TILE_SIZE + 8, 7, 2);
+          this.ctx.fillRect(x * TILE_SIZE + 16 - waveShift, y * TILE_SIZE + 20, 8, 2);
         }
 
-        // Animated portal swirls
+        // Priority 5: Active Redstone Sparks
+        if (tileType === 'REDSTONE_WIRE_ON') {
+          const spark = Math.sin(this.animClock * 12 + x + y) > 0.4;
+          if (spark) {
+            this.ctx.fillStyle = '#fef08a';
+            this.ctx.fillRect(x * TILE_SIZE + 15, y * TILE_SIZE + 15, 2, 2);
+          }
+        }
+
+        // Portal swirling mystical energy
         if (tileType === 'PORTAL') {
-          const shimmer = (Math.sin(this.animClock * 4 + x * 2) + 1) * 0.15;
+          const shimmer = (Math.sin(this.animClock * 3.5 + x * 1.5 + y) + 1) * 0.18;
           this.ctx.fillStyle = `rgba(192, 132, 252, ${shimmer})`;
           this.ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
         }
@@ -1772,13 +2529,59 @@ class Game {
         this.ctx.drawImage(tileImg, obj.tileX * TILE_SIZE, obj.tileY * TILE_SIZE);
       }
 
-      // If nearby, draw a little floating highlight indicator
+      // Priority 5: Handcrafted Storytelling Details
+      // A: Save Room Lantern gentle amber breathing flicker
+      if (obj.id === 'save_room_lantern') {
+        const flicker = Math.sin(this.animClock * 4.5) * 0.08 + Math.sin(this.animClock * 11) * 0.04;
+        const rad = 28 + Math.sin(this.animClock * 2) * 2;
+        const grad = this.ctx.createRadialGradient(
+          obj.tileX * TILE_SIZE + 16, obj.tileY * TILE_SIZE + 16, 4,
+          obj.tileX * TILE_SIZE + 16, obj.tileY * TILE_SIZE + 16, rad
+        );
+        grad.addColorStop(0, `rgba(245, 158, 11, ${0.28 + flicker})`);
+        grad.addColorStop(1, 'rgba(245, 158, 11, 0)');
+        this.ctx.fillStyle = grad;
+        this.ctx.beginPath();
+        this.ctx.arc(obj.tileX * TILE_SIZE + 16, obj.tileY * TILE_SIZE + 16, rad, 0, Math.PI * 2);
+        this.ctx.fill();
+      }
+
+      // B: Hollow Knight Nail Relic Soul Shimmer
+      if (obj.id === 'save_room_relic') {
+        const distToPlayer = Math.hypot(
+          this.player.x + 16 - (obj.tileX * 32 + 16),
+          this.player.y + 20 - (obj.tileY * 32 + 16)
+        );
+        if (distToPlayer < 65) {
+          const soulPulse = (Math.sin(this.animClock * 4) + 1) * 0.15;
+          this.ctx.fillStyle = `rgba(56, 189, 248, ${0.15 + soulPulse})`;
+          this.ctx.beginPath();
+          this.ctx.arc(obj.tileX * TILE_SIZE + 16, obj.tileY * TILE_SIZE + 12, 16, 0, Math.PI * 2);
+          this.ctx.fill();
+        }
+      }
+
+      // C: Active Redstone Lamp Light Bloom
+      if (obj.id === 'redstone_lamp_1' && obj.isOn) {
+        const lampGrad = this.ctx.createRadialGradient(
+          obj.tileX * TILE_SIZE + 16, obj.tileY * TILE_SIZE + 16, 6,
+          obj.tileX * TILE_SIZE + 16, obj.tileY * TILE_SIZE + 16, 42
+        );
+        lampGrad.addColorStop(0, 'rgba(254, 240, 138, 0.45)');
+        lampGrad.addColorStop(1, 'rgba(234, 179, 8, 0)');
+        this.ctx.fillStyle = lampGrad;
+        this.ctx.beginPath();
+        this.ctx.arc(obj.tileX * TILE_SIZE + 16, obj.tileY * TILE_SIZE + 16, 42, 0, Math.PI * 2);
+        this.ctx.fill();
+      }
+
+      // Proximity pointer bob
       if (this.player.nearbyObject === obj) {
-        const hoverBob = Math.sin(this.animClock * 6) * 3;
+        const hoverBob = Math.sin(this.animClock * 6.5) * 3;
         this.ctx.fillStyle = '#fde047';
         this.ctx.beginPath();
         const px = obj.tileX * TILE_SIZE + 16;
-        const py = obj.tileY * TILE_SIZE - 6 + hoverBob;
+        const py = obj.tileY * TILE_SIZE - 7 + hoverBob;
         this.ctx.moveTo(px - 5, py);
         this.ctx.lineTo(px + 5, py);
         this.ctx.lineTo(px, py + 5);
@@ -1786,38 +2589,49 @@ class Game {
       }
     });
 
-    // 3. Render Trees (Foliage canopy)
-    const treeLocations = [
-      [15, 14], [22, 14], [14, 22], [22, 22],
-      [1, 1], [2, 1], [35, 1], [36, 1],
-      [12, 6], [24, 6], [12, 18], [24, 18]
+    // 3. Render Tree Groves (Natural Oak & Evergreen Clusters)
+    const oakTrees = [
+      [15, 13], [22, 13], [14, 22], [22, 22],
+      [1, 1], [36, 1], [11, 7], [24, 7],
+      [11, 24], [24, 24]
     ];
-    treeLocations.forEach(([tx, ty]) => {
-      const treeImg = this.tiles['TREE_TOP'];
-      if (treeImg) {
-        this.ctx.drawImage(treeImg, tx * TILE_SIZE - 16, ty * TILE_SIZE - 28);
+    oakTrees.forEach(([tx, ty]) => {
+      const oakImg = this.tiles['TREE_TOP'];
+      if (oakImg) {
+        this.ctx.drawImage(oakImg, tx * TILE_SIZE - 16, ty * TILE_SIZE - 28);
       }
     });
 
-    // 4. Render Player
+    const pineTrees = [
+      [2, 12], [2, 13], [35, 12], [35, 13],
+      [11, 12], [16, 26]
+    ];
+    pineTrees.forEach(([tx, ty]) => {
+      const pineImg = this.tiles['TREE_PINE'];
+      if (pineImg) {
+        this.ctx.drawImage(pineImg, tx * TILE_SIZE - 16, ty * TILE_SIZE - 28);
+      }
+    });
+
+    // 4. Render Player Character
     this.player.render(this.ctx, this.playerAtlas);
 
     // 5. Restore camera
     this.ctx.restore();
 
-    // 6. Vignette overlay for atmosphere
+    // 6. Restrained Atmospheric Vignette
     const grad = this.ctx.createRadialGradient(
-      this.viewWidth / 2, this.viewHeight / 2, this.viewWidth * 0.4,
-      this.viewWidth / 2, this.viewHeight / 2, this.viewWidth * 0.75
+      this.viewWidth / 2, this.viewHeight / 2, this.viewWidth * 0.42,
+      this.viewWidth / 2, this.viewHeight / 2, this.viewWidth * 0.85
     );
     grad.addColorStop(0, 'rgba(0,0,0,0)');
-    grad.addColorStop(1, 'rgba(0,0,0,0.45)');
+    grad.addColorStop(1, 'rgba(0,0,0,0.38)');
     this.ctx.fillStyle = grad;
     this.ctx.fillRect(0, 0, this.viewWidth, this.viewHeight);
   }
 
   loop(timestamp) {
-    const dt = Math.min((timestamp - this.lastTime) / 1000, 0.05); // clamp max dt to prevent jumps
+    const dt = Math.min((timestamp - this.lastTime) / 1000, 0.05);
     this.lastTime = timestamp;
 
     this.update(dt);
