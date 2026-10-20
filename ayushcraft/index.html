@@ -73,9 +73,16 @@
         </div>
 
         <div class="touch-actions">
-          <button id="touch-emote-btn" class="action-circle-btn emote-btn" aria-label="Character Emote" title="Emote: Wave / Thumbs-up">
-            <span class="action-btn-key" id="touch-emote-icon">👋</span>
-          </button>
+          <div class="emote-container" id="emote-container">
+            <div id="emote-popover" class="emote-popover" role="toolbar" aria-label="Character Emotes">
+              <button class="emote-option-btn" data-emote="wave" aria-label="Wave" title="Wave (👋)">👋</button>
+              <button class="emote-option-btn" data-emote="thumbsup" aria-label="Thumbs-up" title="Thumbs-up (👍)">👍</button>
+              <button class="emote-option-btn" data-emote="celebrate" aria-label="Celebrate" title="Celebrate (🎉)">🎉</button>
+            </div>
+            <button id="touch-emote-btn" class="action-circle-btn emote-btn" aria-label="Character Emote" title="Emote: Wave (👋), Thumbs-up (👍), Celebrate (🎉)">
+              <span class="action-btn-key" id="touch-emote-icon">👋</span>
+            </button>
+          </div>
           <button id="touch-action-btn" class="action-circle-btn" aria-label="Interact" title="Interact">
             <span class="action-btn-key">E</span>
           </button>

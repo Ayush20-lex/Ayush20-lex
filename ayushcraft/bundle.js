@@ -3093,6 +3093,9 @@ class Game {
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
 
+    // Choose optimal pixel zoom
+    // 2.0x on standard desktop for crisp 64px virtual tile scale
+    // Adaptive 1.35x - 1.6x on mobile screens to ensure 8-10 tiles fit comfortably
     let zoom = 2.0;
     if (windowWidth <= 520) {
       zoom = Math.max(1.35, Math.min(1.6, windowWidth / 260));
@@ -3106,6 +3109,7 @@ class Game {
       zoom = 2.0;
     }
 
+    // Set internal canvas resolution so it fills the screen cleanly
     this.viewWidth = Math.ceil(windowWidth / zoom);
     this.viewHeight = Math.ceil(windowHeight / zoom);
 
@@ -3236,22 +3240,65 @@ class Game {
       touchActionBtn.addEventListener('click', handleAction);
     }
 
-    // Mobile Touch Emote Button
+    // Mobile Touch Emote Button & Quick Options Tray
     const touchEmoteBtn = document.getElementById('touch-emote-btn');
+    this.emotePopover = document.getElementById('emote-popover');
+    const emoteOptionBtns = document.querySelectorAll('.emote-option-btn');
+
     if (touchEmoteBtn) {
-      let isWave = true;
-      const handleEmote = (e) => {
+      const EMOTE_CYCLE = ['wave', 'thumbsup', 'celebrate'];
+      const EMOTE_ICONS = { wave: '👋', thumbsup: '👍', celebrate: '🎉' };
+      let cycleIndex = 0;
+      let popoverTimer = null;
+
+      const refreshPopoverTimer = () => {
+        if (!this.emotePopover) return;
+        this.emotePopover.classList.add('open');
+        clearTimeout(popoverTimer);
+        popoverTimer = setTimeout(() => {
+          this.emotePopover?.classList.remove('open');
+        }, 3600);
+      };
+
+      const handleEmoteCycle = (e) => {
         if (e.cancelable) e.preventDefault();
-        const emoteType = isWave ? 'wave' : 'thumbsup';
+        const emoteType = EMOTE_CYCLE[cycleIndex];
         this.player.triggerEmote(emoteType);
-        isWave = !isWave;
+
         const iconSpan = document.getElementById('touch-emote-icon');
         if (iconSpan) {
-          iconSpan.textContent = isWave ? '👋' : '👍';
+          iconSpan.textContent = EMOTE_ICONS[emoteType];
         }
+
+        cycleIndex = (cycleIndex + 1) % EMOTE_CYCLE.length;
+        refreshPopoverTimer();
       };
-      touchEmoteBtn.addEventListener('touchstart', handleEmote, { passive: false });
-      touchEmoteBtn.addEventListener('click', handleEmote);
+
+      touchEmoteBtn.addEventListener('touchstart', handleEmoteCycle, { passive: false });
+      touchEmoteBtn.addEventListener('click', handleEmoteCycle);
+
+      // Direct selection buttons in the floating tray
+      emoteOptionBtns.forEach(btn => {
+        const handleDirectEmote = (e) => {
+          if (e.cancelable) e.preventDefault();
+          e.stopPropagation();
+          const chosenEmote = btn.getAttribute('data-emote');
+          if (chosenEmote) {
+            this.player.triggerEmote(chosenEmote);
+            const iconSpan = document.getElementById('touch-emote-icon');
+            if (iconSpan && EMOTE_ICONS[chosenEmote]) {
+              iconSpan.textContent = EMOTE_ICONS[chosenEmote];
+            }
+            const idx = EMOTE_CYCLE.indexOf(chosenEmote);
+            if (idx !== -1) {
+              cycleIndex = (idx + 1) % EMOTE_CYCLE.length;
+            }
+            refreshPopoverTimer();
+          }
+        };
+        btn.addEventListener('touchstart', handleDirectEmote, { passive: false });
+        btn.addEventListener('click', handleDirectEmote);
+      });
     }
   }
 
@@ -3305,6 +3352,9 @@ class Game {
 
     if (!this.ui.isModalOpen()) {
       this.player.update(dt, this.input, this.collisionMap, this.objects);
+      if (this.player.isMoving && this.emotePopover?.classList.contains('open')) {
+        this.emotePopover.classList.remove('open');
+      }
 
       // Check if player reached clicked target object
       if (this.pendingClickedObject) {
