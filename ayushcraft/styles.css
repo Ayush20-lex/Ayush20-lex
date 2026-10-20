@@ -568,6 +568,23 @@ canvas#game-canvas {
   filter: brightness(1.2);
 }
 
+.action-circle-btn.emote-btn {
+  width: 48px;
+  height: 48px;
+  align-self: center;
+  background: linear-gradient(180deg, #7c3aed 0%, #4c1d95 100%);
+  border: 2px solid #c084fc;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), 0 0 10px rgba(168, 85, 247, 0.35);
+  font-size: 18px;
+}
+
+.action-circle-btn.emote-btn:active {
+  background: linear-gradient(180deg, #9333ea 0%, #581c87 100%);
+  border-color: #e9d5ff;
+  box-shadow: 0 0 14px rgba(192, 132, 252, 0.6);
+  transform: scale(0.9);
+}
+
 /* ==========================================================================
    Priority 4: Native Pixel-Art Dialogue & Information Modals
    ========================================================================== */
@@ -1127,6 +1144,12 @@ canvas#game-canvas {
     width: 54px;
     height: 54px;
     font-size: 18px;
+  }
+
+  .action-circle-btn.emote-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 16px;
   }
 }
 

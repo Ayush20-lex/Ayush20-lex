@@ -120,6 +120,7 @@ export class UIManager {
       if (this.game.player) {
         this.game.player.isMoving = false;
         this.game.player.targetPos = null;
+        this.game.player.cancelEmote();
       }
     }
 
@@ -181,6 +182,7 @@ export class UIManager {
       if (this.game.player) {
         this.game.player.isMoving = false;
         this.game.player.targetPos = null;
+        this.game.player.cancelEmote();
       }
     }
 
@@ -270,6 +272,7 @@ export class UIManager {
       if (this.game.player) {
         this.game.player.isMoving = false;
         this.game.player.targetPos = null;
+        this.game.player.cancelEmote();
       }
     }
 
@@ -473,6 +476,10 @@ export class UIManager {
       if (this.game.player) {
         this.game.player.isMoving = false;
         this.game.player.targetPos = null;
+        if (this.game.pendingCelebration) {
+          this.game.pendingCelebration = false;
+          this.game.player.triggerEmote('celebrate');
+        }
       }
       this.game.canvas?.focus();
     }

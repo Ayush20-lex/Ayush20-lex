@@ -1199,6 +1199,213 @@ function generatePlayerAtlas() {
     }
   });
 
+  // Dedicated Expressive Character Emotes (Canvas procedural pixel art)
+  atlas.emotes = {
+    wave: [],
+    thumbsup: [],
+    celebrate: []
+  };
+
+  // Helper to draw standard front-facing player body
+  function drawBaseFrontPlayer(ctx, { yOffset = 0, eyeType = 'normal', leftArm = true, rightArm = true, shadow = true, legOffset = 0 } = {}) {
+    if (shadow) {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+      ctx.beginPath();
+      ctx.ellipse(16, 30, 9, 3, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Back hair silhouette
+    ctx.fillStyle = '#1c1917';
+    ctx.fillRect(10, 3 + yOffset, 12, 11);
+    // Face skin
+    ctx.fillStyle = '#fed7aa';
+    ctx.fillRect(11, 6 + yOffset, 10, 8);
+
+    // Expressive Eyes
+    ctx.fillStyle = '#0f172a';
+    if (eyeType === 'normal') {
+      ctx.fillRect(13, 9 + yOffset, 2, 3);
+      ctx.fillRect(17, 9 + yOffset, 2, 3);
+    } else if (eyeType === 'wink') {
+      ctx.fillRect(13, 9 + yOffset, 2, 3);
+      ctx.fillRect(17, 10 + yOffset, 3, 1);
+    } else if (eyeType === 'happy') {
+      ctx.fillRect(13, 9 + yOffset, 2, 2);
+      ctx.fillRect(17, 9 + yOffset, 2, 2);
+    } else if (eyeType === 'celebrate') {
+      // Joyful squinting arcs ^ ^
+      ctx.fillRect(13, 8 + yOffset, 2, 1);
+      ctx.fillRect(12, 9 + yOffset, 3, 1);
+      ctx.fillRect(17, 8 + yOffset, 2, 1);
+      ctx.fillRect(17, 9 + yOffset, 3, 1);
+    }
+
+    // Textured bangs
+    ctx.fillStyle = '#292524';
+    ctx.fillRect(10, 3 + yOffset, 12, 4);
+    ctx.fillRect(10, 7 + yOffset, 2, 3);
+    ctx.fillRect(20, 7 + yOffset, 2, 2);
+
+    // Blue Hoodie Body
+    ctx.fillStyle = '#0284c7';
+    ctx.fillRect(9, 14 + yOffset, 14, 10);
+    // Collar & White Zipper
+    ctx.fillStyle = '#f8fafc';
+    ctx.fillRect(15, 14 + yOffset, 2, 8);
+    // Hoodie pocket
+    ctx.fillStyle = '#0369a1';
+    ctx.fillRect(11, 20 + yOffset, 10, 3);
+
+    // Left Arm (if standard)
+    if (leftArm) {
+      ctx.fillStyle = '#0284c7';
+      ctx.fillRect(6, 14 + yOffset, 3, 8);
+      ctx.fillStyle = '#fed7aa';
+      ctx.fillRect(6, 21 + yOffset, 3, 2);
+    }
+
+    // Right Arm (if standard)
+    if (rightArm) {
+      ctx.fillStyle = '#0284c7';
+      ctx.fillRect(23, 14 + yOffset, 3, 8);
+      ctx.fillStyle = '#fed7aa';
+      ctx.fillRect(23, 21 + yOffset, 3, 2);
+    }
+
+    // Dark Cargo Joggers
+    ctx.fillStyle = '#1e293b';
+    ctx.fillRect(11, 24 + yOffset, 4, 5 + (legOffset > 0 ? legOffset : 0));
+    ctx.fillRect(17, 24 + yOffset, 4, 5 + (legOffset < 0 ? -legOffset : 0));
+
+    // White Sneakers
+    ctx.fillStyle = '#f1f5f9';
+    ctx.fillRect(10, 28 + yOffset + (legOffset > 0 ? legOffset : 0), 5, 3);
+    ctx.fillRect(17, 28 + yOffset + (legOffset < 0 ? -legOffset : 0), 5, 3);
+  }
+
+  // --- EMOTE 1: WAVE (3 frames) ---
+  // Frame 0: Right arm raised, palm tilted inward/left
+  {
+    const { canvas, ctx } = createTileCanvas(32, 32);
+    drawBaseFrontPlayer(ctx, { rightArm: false, eyeType: 'wink' });
+    ctx.fillStyle = '#0284c7';
+    ctx.fillRect(22, 12, 4, 3);
+    ctx.fillRect(24, 7, 3, 7);
+    ctx.fillStyle = '#0369a1';
+    ctx.fillRect(24, 7, 3, 1);
+    ctx.fillStyle = '#fed7aa';
+    ctx.fillRect(23, 4, 4, 3);
+    ctx.fillRect(22, 3, 3, 2);
+    atlas.emotes.wave.push(canvas);
+  }
+
+  // Frame 1: Right arm raised, palm tilted outward/right
+  {
+    const { canvas, ctx } = createTileCanvas(32, 32);
+    drawBaseFrontPlayer(ctx, { rightArm: false, eyeType: 'normal' });
+    ctx.fillStyle = '#0284c7';
+    ctx.fillRect(22, 12, 4, 3);
+    ctx.fillRect(25, 8, 3, 7);
+    ctx.fillStyle = '#0369a1';
+    ctx.fillRect(25, 8, 3, 1);
+    ctx.fillStyle = '#fed7aa';
+    ctx.fillRect(26, 5, 4, 3);
+    ctx.fillRect(27, 4, 3, 2);
+    atlas.emotes.wave.push(canvas);
+  }
+
+  // Frame 2: Right arm raised high, palm center flourish
+  {
+    const { canvas, ctx } = createTileCanvas(32, 32);
+    drawBaseFrontPlayer(ctx, { rightArm: false, eyeType: 'happy' });
+    ctx.fillStyle = '#0284c7';
+    ctx.fillRect(22, 12, 4, 3);
+    ctx.fillRect(24, 7, 3, 7);
+    ctx.fillStyle = '#0369a1';
+    ctx.fillRect(24, 7, 3, 1);
+    ctx.fillStyle = '#fed7aa';
+    ctx.fillRect(24, 3, 4, 4);
+    ctx.fillStyle = '#fef08a';
+    ctx.fillRect(26, 2, 1, 1);
+    atlas.emotes.wave.push(canvas);
+  }
+
+  // --- EMOTE 2: THUMBS-UP (2 frames) ---
+  // Frame 0: Transition raise — elbow bent forward
+  {
+    const { canvas, ctx } = createTileCanvas(32, 32);
+    drawBaseFrontPlayer(ctx, { rightArm: false, eyeType: 'normal' });
+    ctx.fillStyle = '#0284c7';
+    ctx.fillRect(23, 14, 3, 4);
+    ctx.fillRect(20, 16, 4, 3);
+    ctx.fillStyle = '#fed7aa';
+    ctx.fillRect(18, 16, 3, 3);
+    atlas.emotes.thumbsup.push(canvas);
+  }
+
+  // Frame 1: Proud Thumbs-Up with prominent vertical thumb & highlight
+  {
+    const { canvas, ctx } = createTileCanvas(32, 32);
+    drawBaseFrontPlayer(ctx, { rightArm: false, eyeType: 'happy' });
+    ctx.fillStyle = '#0284c7';
+    ctx.fillRect(22, 14, 4, 4);
+    ctx.fillRect(19, 15, 4, 3);
+    ctx.fillStyle = '#0369a1';
+    ctx.fillRect(19, 15, 1, 3);
+    ctx.fillStyle = '#fed7aa';
+    ctx.fillRect(15, 14, 4, 4);
+    ctx.fillStyle = '#ea580c';
+    ctx.fillRect(15, 16, 1, 2);
+    ctx.fillStyle = '#fed7aa';
+    ctx.fillRect(15, 10, 2, 4);
+    ctx.fillStyle = '#ea580c';
+    ctx.fillRect(17, 11, 1, 3);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(15, 10, 1, 1);
+    atlas.emotes.thumbsup.push(canvas);
+  }
+
+  // --- EMOTE 3: TINY CELEBRATION (3 frames) ---
+  // Frame 0: Anticipation crouch (-1px lower)
+  {
+    const { canvas, ctx } = createTileCanvas(32, 32);
+    drawBaseFrontPlayer(ctx, { yOffset: 1, eyeType: 'happy' });
+    atlas.emotes.celebrate.push(canvas);
+  }
+
+  // Frame 1: Jubilant leap with BOTH arms raised high in victory pose
+  {
+    const { canvas, ctx } = createTileCanvas(32, 32);
+    drawBaseFrontPlayer(ctx, { leftArm: false, rightArm: false, eyeType: 'celebrate', shadow: false });
+    ctx.fillStyle = '#0284c7';
+    ctx.fillRect(7, 11, 3, 5);
+    ctx.fillRect(5, 6, 3, 5);
+    ctx.fillStyle = '#fed7aa';
+    ctx.fillRect(4, 4, 4, 3);
+    ctx.fillStyle = '#0284c7';
+    ctx.fillRect(22, 11, 3, 5);
+    ctx.fillRect(24, 6, 3, 5);
+    ctx.fillStyle = '#fed7aa';
+    ctx.fillRect(24, 4, 4, 3);
+    atlas.emotes.celebrate.push(canvas);
+  }
+
+  // Frame 2: Landing victory pose with arms folded proudly
+  {
+    const { canvas, ctx } = createTileCanvas(32, 32);
+    drawBaseFrontPlayer(ctx, { leftArm: false, rightArm: false, eyeType: 'happy' });
+    ctx.fillStyle = '#0284c7';
+    ctx.fillRect(6, 14, 4, 4);
+    ctx.fillRect(9, 15, 3, 3);
+    ctx.fillRect(22, 14, 4, 4);
+    ctx.fillRect(20, 15, 3, 3);
+    ctx.fillStyle = '#fed7aa';
+    ctx.fillRect(10, 14, 3, 3);
+    ctx.fillRect(19, 14, 3, 3);
+    atlas.emotes.celebrate.push(canvas);
+  }
+
   return atlas;
 }
 
@@ -1305,6 +1512,69 @@ class SoundManager {
         gain.connect(this.ctx.destination);
         osc.start(now + idx * 0.08);
         osc.stop(now + idx * 0.08 + 0.2);
+      });
+    } catch (e) {}
+  }
+
+  playWave() {
+    if (this.muted) return;
+    this.init();
+    if (!this.ctx) return;
+    try {
+      const now = this.ctx.currentTime;
+      [587.33, 783.99].forEach((freq, idx) => {
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+        gain.gain.setValueAtTime(0.025, now + idx * 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.1);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now + idx * 0.08);
+        osc.stop(now + idx * 0.08 + 0.1);
+      });
+    } catch (e) {}
+  }
+
+  playThumbsUp() {
+    if (this.muted) return;
+    this.init();
+    if (!this.ctx) return;
+    try {
+      const now = this.ctx.currentTime;
+      [523.25, 659.25, 880.00].forEach((freq, idx) => {
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now + idx * 0.06);
+        gain.gain.setValueAtTime(0.03, now + idx * 0.06);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.06 + 0.12);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now + idx * 0.06);
+        osc.stop(now + idx * 0.06 + 0.12);
+      });
+    } catch (e) {}
+  }
+
+  playCelebration() {
+    if (this.muted) return;
+    this.init();
+    if (!this.ctx) return;
+    try {
+      const now = this.ctx.currentTime;
+      [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now + idx * 0.07);
+        gain.gain.setValueAtTime(0.035, now + idx * 0.07);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.07 + 0.16);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now + idx * 0.07);
+        osc.stop(now + idx * 0.07 + 0.16);
       });
     } catch (e) {}
   }
@@ -1960,6 +2230,11 @@ class Player {
 
     // Proximity interaction candidate
     this.nearbyObject = null;
+
+    // Character Emote System State
+    this.currentEmote = null; // null | 'wave' | 'thumbsup' | 'celebrate'
+    this.emoteTimer = 0;
+    this.emoteDuration = 0;
   }
 
   update(dt, input, collisionMap, objects) {
@@ -2005,6 +2280,18 @@ class Player {
       else if (dy > 0.1) this.direction = 'down';
     }
 
+    // 0. Emote cancellation on movement or timer progression
+    if (this.currentEmote) {
+      if (dx !== 0 || dy !== 0 || this.targetPos) {
+        this.cancelEmote();
+      } else {
+        this.emoteTimer -= dt;
+        if (this.emoteTimer <= 0) {
+          this.cancelEmote();
+        }
+      }
+    }
+
     this.isMoving = (dx !== 0 || dy !== 0);
 
     // 3. Collision Detection & Position Update
@@ -2044,6 +2331,39 @@ class Player {
 
     // 4. Check Proximity to Interactable Objects (within ~46 pixels)
     this.updateProximity(objects);
+  }
+
+  // Trigger an expressive pixel-art emote
+  triggerEmote(type) {
+    // If moving or pathing, stop pathing cleanly
+    this.targetPos = null;
+    this.isMoving = false;
+    this.animFrame = 0;
+    this.idleTimer = 0;
+
+    this.currentEmote = type;
+    this.direction = 'down'; // Face camera for clear, readable gesture display
+
+    if (type === 'wave') {
+      this.emoteDuration = 1.2;
+      this.emoteTimer = 1.2;
+      audio.playWave();
+    } else if (type === 'thumbsup') {
+      this.emoteDuration = 1.1;
+      this.emoteTimer = 1.1;
+      audio.playThumbsUp();
+    } else if (type === 'celebrate') {
+      this.emoteDuration = 1.25;
+      this.emoteTimer = 1.25;
+      audio.playCelebration();
+    }
+  }
+
+  // Cancel any active emote immediately
+  cancelEmote() {
+    this.currentEmote = null;
+    this.emoteTimer = 0;
+    this.emoteDuration = 0;
   }
 
   // Check collision using bounding box at player's feet
@@ -2106,9 +2426,71 @@ class Player {
     this.nearbyObject = closest;
   }
 
-  // Render player sprite with walk cycle and idle breathing bob
+  // Render player sprite with walk cycle, idle breathing bob, or active emote
   render(ctx, atlas) {
-    // Convert 4-frame cycle (0, 1, 2, 3) to 3 sprite frames (0, 1, 0, 2)
+    // 1. Render Active Emote Animation
+    if (this.currentEmote && atlas.emotes && atlas.emotes[this.currentEmote]) {
+      const emoteFrames = atlas.emotes[this.currentEmote];
+      const progress = Math.max(0, Math.min(1, 1 - (this.emoteTimer / this.emoteDuration)));
+      let frameIdx = 0;
+      let yOffset = 0;
+
+      const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (this.currentEmote === 'wave') {
+        if (!prefersReducedMotion) {
+          // Wave back and forth across 3 frames: 0 -> 1 -> 0 -> 1 -> 2
+          const wavePhase = Math.floor(progress * 7) % 3;
+          frameIdx = wavePhase;
+        } else {
+          frameIdx = 0; // Gentle static raised hand pose
+        }
+      } else if (this.currentEmote === 'thumbsup') {
+        // Frame 0: Transition raise (0.0 -> 0.18), Frame 1: Proud thumbs-up hold
+        frameIdx = progress < 0.18 ? 0 : 1;
+        if (!prefersReducedMotion && progress >= 0.18 && progress < 0.4) {
+          yOffset = 1; // Subtle nod of approval
+        }
+      } else if (this.currentEmote === 'celebrate') {
+        // Frame 0: Anticipation crouch (0 -> 0.18)
+        // Frame 1: Jubilant leap in air with both arms raised (0.18 -> 0.82)
+        // Frame 2: Smooth landing (0.82 -> 1.0)
+        if (progress < 0.18) {
+          frameIdx = 0;
+          if (!prefersReducedMotion) yOffset = 1;
+        } else if (progress < 0.82) {
+          frameIdx = 1;
+          if (!prefersReducedMotion) {
+            const jumpNorm = (progress - 0.18) / (0.82 - 0.18);
+            yOffset = -Math.round(Math.sin(jumpNorm * Math.PI) * 7);
+          }
+        } else {
+          frameIdx = 2;
+          if (!prefersReducedMotion) yOffset = 0;
+        }
+      }
+
+      // Ground shadow during celebrate jump (shadow stays anchored to ground)
+      if (this.currentEmote === 'celebrate' && yOffset < 0) {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.28)';
+        ctx.beginPath();
+        ctx.ellipse(Math.round(this.x + 16), Math.round(this.y + 30), 8, 2.5, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      const sprite = emoteFrames[frameIdx] || emoteFrames[0];
+      if (sprite) {
+        ctx.drawImage(sprite, Math.round(this.x), Math.round(this.y + yOffset));
+      }
+
+      // Procedural pixel sparkle stars during victory leap (no emojis)
+      if (this.currentEmote === 'celebrate' && progress > 0.2 && progress < 0.82 && !prefersReducedMotion) {
+        this.renderCelebrationSparkles(ctx, progress);
+      }
+      return;
+    }
+
+    // 2. Standard Walk Cycle & Breathing Idle
     let frameIdx = 0;
     let yOffset = 0;
 
@@ -2127,6 +2509,26 @@ class Player {
     if (sprite) {
       ctx.drawImage(sprite, Math.round(this.x), Math.round(this.y + yOffset));
     }
+  }
+
+  // Handcrafted procedural celebration sparkles (Canvas pixels, zero emojis)
+  renderCelebrationSparkles(ctx, progress) {
+    const cx = Math.round(this.x + 16);
+    const cy = Math.round(this.y + 6);
+    const t = (progress - 0.2) / 0.62;
+    const dist = t * 14;
+
+    const sparkles = [
+      { x: cx - dist - 4, y: cy - dist * 0.8, color: '#fde047', size: 2 },
+      { x: cx + dist + 4, y: cy - dist * 0.8, color: '#fde047', size: 2 },
+      { x: cx - dist * 0.5, y: cy - dist - 5, color: '#38bdf8', size: 2 },
+      { x: cx + dist * 0.5, y: cy - dist - 5, color: '#c084fc', size: 2 }
+    ];
+
+    sparkles.forEach(s => {
+      ctx.fillStyle = s.color;
+      ctx.fillRect(Math.round(s.x), Math.round(s.y), s.size, s.size);
+    });
   }
 }
 
@@ -2252,6 +2654,7 @@ class UIManager {
       if (this.game.player) {
         this.game.player.isMoving = false;
         this.game.player.targetPos = null;
+        this.game.player.cancelEmote();
       }
     }
 
@@ -2313,6 +2716,7 @@ class UIManager {
       if (this.game.player) {
         this.game.player.isMoving = false;
         this.game.player.targetPos = null;
+        this.game.player.cancelEmote();
       }
     }
 
@@ -2402,6 +2806,7 @@ class UIManager {
       if (this.game.player) {
         this.game.player.isMoving = false;
         this.game.player.targetPos = null;
+        this.game.player.cancelEmote();
       }
     }
 
@@ -2605,6 +3010,10 @@ class UIManager {
       if (this.game.player) {
         this.game.player.isMoving = false;
         this.game.player.targetPos = null;
+        if (this.game.pendingCelebration) {
+          this.game.pendingCelebration = false;
+          this.game.player.triggerEmote('celebrate');
+        }
       }
       this.game.canvas?.focus();
     }
@@ -2653,6 +3062,10 @@ class Game {
     // Systems
     this.ui = new UIManager(this);
 
+    // Discovery Milestones & Celebration State
+    this.discoveredMilestones = new Set();
+    this.pendingCelebration = false;
+
     // Input States
     this.input = { up: false, down: false, left: false, right: false };
     this.lastTime = performance.now();
@@ -2680,9 +3093,6 @@ class Game {
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
 
-    // Choose optimal pixel zoom
-    // 2.0x on standard desktop for crisp 64px virtual tile scale
-    // Adaptive 1.35x - 1.6x on mobile screens to ensure 8-10 tiles fit comfortably
     let zoom = 2.0;
     if (windowWidth <= 520) {
       zoom = Math.max(1.35, Math.min(1.6, windowWidth / 260));
@@ -2696,7 +3106,6 @@ class Game {
       zoom = 2.0;
     }
 
-    // Set internal canvas resolution so it fills the screen cleanly
     this.viewWidth = Math.ceil(windowWidth / zoom);
     this.viewHeight = Math.ceil(windowHeight / zoom);
 
@@ -2721,6 +3130,15 @@ class Game {
 
       if (e.key === 'e' || e.key === 'E' || e.key === 'Enter' || e.key === ' ') {
         this.interact();
+      }
+
+      // Character Emote Shortcuts (1/V: Wave, 2/T: Thumbs-up, 3/C: Celebrate)
+      if (e.key === '1' || e.key === 'v' || e.key === 'V') {
+        this.player.triggerEmote('wave');
+      } else if (e.key === '2' || e.key === 't' || e.key === 'T') {
+        this.player.triggerEmote('thumbsup');
+      } else if (e.key === '3' || e.key === 'c' || e.key === 'C') {
+        this.player.triggerEmote('celebrate');
       }
     });
 
@@ -2817,6 +3235,24 @@ class Game {
       touchActionBtn.addEventListener('touchstart', handleAction, { passive: false });
       touchActionBtn.addEventListener('click', handleAction);
     }
+
+    // Mobile Touch Emote Button
+    const touchEmoteBtn = document.getElementById('touch-emote-btn');
+    if (touchEmoteBtn) {
+      let isWave = true;
+      const handleEmote = (e) => {
+        if (e.cancelable) e.preventDefault();
+        const emoteType = isWave ? 'wave' : 'thumbsup';
+        this.player.triggerEmote(emoteType);
+        isWave = !isWave;
+        const iconSpan = document.getElementById('touch-emote-icon');
+        if (iconSpan) {
+          iconSpan.textContent = isWave ? '👋' : '👍';
+        }
+      };
+      touchEmoteBtn.addEventListener('touchstart', handleEmote, { passive: false });
+      touchEmoteBtn.addEventListener('click', handleEmote);
+    }
   }
 
   interact() {
@@ -2828,10 +3264,21 @@ class Game {
   }
 
   triggerObject(obj) {
+    const MAJOR_MILESTONES = ['observatory_terminal', 'ai_workbench', 'redstone_chest', 'save_room_relic', 'nether_portal', 'redstone_lever'];
+    const isFirstDiscovery = MAJOR_MILESTONES.includes(obj.id) && !this.discoveredMilestones.has(obj.id);
+
     if (obj.type === 'sign') {
       this.ui.openSign(obj.data.title, obj.data.text);
+      if (isFirstDiscovery) {
+        this.discoveredMilestones.add(obj.id);
+        this.pendingCelebration = true;
+      }
     } else if (obj.type === 'modal') {
       this.ui.openModal(obj.data);
+      if (isFirstDiscovery) {
+        this.discoveredMilestones.add(obj.id);
+        this.pendingCelebration = true;
+      }
     } else if (obj.type === 'toggle') {
       // Toggle Redstone lamp logic with live wire feedback
       obj.isOn = !obj.isOn;
@@ -2844,6 +3291,12 @@ class Game {
 
       audio.playToggle();
       this.ui.updateLocation(obj.isOn ? 'Redstone Circuit: Active ⚡ (15V Signal)' : 'Redstone Circuit: Inactive');
+
+      // First-time activation celebration
+      if (obj.isOn && isFirstDiscovery) {
+        this.discoveredMilestones.add(obj.id);
+        this.player.triggerEmote('celebrate');
+      }
     }
   }
 

@@ -1195,5 +1195,212 @@ export function generatePlayerAtlas() {
     }
   });
 
+  // Dedicated Expressive Character Emotes (Canvas procedural pixel art)
+  atlas.emotes = {
+    wave: [],
+    thumbsup: [],
+    celebrate: []
+  };
+
+  // Helper to draw standard front-facing player body
+  function drawBaseFrontPlayer(ctx, { yOffset = 0, eyeType = 'normal', leftArm = true, rightArm = true, shadow = true, legOffset = 0 } = {}) {
+    if (shadow) {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+      ctx.beginPath();
+      ctx.ellipse(16, 30, 9, 3, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Back hair silhouette
+    ctx.fillStyle = '#1c1917';
+    ctx.fillRect(10, 3 + yOffset, 12, 11);
+    // Face skin
+    ctx.fillStyle = '#fed7aa';
+    ctx.fillRect(11, 6 + yOffset, 10, 8);
+
+    // Expressive Eyes
+    ctx.fillStyle = '#0f172a';
+    if (eyeType === 'normal') {
+      ctx.fillRect(13, 9 + yOffset, 2, 3);
+      ctx.fillRect(17, 9 + yOffset, 2, 3);
+    } else if (eyeType === 'wink') {
+      ctx.fillRect(13, 9 + yOffset, 2, 3);
+      ctx.fillRect(17, 10 + yOffset, 3, 1);
+    } else if (eyeType === 'happy') {
+      ctx.fillRect(13, 9 + yOffset, 2, 2);
+      ctx.fillRect(17, 9 + yOffset, 2, 2);
+    } else if (eyeType === 'celebrate') {
+      // Joyful squinting arcs ^ ^
+      ctx.fillRect(13, 8 + yOffset, 2, 1);
+      ctx.fillRect(12, 9 + yOffset, 3, 1);
+      ctx.fillRect(17, 8 + yOffset, 2, 1);
+      ctx.fillRect(17, 9 + yOffset, 3, 1);
+    }
+
+    // Textured bangs
+    ctx.fillStyle = '#292524';
+    ctx.fillRect(10, 3 + yOffset, 12, 4);
+    ctx.fillRect(10, 7 + yOffset, 2, 3);
+    ctx.fillRect(20, 7 + yOffset, 2, 2);
+
+    // Blue Hoodie Body
+    ctx.fillStyle = '#0284c7';
+    ctx.fillRect(9, 14 + yOffset, 14, 10);
+    // Collar & White Zipper
+    ctx.fillStyle = '#f8fafc';
+    ctx.fillRect(15, 14 + yOffset, 2, 8);
+    // Hoodie pocket
+    ctx.fillStyle = '#0369a1';
+    ctx.fillRect(11, 20 + yOffset, 10, 3);
+
+    // Left Arm (if standard)
+    if (leftArm) {
+      ctx.fillStyle = '#0284c7';
+      ctx.fillRect(6, 14 + yOffset, 3, 8);
+      ctx.fillStyle = '#fed7aa';
+      ctx.fillRect(6, 21 + yOffset, 3, 2);
+    }
+
+    // Right Arm (if standard)
+    if (rightArm) {
+      ctx.fillStyle = '#0284c7';
+      ctx.fillRect(23, 14 + yOffset, 3, 8);
+      ctx.fillStyle = '#fed7aa';
+      ctx.fillRect(23, 21 + yOffset, 3, 2);
+    }
+
+    // Dark Cargo Joggers
+    ctx.fillStyle = '#1e293b';
+    ctx.fillRect(11, 24 + yOffset, 4, 5 + (legOffset > 0 ? legOffset : 0));
+    ctx.fillRect(17, 24 + yOffset, 4, 5 + (legOffset < 0 ? -legOffset : 0));
+
+    // White Sneakers
+    ctx.fillStyle = '#f1f5f9';
+    ctx.fillRect(10, 28 + yOffset + (legOffset > 0 ? legOffset : 0), 5, 3);
+    ctx.fillRect(17, 28 + yOffset + (legOffset < 0 ? -legOffset : 0), 5, 3);
+  }
+
+  // --- EMOTE 1: WAVE (3 frames) ---
+  // Frame 0: Right arm raised, palm tilted inward/left
+  {
+    const { canvas, ctx } = createTileCanvas(32, 32);
+    drawBaseFrontPlayer(ctx, { rightArm: false, eyeType: 'wink' });
+    ctx.fillStyle = '#0284c7';
+    ctx.fillRect(22, 12, 4, 3);
+    ctx.fillRect(24, 7, 3, 7);
+    ctx.fillStyle = '#0369a1';
+    ctx.fillRect(24, 7, 3, 1);
+    ctx.fillStyle = '#fed7aa';
+    ctx.fillRect(23, 4, 4, 3);
+    ctx.fillRect(22, 3, 3, 2);
+    atlas.emotes.wave.push(canvas);
+  }
+
+  // Frame 1: Right arm raised, palm tilted outward/right
+  {
+    const { canvas, ctx } = createTileCanvas(32, 32);
+    drawBaseFrontPlayer(ctx, { rightArm: false, eyeType: 'normal' });
+    ctx.fillStyle = '#0284c7';
+    ctx.fillRect(22, 12, 4, 3);
+    ctx.fillRect(25, 8, 3, 7);
+    ctx.fillStyle = '#0369a1';
+    ctx.fillRect(25, 8, 3, 1);
+    ctx.fillStyle = '#fed7aa';
+    ctx.fillRect(26, 5, 4, 3);
+    ctx.fillRect(27, 4, 3, 2);
+    atlas.emotes.wave.push(canvas);
+  }
+
+  // Frame 2: Right arm raised high, palm center flourish
+  {
+    const { canvas, ctx } = createTileCanvas(32, 32);
+    drawBaseFrontPlayer(ctx, { rightArm: false, eyeType: 'happy' });
+    ctx.fillStyle = '#0284c7';
+    ctx.fillRect(22, 12, 4, 3);
+    ctx.fillRect(24, 7, 3, 7);
+    ctx.fillStyle = '#0369a1';
+    ctx.fillRect(24, 7, 3, 1);
+    ctx.fillStyle = '#fed7aa';
+    ctx.fillRect(24, 3, 4, 4);
+    ctx.fillStyle = '#fef08a';
+    ctx.fillRect(26, 2, 1, 1);
+    atlas.emotes.wave.push(canvas);
+  }
+
+  // --- EMOTE 2: THUMBS-UP (2 frames) ---
+  // Frame 0: Transition raise — elbow bent forward
+  {
+    const { canvas, ctx } = createTileCanvas(32, 32);
+    drawBaseFrontPlayer(ctx, { rightArm: false, eyeType: 'normal' });
+    ctx.fillStyle = '#0284c7';
+    ctx.fillRect(23, 14, 3, 4);
+    ctx.fillRect(20, 16, 4, 3);
+    ctx.fillStyle = '#fed7aa';
+    ctx.fillRect(18, 16, 3, 3);
+    atlas.emotes.thumbsup.push(canvas);
+  }
+
+  // Frame 1: Proud Thumbs-Up with prominent vertical thumb & highlight
+  {
+    const { canvas, ctx } = createTileCanvas(32, 32);
+    drawBaseFrontPlayer(ctx, { rightArm: false, eyeType: 'happy' });
+    ctx.fillStyle = '#0284c7';
+    ctx.fillRect(22, 14, 4, 4);
+    ctx.fillRect(19, 15, 4, 3);
+    ctx.fillStyle = '#0369a1';
+    ctx.fillRect(19, 15, 1, 3);
+    ctx.fillStyle = '#fed7aa';
+    ctx.fillRect(15, 14, 4, 4);
+    ctx.fillStyle = '#ea580c';
+    ctx.fillRect(15, 16, 1, 2);
+    ctx.fillStyle = '#fed7aa';
+    ctx.fillRect(15, 10, 2, 4);
+    ctx.fillStyle = '#ea580c';
+    ctx.fillRect(17, 11, 1, 3);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(15, 10, 1, 1);
+    atlas.emotes.thumbsup.push(canvas);
+  }
+
+  // --- EMOTE 3: TINY CELEBRATION (3 frames) ---
+  // Frame 0: Anticipation crouch (-1px lower)
+  {
+    const { canvas, ctx } = createTileCanvas(32, 32);
+    drawBaseFrontPlayer(ctx, { yOffset: 1, eyeType: 'happy' });
+    atlas.emotes.celebrate.push(canvas);
+  }
+
+  // Frame 1: Jubilant leap with BOTH arms raised high in victory pose
+  {
+    const { canvas, ctx } = createTileCanvas(32, 32);
+    drawBaseFrontPlayer(ctx, { leftArm: false, rightArm: false, eyeType: 'celebrate', shadow: false });
+    ctx.fillStyle = '#0284c7';
+    ctx.fillRect(7, 11, 3, 5);
+    ctx.fillRect(5, 6, 3, 5);
+    ctx.fillStyle = '#fed7aa';
+    ctx.fillRect(4, 4, 4, 3);
+    ctx.fillStyle = '#0284c7';
+    ctx.fillRect(22, 11, 3, 5);
+    ctx.fillRect(24, 6, 3, 5);
+    ctx.fillStyle = '#fed7aa';
+    ctx.fillRect(24, 4, 4, 3);
+    atlas.emotes.celebrate.push(canvas);
+  }
+
+  // Frame 2: Landing victory pose with arms folded proudly
+  {
+    const { canvas, ctx } = createTileCanvas(32, 32);
+    drawBaseFrontPlayer(ctx, { leftArm: false, rightArm: false, eyeType: 'happy' });
+    ctx.fillStyle = '#0284c7';
+    ctx.fillRect(6, 14, 4, 4);
+    ctx.fillRect(9, 15, 3, 3);
+    ctx.fillRect(22, 14, 4, 4);
+    ctx.fillRect(20, 15, 3, 3);
+    ctx.fillStyle = '#fed7aa';
+    ctx.fillRect(10, 14, 3, 3);
+    ctx.fillRect(19, 14, 3, 3);
+    atlas.emotes.celebrate.push(canvas);
+  }
+
   return atlas;
 }

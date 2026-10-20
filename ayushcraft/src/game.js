@@ -36,6 +36,10 @@ export class Game {
     // Systems
     this.ui = new UIManager(this);
 
+    // Discovery Milestones & Celebration State
+    this.discoveredMilestones = new Set();
+    this.pendingCelebration = false;
+
     // Input States
     this.input = { up: false, down: false, left: false, right: false };
     this.lastTime = performance.now();
@@ -104,6 +108,15 @@ export class Game {
 
       if (e.key === 'e' || e.key === 'E' || e.key === 'Enter' || e.key === ' ') {
         this.interact();
+      }
+
+      // Character Emote Shortcuts (1/V: Wave, 2/T: Thumbs-up, 3/C: Celebrate)
+      if (e.key === '1' || e.key === 'v' || e.key === 'V') {
+        this.player.triggerEmote('wave');
+      } else if (e.key === '2' || e.key === 't' || e.key === 'T') {
+        this.player.triggerEmote('thumbsup');
+      } else if (e.key === '3' || e.key === 'c' || e.key === 'C') {
+        this.player.triggerEmote('celebrate');
       }
     });
 
@@ -200,6 +213,24 @@ export class Game {
       touchActionBtn.addEventListener('touchstart', handleAction, { passive: false });
       touchActionBtn.addEventListener('click', handleAction);
     }
+
+    // Mobile Touch Emote Button
+    const touchEmoteBtn = document.getElementById('touch-emote-btn');
+    if (touchEmoteBtn) {
+      let isWave = true;
+      const handleEmote = (e) => {
+        if (e.cancelable) e.preventDefault();
+        const emoteType = isWave ? 'wave' : 'thumbsup';
+        this.player.triggerEmote(emoteType);
+        isWave = !isWave;
+        const iconSpan = document.getElementById('touch-emote-icon');
+        if (iconSpan) {
+          iconSpan.textContent = isWave ? '👋' : '👍';
+        }
+      };
+      touchEmoteBtn.addEventListener('touchstart', handleEmote, { passive: false });
+      touchEmoteBtn.addEventListener('click', handleEmote);
+    }
   }
 
   interact() {
@@ -211,10 +242,21 @@ export class Game {
   }
 
   triggerObject(obj) {
+    const MAJOR_MILESTONES = ['observatory_terminal', 'ai_workbench', 'redstone_chest', 'save_room_relic', 'nether_portal', 'redstone_lever'];
+    const isFirstDiscovery = MAJOR_MILESTONES.includes(obj.id) && !this.discoveredMilestones.has(obj.id);
+
     if (obj.type === 'sign') {
       this.ui.openSign(obj.data.title, obj.data.text);
+      if (isFirstDiscovery) {
+        this.discoveredMilestones.add(obj.id);
+        this.pendingCelebration = true;
+      }
     } else if (obj.type === 'modal') {
       this.ui.openModal(obj.data);
+      if (isFirstDiscovery) {
+        this.discoveredMilestones.add(obj.id);
+        this.pendingCelebration = true;
+      }
     } else if (obj.type === 'toggle') {
       // Toggle Redstone lamp logic with live wire feedback
       obj.isOn = !obj.isOn;
@@ -227,6 +269,12 @@ export class Game {
 
       audio.playToggle();
       this.ui.updateLocation(obj.isOn ? 'Redstone Circuit: Active ⚡ (15V Signal)' : 'Redstone Circuit: Inactive');
+
+      // First-time activation celebration
+      if (obj.isOn && isFirstDiscovery) {
+        this.discoveredMilestones.add(obj.id);
+        this.player.triggerEmote('celebrate');
+      }
     }
   }
 
