@@ -15,21 +15,28 @@
     <!-- HUD Overlay -->
     <div id="hud-overlay">
       <!-- Top Navigation Bar -->
-      <div class="hud-top-bar">
-        <div class="brand-badge">
-          <span class="brand-icon"></span>
-          <div>
-            <div class="brand-title">AYUSHCRAFT</div>
-            <div class="brand-sub">Build. Explore. Discover.</div>
-          </div>
+      <header class="hud-top-bar">
+        <div class="brand-badge" title="AYUSHCRAFT — Explorable Developer World">
+          <span class="brand-gem" aria-hidden="true"></span>
+          <span class="brand-title">AYUSHCRAFT</span>
+          <span class="brand-sub">World</span>
         </div>
 
-        <div class="hud-actions">
-          <a href="https://github.com/Ayush20-lex" class="pixel-btn back-btn" id="return-repo-btn" title="Return to GitHub Profile">⬅️ Return to Profile</a>
-          <button id="sound-toggle-btn" class="pixel-btn secondary" title="Toggle Sound">🔇 Sound: Off</button>
-          <button id="journal-btn" class="pixel-btn" title="Open Explorer's Journal">📖 Journal [J]</button>
-        </div>
-      </div>
+        <nav class="hud-actions" aria-label="Quick Controls">
+          <a href="https://github.com/Ayush20-lex" class="hud-pill-btn btn-profile" id="return-repo-btn" title="Return to GitHub Profile">
+            <span class="btn-icon">⬅️</span>
+            <span class="btn-text">Profile</span>
+          </a>
+          <button id="sound-toggle-btn" class="hud-pill-btn btn-sound" title="Toggle Sound Effects" aria-label="Toggle Sound Effects">
+            <span class="btn-icon" id="sound-icon">🔇</span>
+            <span class="btn-text" id="sound-text">Mute</span>
+          </button>
+          <button id="journal-btn" class="hud-pill-btn btn-journal" title="Open Explorer's Journal [J]" aria-label="Open Explorer's Journal">
+            <span class="btn-icon">📖</span>
+            <span class="btn-text">Journal</span>
+          </button>
+        </nav>
+      </header>
 
       <!-- Current Location Pill -->
       <div id="location-pill">
@@ -56,16 +63,18 @@
 
       <!-- Mobile Virtual Touch Controls -->
       <div id="touch-controls">
-        <div class="dpad">
-          <button id="dpad-up" class="dpad-btn dpad-up" aria-label="Up">▲</button>
-          <button id="dpad-down" class="dpad-btn dpad-down" aria-label="Down">▼</button>
-          <button id="dpad-left" class="dpad-btn dpad-left" aria-label="Left">◀</button>
-          <button id="dpad-right" class="dpad-btn dpad-right" aria-label="Right">▶</button>
-          <div class="dpad-center"></div>
+        <div class="dpad" id="virtual-dpad">
+          <button id="dpad-up" class="dpad-btn dpad-up" aria-label="Move Up">▲</button>
+          <button id="dpad-down" class="dpad-btn dpad-down" aria-label="Move Down">▼</button>
+          <button id="dpad-left" class="dpad-btn dpad-left" aria-label="Move Left">◀</button>
+          <button id="dpad-right" class="dpad-btn dpad-right" aria-label="Move Right">▶</button>
+          <div class="dpad-center" aria-hidden="true"></div>
         </div>
 
         <div class="touch-actions">
-          <button id="touch-action-btn" class="action-circle-btn" aria-label="Interact">E</button>
+          <button id="touch-action-btn" class="action-circle-btn" aria-label="Interact" title="Interact">
+            <span class="action-btn-key">E</span>
+          </button>
         </div>
       </div>
     </div>

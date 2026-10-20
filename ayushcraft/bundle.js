@@ -1820,8 +1820,16 @@ class UIManager {
     if (this.soundToggleBtn) {
       this.soundToggleBtn.addEventListener('click', () => {
         const isMuted = audio.toggleMute();
-        this.soundToggleBtn.innerHTML = isMuted ? '🔇 Sound: Off' : '🔊 Sound: On';
-        this.soundToggleBtn.setAttribute('title', isMuted ? 'Enable sound effects' : 'Disable sound effects');
+        const iconEl = document.getElementById('sound-icon');
+        const textEl = document.getElementById('sound-text');
+        if (iconEl && textEl) {
+          iconEl.textContent = isMuted ? '🔇' : '🔊';
+          textEl.textContent = isMuted ? 'Mute' : 'Audio';
+        } else {
+          this.soundToggleBtn.innerHTML = isMuted ? '<span class="btn-icon">🔇</span><span class="btn-text">Mute</span>' : '<span class="btn-icon">🔊</span><span class="btn-text">Audio</span>';
+        }
+        this.soundToggleBtn.classList.toggle('active', !isMuted);
+        this.soundToggleBtn.setAttribute('title', isMuted ? 'Sound: Muted (Click to enable)' : 'Sound: Active (Click to mute)');
       });
     }
 
@@ -2254,6 +2262,12 @@ class Game {
     this.initInput();
     this.resizeCanvas();
     window.addEventListener('resize', () => this.resizeCanvas());
+    window.addEventListener('orientationchange', () => {
+      setTimeout(() => this.resizeCanvas(), 80);
+    });
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', () => this.resizeCanvas());
+    }
 
     // Start loop
     requestAnimationFrame((t) => this.loop(t));
@@ -2266,13 +2280,14 @@ class Game {
 
     // Choose optimal pixel zoom
     // 2.0x on standard desktop for crisp 64px virtual tile scale
-    // 1.5x on mid laptops/tablets
-    // 1.25x on small mobile screens
+    // Adaptive 1.35x - 1.6x on mobile screens to ensure 8-10 tiles fit comfortably
     let zoom = 2.0;
-    if (windowWidth < 600 || windowHeight < 460) {
-      zoom = 1.25;
-    } else if (windowWidth < 1000 || windowHeight < 640) {
+    if (windowWidth <= 520) {
+      zoom = Math.max(1.35, Math.min(1.6, windowWidth / 260));
+    } else if (windowWidth < 768 || windowHeight < 500) {
       zoom = 1.5;
+    } else if (windowWidth < 1100 || windowHeight < 680) {
+      zoom = 1.75;
     } else if (windowWidth > 1920) {
       zoom = 2.5;
     } else {
@@ -2286,8 +2301,8 @@ class Game {
     this.canvas.width = this.viewWidth;
     this.canvas.height = this.viewHeight;
 
-    this.canvas.style.width = '100vw';
-    this.canvas.style.height = '100vh';
+    this.canvas.style.width = '100%';
+    this.canvas.style.height = '100%';
 
     this.ctx.imageSmoothingEnabled = false;
   }
@@ -2359,14 +2374,20 @@ class Game {
     const bindTouch = (id, dir) => {
       const btn = document.getElementById(id);
       if (!btn) return;
-      btn.addEventListener('touchstart', (e) => {
-        e.preventDefault();
+
+      const press = (e) => {
+        if (e.cancelable) e.preventDefault();
         this.input[dir] = true;
-      });
-      btn.addEventListener('touchend', (e) => {
-        e.preventDefault();
+      };
+      const release = (e) => {
+        if (e.cancelable) e.preventDefault();
         this.input[dir] = false;
-      });
+      };
+
+      btn.addEventListener('touchstart', press, { passive: false });
+      btn.addEventListener('touchend', release, { passive: false });
+      btn.addEventListener('touchcancel', release, { passive: false });
+
       btn.addEventListener('mousedown', (e) => {
         e.preventDefault();
         this.input[dir] = true;
@@ -2387,10 +2408,12 @@ class Game {
 
     const touchActionBtn = document.getElementById('touch-action-btn');
     if (touchActionBtn) {
-      touchActionBtn.addEventListener('click', (e) => {
-        e.preventDefault();
+      const handleAction = (e) => {
+        if (e.cancelable) e.preventDefault();
         this.interact();
-      });
+      };
+      touchActionBtn.addEventListener('touchstart', handleAction, { passive: false });
+      touchActionBtn.addEventListener('click', handleAction);
     }
   }
 

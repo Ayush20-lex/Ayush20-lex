@@ -52,8 +52,16 @@ export class UIManager {
     if (this.soundToggleBtn) {
       this.soundToggleBtn.addEventListener('click', () => {
         const isMuted = audio.toggleMute();
-        this.soundToggleBtn.innerHTML = isMuted ? '🔇 Sound: Off' : '🔊 Sound: On';
-        this.soundToggleBtn.setAttribute('title', isMuted ? 'Enable sound effects' : 'Disable sound effects');
+        const iconEl = document.getElementById('sound-icon');
+        const textEl = document.getElementById('sound-text');
+        if (iconEl && textEl) {
+          iconEl.textContent = isMuted ? '🔇' : '🔊';
+          textEl.textContent = isMuted ? 'Mute' : 'Audio';
+        } else {
+          this.soundToggleBtn.innerHTML = isMuted ? '<span class="btn-icon">🔇</span><span class="btn-text">Mute</span>' : '<span class="btn-icon">🔊</span><span class="btn-text">Audio</span>';
+        }
+        this.soundToggleBtn.classList.toggle('active', !isMuted);
+        this.soundToggleBtn.setAttribute('title', isMuted ? 'Sound: Muted (Click to enable)' : 'Sound: Active (Click to mute)');
       });
     }
 
