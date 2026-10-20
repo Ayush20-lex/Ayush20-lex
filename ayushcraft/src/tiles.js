@@ -388,120 +388,252 @@ export function generateTileAtlas() {
     tiles['SAVEROOM_RUG'] = canvas;
   }
 
-  // 6E. OBSERVATORY_ENTRANCE — Stately Stone Research Portal
+  // 6E. OBSERVATORY ENTRANCE (East wall: 2-tile tall architectural stone portal)
+  // Top Tile (y: 6) — Stone Lintel Header & Brass Corner Bracket
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = '#1e2438';
+    // Smooth flagstone threshold floor connecting outside cobblestone to inside slate
+    ctx.fillStyle = '#484c59';
     ctx.fillRect(0, 0, 32, 32);
-    // Heavy chiseled stone frame lintel / jambs
-    ctx.fillStyle = '#3a3d4a';
-    ctx.fillRect(0, 0, 32, 4);
-    ctx.fillRect(0, 28, 32, 4);
-    // Polished brass threshold track
+    // Subtle flagstone texture
+    ctx.fillStyle = '#3c404c';
+    ctx.fillRect(4, 10, 12, 10);
+    ctx.fillRect(18, 14, 10, 12);
+    // Heavy chiseled stone lintel across top edge (meeting solid wall above)
+    ctx.fillStyle = '#262833';
+    ctx.fillRect(0, 0, 32, 6);
+    ctx.fillStyle = '#1c1d26';
+    ctx.fillRect(0, 0, 32, 2);
+    // Drop shadow under lintel
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+    ctx.fillRect(0, 6, 32, 3);
+    // Outer stone doorframe jamb bevel (facing outside on right)
+    ctx.fillStyle = '#626677';
+    ctx.fillRect(30, 6, 2, 26);
+    // Stately brass lintel bracket on outer corner
     ctx.fillStyle = '#d97706';
-    ctx.fillRect(0, 14, 32, 4);
+    ctx.fillRect(26, 2, 5, 5);
     ctx.fillStyle = '#fbbf24';
-    ctx.fillRect(4, 15, 24, 2);
-    // Stately brass corner studs
-    ctx.fillStyle = '#f59e0b';
-    ctx.fillRect(2, 6, 3, 3);
-    ctx.fillRect(2, 23, 3, 3);
-    ctx.fillRect(27, 6, 3, 3);
-    ctx.fillRect(27, 23, 3, 3);
-    // Cyan optical glint
-    ctx.fillStyle = '#38bdf8';
-    ctx.fillRect(15, 15, 2, 2);
-    tiles['OBSERVATORY_ENTRANCE'] = canvas;
+    ctx.fillRect(27, 3, 3, 3);
+    // Soft interior slate shadow on inside edge (left)
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.4)';
+    ctx.fillRect(0, 6, 3, 26);
+    tiles['OBSERVATORY_ENTRANCE_T'] = canvas;
+    tiles['OBSERVATORY_ENTRANCE'] = canvas; // Fallback alias
   }
 
-  // 6F. WORKSHOP_ENTRANCE — Heavy Carved Timber Portal with Iron Brackets
+  // Bottom Tile (y: 7) — Stone Doorpost Base & Brass Sill Bracket
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = '#9e6442';
+    // Smooth flagstone threshold floor
+    ctx.fillStyle = '#484c59';
     ctx.fillRect(0, 0, 32, 32);
-    // Heavy oak doorframe jambs
-    ctx.fillStyle = '#452613';
-    ctx.fillRect(0, 0, 32, 5);
-    ctx.fillRect(0, 27, 32, 5);
-    // Forged iron reinforcement brackets
-    ctx.fillStyle = '#1e293b';
-    ctx.fillRect(0, 2, 6, 6);
-    ctx.fillRect(0, 24, 6, 6);
-    ctx.fillRect(26, 2, 6, 6);
-    ctx.fillRect(26, 24, 6, 6);
-    // Warm cedar threshold plate
+    ctx.fillStyle = '#3c404c';
+    ctx.fillRect(6, 6, 14, 12);
+    // Heavy chiseled stone sill across bottom edge (meeting solid wall below)
+    ctx.fillStyle = '#262833';
+    ctx.fillRect(0, 26, 32, 6);
+    ctx.fillStyle = '#3a3d4a';
+    ctx.fillRect(0, 25, 32, 1);
+    // Outer stone doorframe jamb bevel (facing outside on right)
+    ctx.fillStyle = '#626677';
+    ctx.fillRect(30, 0, 2, 25);
+    // Stately brass sill bracket on outer corner
+    ctx.fillStyle = '#d97706';
+    ctx.fillRect(26, 25, 5, 5);
+    ctx.fillStyle = '#fbbf24';
+    ctx.fillRect(27, 26, 3, 3);
+    // Soft interior slate shadow on inside edge (left)
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.4)';
+    ctx.fillRect(0, 0, 3, 25);
+    tiles['OBSERVATORY_ENTRANCE_B'] = canvas;
+  }
+
+  // 6F. WORKSHOP ENTRANCE (West wall: 2-tile tall carved timber lodge portal)
+  // Top Tile (y: 6) — Dark Oak Lintel Beam & Forged Iron Strap
+  {
+    const { canvas, ctx } = createTileCanvas();
+    // Warm cedar threshold plank floor connecting avenue to workshop
+    ctx.fillStyle = '#a16207';
+    ctx.fillRect(0, 0, 32, 32);
+    // Cedar wood grain highlights
     ctx.fillStyle = '#b45309';
-    ctx.fillRect(4, 13, 24, 6);
-    ctx.fillStyle = '#fef3c7';
-    ctx.fillRect(6, 15, 20, 2);
-    tiles['WORKSHOP_ENTRANCE'] = canvas;
+    ctx.fillRect(4, 8, 24, 4);
+    ctx.fillRect(6, 18, 20, 4);
+    // Heavy dark oak lintel beam across top edge (meeting solid wall above)
+    ctx.fillStyle = '#452613';
+    ctx.fillRect(0, 0, 32, 6);
+    ctx.fillStyle = '#2d180b';
+    ctx.fillRect(0, 0, 32, 2);
+    // Overhang shadow
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+    ctx.fillRect(0, 6, 32, 3);
+    // Doorframe post bevel on outside edge (left)
+    ctx.fillStyle = '#5c331a';
+    ctx.fillRect(0, 6, 3, 26);
+    // Forged iron corner strap bracket with bolt
+    ctx.fillStyle = '#1e293b';
+    ctx.fillRect(1, 1, 6, 6);
+    ctx.fillStyle = '#94a3b8';
+    ctx.fillRect(3, 3, 2, 2);
+    // Interior parquet shadow on right
+    ctx.fillStyle = 'rgba(30, 15, 5, 0.35)';
+    ctx.fillRect(29, 6, 3, 26);
+    tiles['WORKSHOP_ENTRANCE_T'] = canvas;
+    tiles['WORKSHOP_ENTRANCE'] = canvas; // Fallback alias
   }
 
-  // 6G. REDSTONE_ENTRANCE — Fortified Basalt Portal with Active Conduit Threshold
+  // Bottom Tile (y: 7) — Dark Oak Base Post & Forged Iron Strap
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = '#1c1c24';
+    // Warm cedar threshold plank floor
+    ctx.fillStyle = '#a16207';
     ctx.fillRect(0, 0, 32, 32);
-    // Reinforced stone brick masonry jambs
-    ctx.fillStyle = '#343640';
-    ctx.fillRect(0, 0, 32, 5);
-    ctx.fillRect(0, 27, 32, 5);
-    // Heavy iron threshold bevels
-    ctx.fillStyle = '#4b5563';
-    ctx.fillRect(0, 5, 4, 22);
-    ctx.fillRect(28, 5, 4, 22);
-    // Active glowing redstone conduit strip embedded in sill
-    ctx.fillStyle = 'rgba(239, 68, 68, 0.35)';
-    ctx.fillRect(4, 11, 24, 10);
-    ctx.fillStyle = '#ef4444';
-    ctx.fillRect(0, 14, 32, 4);
-    ctx.fillStyle = '#fecaca';
-    ctx.fillRect(8, 15, 16, 2);
-    tiles['REDSTONE_ENTRANCE'] = canvas;
+    ctx.fillStyle = '#b45309';
+    ctx.fillRect(6, 6, 20, 4);
+    ctx.fillRect(4, 16, 24, 4);
+    // Heavy dark oak base beam across bottom edge (meeting solid wall below)
+    ctx.fillStyle = '#452613';
+    ctx.fillRect(0, 26, 32, 6);
+    ctx.fillStyle = '#5c331a';
+    ctx.fillRect(0, 25, 32, 1);
+    // Doorframe post bevel on outside edge (left)
+    ctx.fillStyle = '#5c331a';
+    ctx.fillRect(0, 0, 3, 25);
+    // Forged iron corner strap bracket with bolt
+    ctx.fillStyle = '#1e293b';
+    ctx.fillRect(1, 25, 6, 6);
+    ctx.fillStyle = '#94a3b8';
+    ctx.fillRect(3, 27, 2, 2);
+    // Interior parquet shadow on right
+    ctx.fillStyle = 'rgba(30, 15, 5, 0.35)';
+    ctx.fillRect(29, 0, 3, 25);
+    tiles['WORKSHOP_ENTRANCE_B'] = canvas;
   }
 
-  // 6H. SAVEROOM_ENTRANCE — Sanctuary Stone Arch with Velvet Carpet Threshold
+  // 6G. REDSTONE LAB ENTRANCE (West wall: Fortified Basalt Portal with Iron Gussets)
+  // Top Tile (y: 18) — Reinforced Basalt Lintel & Redstone Diode
   {
     const { canvas, ctx } = createTileCanvas();
+    // Dark industrial metal threshold plate floor
+    ctx.fillStyle = '#262733';
+    ctx.fillRect(0, 0, 32, 32);
+    // Steel treadplate traction grooves
+    ctx.fillStyle = '#343644';
+    ctx.fillRect(6, 10, 18, 3);
+    ctx.fillRect(8, 20, 16, 3);
+    // Heavy basalt lintel across top edge (meeting solid stone brick wall above)
+    ctx.fillStyle = '#181922';
+    ctx.fillRect(0, 0, 32, 6);
+    ctx.fillStyle = '#0f1017';
+    ctx.fillRect(0, 0, 32, 2);
+    // Portal shadow under lintel
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
+    ctx.fillRect(0, 6, 32, 3);
+    // Outer iron frame jamb bevel on outside edge (left)
+    ctx.fillStyle = '#47495a';
+    ctx.fillRect(0, 6, 3, 26);
+    // Reinforced iron corner gusset with active redstone indicator diode
+    ctx.fillStyle = '#343640';
+    ctx.fillRect(0, 0, 7, 7);
+    ctx.fillStyle = '#ef4444'; // Glowing redstone status node
+    ctx.fillRect(2, 2, 3, 3);
+    ctx.fillStyle = '#fecaca';
+    ctx.fillRect(3, 3, 1, 1);
+    // Interior lab depth shadow on right
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+    ctx.fillRect(29, 6, 3, 26);
+    tiles['REDSTONE_ENTRANCE_T'] = canvas;
+    tiles['REDSTONE_ENTRANCE'] = canvas; // Fallback alias
+  }
+
+  // Bottom Tile (y: 19) — Reinforced Basalt Base & Redstone Diode
+  {
+    const { canvas, ctx } = createTileCanvas();
+    // Dark industrial metal threshold plate floor
+    ctx.fillStyle = '#262733';
+    ctx.fillRect(0, 0, 32, 32);
+    // Steel treadplate traction grooves
+    ctx.fillStyle = '#343644';
+    ctx.fillRect(8, 8, 16, 3);
+    ctx.fillRect(6, 18, 18, 3);
+    // Heavy basalt base across bottom edge (meeting solid stone brick wall below)
+    ctx.fillStyle = '#181922';
+    ctx.fillRect(0, 26, 32, 6);
+    ctx.fillStyle = '#343640';
+    ctx.fillRect(0, 25, 32, 1);
+    // Outer iron frame jamb bevel on outside edge (left)
+    ctx.fillStyle = '#47495a';
+    ctx.fillRect(0, 0, 3, 25);
+    // Reinforced iron corner gusset with active redstone indicator diode
+    ctx.fillStyle = '#343640';
+    ctx.fillRect(0, 25, 7, 7);
+    ctx.fillStyle = '#ef4444'; // Glowing redstone status node
+    ctx.fillRect(2, 27, 3, 3);
+    ctx.fillStyle = '#fecaca';
+    ctx.fillRect(3, 28, 1, 1);
+    // Interior lab depth shadow on right
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+    ctx.fillRect(29, 0, 3, 25);
+    tiles['REDSTONE_ENTRANCE_B'] = canvas;
+  }
+
+  // 6H. SAVE ROOM ENTRANCE (East wall: Sanctuary Stone Arch with Velvet Runner)
+  // Top Tile (y: 18) — Weathered Stone Lintel & Golden Carpet Border
+  {
+    const { canvas, ctx } = createTileCanvas();
+    // Dark stone sill background
     ctx.fillStyle = '#2d2e38';
     ctx.fillRect(0, 0, 32, 32);
-    // Cobblestone arch jambs
-    ctx.fillStyle = '#3c3d47';
-    ctx.fillRect(0, 0, 32, 4);
-    ctx.fillRect(0, 28, 32, 4);
-    // Royal velvet carpet runner spilling through the entrance
+    // Weathered cobblestone lintel across top edge (meeting solid wall above)
+    ctx.fillStyle = '#202129';
+    ctx.fillRect(0, 0, 32, 6);
+    ctx.fillStyle = '#16171d';
+    ctx.fillRect(0, 0, 32, 2);
+    // Royal blue velvet carpet runner flowing through the doorway
     ctx.fillStyle = '#1e3a8a';
-    ctx.fillRect(0, 6, 32, 20);
-    // Embroidered gold borders on the velvet runner
+    ctx.fillRect(0, 6, 32, 26);
+    // Embroidered gold trim along the top border of the carpet
     ctx.fillStyle = '#f59e0b';
     ctx.fillRect(0, 6, 32, 2);
-    ctx.fillRect(0, 24, 32, 2);
-    // Silver Hallownest diamond crest
-    ctx.fillStyle = '#93c5fd';
-    ctx.fillRect(14, 14, 4, 4);
+    ctx.fillStyle = '#fbbf24';
+    ctx.fillRect(2, 6, 28, 1);
+    // Outer stone doorframe bevel on outside edge (right)
+    ctx.fillStyle = '#4e505f';
+    ctx.fillRect(30, 6, 2, 26);
     // Warm lantern light glow
-    ctx.fillStyle = 'rgba(254, 240, 138, 0.15)';
+    ctx.fillStyle = 'rgba(254, 240, 138, 0.12)';
     ctx.fillRect(0, 0, 32, 32);
-    tiles['SAVEROOM_ENTRANCE'] = canvas;
+    tiles['SAVEROOM_ENTRANCE_T'] = canvas;
+    tiles['SAVEROOM_ENTRANCE'] = canvas; // Fallback alias
   }
 
-  // 6I. PORTAL_GATE — Runic Obsidian Gate Threshold
+  // Bottom Tile (y: 19) — Weathered Stone Base & Golden Carpet Border
   {
     const { canvas, ctx } = createTileCanvas();
-    ctx.fillStyle = '#646675';
+    // Dark stone sill background
+    ctx.fillStyle = '#2d2e38';
     ctx.fillRect(0, 0, 32, 32);
-    // Obsidian gate pillars on borders
-    ctx.fillStyle = '#141121';
-    ctx.fillRect(0, 0, 6, 32);
-    ctx.fillRect(26, 0, 6, 32);
-    // Interdimensional rune inlay in cobblestone
-    ctx.fillStyle = '#6b3ea8';
-    ctx.fillRect(8, 12, 16, 8);
-    ctx.fillStyle = '#a855f7';
-    ctx.fillRect(11, 14, 10, 4);
-    ctx.fillStyle = '#e9d5ff';
-    ctx.fillRect(15, 15, 2, 2);
-    tiles['PORTAL_GATE'] = canvas;
+    // Royal blue velvet carpet runner flowing through the doorway
+    ctx.fillStyle = '#1e3a8a';
+    ctx.fillRect(0, 0, 32, 26);
+    // Embroidered gold trim along the bottom border of the carpet
+    ctx.fillStyle = '#f59e0b';
+    ctx.fillRect(0, 24, 32, 2);
+    ctx.fillStyle = '#fbbf24';
+    ctx.fillRect(2, 25, 28, 1);
+    // Weathered cobblestone base across bottom edge (meeting solid wall below)
+    ctx.fillStyle = '#202129';
+    ctx.fillRect(0, 26, 32, 6);
+    ctx.fillStyle = '#3c3d47';
+    ctx.fillRect(0, 25, 32, 1);
+    // Outer stone doorframe bevel on outside edge (right)
+    ctx.fillStyle = '#4e505f';
+    ctx.fillRect(30, 0, 2, 25);
+    // Warm lantern light glow
+    ctx.fillStyle = 'rgba(254, 240, 138, 0.12)';
+    ctx.fillRect(0, 0, 32, 32);
+    tiles['SAVEROOM_ENTRANCE_B'] = canvas;
   }
 
   // 7. OBSIDIAN — Nether Portal Framing

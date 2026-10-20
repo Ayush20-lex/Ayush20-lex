@@ -175,26 +175,26 @@ export function buildWorldData() {
 
   // NW path branch: Connects Spawn crossroads to Observatory approach
   for (let y = 10; y <= 16; y++) {
-    baseMap[y][15] = 'COBBLESTONE';
+    baseMap[y][15] = 'DIRT_PATH';
   }
   for (let x = 12; x <= 15; x++) {
-    baseMap[10][x] = 'COBBLESTONE';
+    baseMap[10][x] = 'DIRT_PATH';
   }
   // Dedicated Observatory Approach Avenue leading directly to East entrance (11, 6..7)
   for (let y = 6; y <= 10; y++) {
-    baseMap[y][12] = 'COBBLESTONE';
+    baseMap[y][12] = 'DIRT_PATH';
   }
 
   // NE path branch: Connects Spawn crossroads to AI Workshop approach
   for (let y = 10; y <= 16; y++) {
-    baseMap[y][22] = 'COBBLESTONE';
+    baseMap[y][22] = 'DIRT_PATH';
   }
   for (let x = 22; x <= 25; x++) {
-    baseMap[10][x] = 'COBBLESTONE';
+    baseMap[10][x] = 'DIRT_PATH';
   }
   // Dedicated Workshop Approach Avenue leading directly to West entrance (26, 6..7)
   for (let y = 6; y <= 10; y++) {
-    baseMap[y][25] = 'COBBLESTONE';
+    baseMap[y][25] = 'DIRT_PATH';
   }
 
   // --- 3. THE OBSERVATORY (NW: x: 3 to 11, y: 3 to 9) ---
@@ -209,10 +209,10 @@ export function buildWorldData() {
       }
     }
   }
-  // Purpose-designed Observatory Stately Stone Portal on East wall (facing approach avenue at x: 12)
-  baseMap[6][11] = 'OBSERVATORY_ENTRANCE';
+  // Architectural Stone Portal on East wall (facing approach avenue at x: 12)
+  baseMap[6][11] = 'OBSERVATORY_ENTRANCE_T';
   collisionMap[6][11] = false;
-  baseMap[7][11] = 'OBSERVATORY_ENTRANCE';
+  baseMap[7][11] = 'OBSERVATORY_ENTRANCE_B';
   collisionMap[7][11] = false;
 
   // --- 4. THE AI WORKSHOP (NE: x: 26 to 34, y: 3 to 9) ---
@@ -227,10 +227,10 @@ export function buildWorldData() {
       }
     }
   }
-  // Purpose-designed AI Workshop Timber Portal on West wall (facing approach avenue at x: 25)
-  baseMap[6][26] = 'WORKSHOP_ENTRANCE';
+  // Architectural Carved Timber Portal on West wall (facing approach avenue at x: 25)
+  baseMap[6][26] = 'WORKSHOP_ENTRANCE_T';
   collisionMap[6][26] = false;
-  baseMap[7][26] = 'WORKSHOP_ENTRANCE';
+  baseMap[7][26] = 'WORKSHOP_ENTRANCE_B';
   collisionMap[7][26] = false;
 
   // --- 5. THE SAVE ROOM (SW: x: 3 to 11, y: 16 to 23) ---
@@ -241,8 +241,10 @@ export function buildWorldData() {
         baseMap[sy][sx] = 'COBBLESTONE';
         collisionMap[sy][sx] = true; // Continuous solid perimeter walls
       } else {
-        // Velvet runner rug down the center of the room
-        if (sx >= 6 && sx <= 8 && sy >= 18 && sy <= 21) {
+        // Velvet runner rug extending from entrance archway (sx=10) down the center to the relic (sx=6)
+        if (sx >= 6 && sx <= 10 && (sy === 18 || sy === 19)) {
+          baseMap[sy][sx] = 'SAVEROOM_RUG';
+        } else if (sx >= 6 && sx <= 8 && (sy === 20 || sy === 21)) {
           baseMap[sy][sx] = 'SAVEROOM_RUG';
         } else {
           baseMap[sy][sx] = 'WOOD_PLANKS';
@@ -250,10 +252,10 @@ export function buildWorldData() {
       }
     }
   }
-  // Purpose-designed Sanctuary Arch on East wall (aligned with highway at y: 18..19)
-  baseMap[18][11] = 'SAVEROOM_ENTRANCE';
+  // Architectural Sanctuary Arch on East wall (aligned with highway and footbridge at y: 18..19)
+  baseMap[18][11] = 'SAVEROOM_ENTRANCE_T';
   collisionMap[18][11] = false;
-  baseMap[19][11] = 'SAVEROOM_ENTRANCE';
+  baseMap[19][11] = 'SAVEROOM_ENTRANCE_B';
   collisionMap[19][11] = false;
   // Ensure y: 20 is sealed with solid cobblestone
   baseMap[20][11] = 'COBBLESTONE';
@@ -271,10 +273,10 @@ export function buildWorldData() {
       }
     }
   }
-  // Purpose-designed Fortified Basalt Portal on West wall (aligned with highway at y: 18..19)
-  baseMap[18][26] = 'REDSTONE_ENTRANCE';
+  // Architectural Fortified Basalt Portal on West wall (aligned with highway at y: 18..19)
+  baseMap[18][26] = 'REDSTONE_ENTRANCE_T';
   collisionMap[18][26] = false;
-  baseMap[19][26] = 'REDSTONE_ENTRANCE';
+  baseMap[19][26] = 'REDSTONE_ENTRANCE_B';
   collisionMap[19][26] = false;
   // Ensure y: 20 is sealed with solid stone brick
   baseMap[20][26] = 'STONE_BRICK';
@@ -284,41 +286,16 @@ export function buildWorldData() {
   baseMap[19][30] = 'REDSTONE_WIRE_OFF';
   baseMap[20][30] = 'REDSTONE_WIRE_OFF';
 
-  // --- 7. THE NETHER GATE CITADEL (North: x: 16 to 21, y: 2 to 5) ---
-  // Fortress Bastion Platform & Perimeter Walls
+  // --- 7. THE NETHER GATE / EXIT PORTAL (North: x: 16 to 21, y: 2 to 5) ---
+  // Open Scenic Cobblestone Plaza at the northern terminus of the highway
   for (let py = 2; py <= 5; py++) {
     for (let px = 16; px <= 21; px++) {
       baseMap[py][px] = 'COBBLESTONE';
     }
   }
-  // Solid Obsidian Citadel Perimeter (North, West, and East walls)
-  for (let px = 16; px <= 21; px++) {
-    baseMap[2][px] = 'OBSIDIAN';
-    collisionMap[2][px] = true; // Solid North Citadel Wall
-  }
-  for (let py = 2; py <= 5; py++) {
-    baseMap[py][16] = 'OBSIDIAN';
-    collisionMap[py][16] = true; // Solid West Citadel Wall
-    baseMap[py][21] = 'OBSIDIAN';
-    collisionMap[py][21] = true; // Solid East Citadel Wall
-  }
-  // South Citadel Wall & Flanking Bastion Pillars
-  baseMap[5][16] = 'OBSIDIAN';
-  collisionMap[5][16] = true; // SW Bastion Tower
-  baseMap[5][17] = 'OBSIDIAN';
-  collisionMap[5][17] = true; // West Gatepost
-  baseMap[5][20] = 'OBSIDIAN';
-  collisionMap[5][20] = true; // East Gatepost
-  baseMap[5][21] = 'OBSIDIAN';
-  collisionMap[5][21] = true; // SE Bastion Tower
-
-  // Grand Runic Obsidian Gate Entrance (facing North-South highway at y: 6)
-  baseMap[5][18] = 'PORTAL_GATE';
-  collisionMap[5][18] = false;
-  baseMap[5][19] = 'PORTAL_GATE';
-  collisionMap[5][19] = false;
-
-  // Obsidian Inner Portal Frame & Vortex
+  // Imposing Minecraft-style Obsidian Portal Arch
+  baseMap[2][18] = 'OBSIDIAN';
+  baseMap[2][19] = 'OBSIDIAN';
   baseMap[3][17] = 'OBSIDIAN';
   baseMap[4][17] = 'OBSIDIAN';
   baseMap[3][20] = 'OBSIDIAN';
@@ -328,6 +305,8 @@ export function buildWorldData() {
   baseMap[4][18] = 'PORTAL';
   baseMap[4][19] = 'PORTAL';
 
+  collisionMap[2][18] = true;
+  collisionMap[2][19] = true;
   collisionMap[3][17] = true;
   collisionMap[4][17] = true;
   collisionMap[3][20] = true;
