@@ -397,16 +397,25 @@ export class Game {
       }
     });
 
-    // 3. Render Tree Groves (Natural Oak & Evergreen Clusters)
+    // 3. Render Tree Groves (Natural Oak, Birch & Evergreen Clusters)
     const oakTrees = [
-      [15, 13], [22, 13], [14, 22], [22, 22],
-      [1, 1], [36, 1], [11, 7], [24, 7],
-      [11, 24], [24, 24]
+      [14, 12], [23, 12], [14, 22],
+      [1, 1], [36, 1], [4, 2], [33, 2]
     ];
     oakTrees.forEach(([tx, ty]) => {
       const oakImg = this.tiles['TREE_TOP'];
       if (oakImg) {
         this.ctx.drawImage(oakImg, tx * TILE_SIZE - 16, ty * TILE_SIZE - 28);
+      }
+    });
+
+    const birchTrees = [
+      [22, 22], [24, 24], [11, 24]
+    ];
+    birchTrees.forEach(([tx, ty]) => {
+      const birchImg = this.tiles['TREE_BIRCH'] || this.tiles['TREE_TOP'];
+      if (birchImg) {
+        this.ctx.drawImage(birchImg, tx * TILE_SIZE - 16, ty * TILE_SIZE - 28);
       }
     });
 

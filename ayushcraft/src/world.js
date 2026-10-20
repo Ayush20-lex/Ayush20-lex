@@ -41,22 +41,12 @@ export function buildWorldData() {
     baseMap[y] = [];
     collisionMap[y] = [];
     for (let x = 0; x < MAP_WIDTH; x++) {
-      // Natural grass variation
-      const r = random();
-      if (r < 0.62) {
-        baseMap[y][x] = 'GRASS';
-      } else if (r < 0.74) {
-        baseMap[y][x] = 'GRASS_FLOWERS';
-      } else if (r < 0.83) {
-        baseMap[y][x] = 'GRASS_FLOWERS_WHITE';
-      } else if (r < 0.92) {
-        baseMap[y][x] = 'GRASS_TALL';
-      } else {
-        baseMap[y][x] = 'GRASS_PEBBLE';
-      }
+      // Coherent meadow base with subtle deterministic micro-variation
+      // Alternating GRASS and GRASS_VAR2 prevents repetitive wallpaper grid
+      baseMap[y][x] = ((x * 7 + y * 13) % 5 === 0) ? 'GRASS_VAR2' : 'GRASS';
       collisionMap[y][x] = false;
 
-      // Outer world boundary walls (Stone Brick with moss)
+      // Outer world boundary walls (Stone Brick with weathered mossy accents)
       if (x === 0 || x === MAP_WIDTH - 1 || y === 0 || y === MAP_HEIGHT - 1) {
         baseMap[y][x] = (x + y) % 3 === 0 ? 'COBBLE_MOSSY' : 'STONE_BRICK';
         collisionMap[y][x] = true;
@@ -64,7 +54,7 @@ export function buildWorldData() {
     }
   }
 
-  // --- 1. NATURAL WINDING RIVER & SHORE ---
+  // --- 1. NATURAL WINDING RIVER & SHORELINE TRANSITIONS ---
   // A scenic winding river separating the western sanctuaries from spawn
   const riverTiles = [
     // North source
@@ -89,24 +79,87 @@ export function buildWorldData() {
     }
   });
 
-  // Shoreline sand/grass edges alongside the river
+  // Shoreline organic riverbank transitions (mossy turf, reeds, and river pebbles)
   riverTiles.forEach(([rx, ry]) => {
-    if (rx > 1 && baseMap[ry][rx - 1] === 'GRASS' && random() > 0.4) {
-      baseMap[ry][rx - 1] = 'GRASS_MOSSY';
+    // West bank
+    if (rx > 1 && (baseMap[ry][rx - 1] === 'GRASS' || baseMap[ry][rx - 1] === 'GRASS_VAR2')) {
+      const bankR = (rx * 11 + ry * 17) % 7;
+      if (bankR === 0 || bankR === 1) {
+        baseMap[ry][rx - 1] = 'GRASS_TALL'; // River reeds
+      } else if (bankR === 2 || bankR === 3) {
+        baseMap[ry][rx - 1] = 'GRASS_MOSSY'; // Lush shaded turf
+      } else if (bankR === 4) {
+        baseMap[ry][rx - 1] = 'GRASS_PEBBLE'; // Rounded river stone
+      }
     }
-    if (rx < MAP_WIDTH - 2 && baseMap[ry][rx + 1] === 'GRASS' && random() > 0.4) {
-      baseMap[ry][rx + 1] = 'GRASS_MOSSY';
+    // East bank
+    if (rx < MAP_WIDTH - 2 && (baseMap[ry][rx + 1] === 'GRASS' || baseMap[ry][rx + 1] === 'GRASS_VAR2')) {
+      const bankR = (rx * 13 + ry * 19) % 7;
+      if (bankR === 0 || bankR === 1) {
+        baseMap[ry][rx + 1] = 'GRASS_MOSSY';
+      } else if (bankR === 2) {
+        baseMap[ry][rx + 1] = 'GRASS_TALL';
+      } else if (bankR === 3) {
+        baseMap[ry][rx + 1] = 'GRASS_PEBBLE';
+      }
+    }
+  });
+
+  // Tall grass reeds along outer perimeter walls (where grass grows tall against masonry)
+  for (let x = 1; x < MAP_WIDTH - 1; x++) {
+    if (baseMap[1][x] === 'GRASS' && x % 4 === 0) baseMap[1][x] = 'GRASS_TALL';
+    if (baseMap[MAP_HEIGHT - 2][x] === 'GRASS' && x % 4 === 2) baseMap[MAP_HEIGHT - 2][x] = 'GRASS_TALL';
+  }
+  for (let y = 1; y < MAP_HEIGHT - 1; y++) {
+    if (baseMap[y][1] === 'GRASS' && y % 4 === 1) baseMap[y][1] = 'GRASS_TALL';
+    if (baseMap[y][MAP_WIDTH - 2] === 'GRASS' && y % 4 === 3) baseMap[y][MAP_WIDTH - 2] = 'GRASS_TALL';
+  }
+
+  // --- INTENTIONAL SCENIC FLOWER CLUSTERS ---
+  // Cluster A: Spawn Meadow Garden (Framing the fountain plaza and bench)
+  const spawnGarden = [
+    [16, 15, 'GRASS_FLOWERS'], [21, 15, 'GRASS_FLOWERS_WHITE'],
+    [16, 21, 'GRASS_FLOWERS_WHITE'], [21, 21, 'GRASS_FLOWERS'],
+    [15, 17, 'GRASS_FLOWERS'], [22, 17, 'GRASS_FLOWERS_WHITE'],
+    [16, 16, 'GRASS_TALL'], [21, 16, 'GRASS_TALL']
+  ];
+  spawnGarden.forEach(([gx, gy, type]) => {
+    if (baseMap[gy][gx] === 'GRASS' || baseMap[gy][gx] === 'GRASS_VAR2') {
+      baseMap[gy][gx] = type;
+    }
+  });
+
+  // Cluster B: Scenic Riverbank Meadow Bend (West of river, near y: 10-14)
+  const riverMeadow = [
+    [11, 11, 'GRASS_FLOWERS'], [10, 12, 'GRASS_FLOWERS_WHITE'],
+    [11, 13, 'GRASS_FLOWERS'], [12, 11, 'GRASS_TALL'],
+    [10, 14, 'GRASS_PEBBLE']
+  ];
+  riverMeadow.forEach(([gx, gy, type]) => {
+    if (baseMap[gy][gx] === 'GRASS' || baseMap[gy][gx] === 'GRASS_VAR2') {
+      baseMap[gy][gx] = type;
+    }
+  });
+
+  // Cluster C: Observatory Meadow Verge (North-West meadow corner)
+  const obsMeadow = [
+    [10, 10, 'GRASS_FLOWERS_WHITE'], [9, 11, 'GRASS_FLOWERS'],
+    [12, 10, 'GRASS_TALL'], [8, 11, 'GRASS_MOSSY']
+  ];
+  obsMeadow.forEach(([gx, gy, type]) => {
+    if (baseMap[gy][gx] === 'GRASS' || baseMap[gy][gx] === 'GRASS_VAR2') {
+      baseMap[gy][gx] = type;
     }
   });
 
   // --- 2. HIGHWAYS, COBBLE PATHS & CROSSROADS ---
-  // Central North-South highway (connecting Nether Gate to Spawn)
+  // Central North-South highway (connecting Nether Gate Citadel to Spawn & South)
   for (let y = 6; y <= 21; y++) {
     baseMap[y][18] = 'DIRT_PATH';
     baseMap[y][19] = 'DIRT_PATH';
   }
 
-  // East-West central trail crossing the bridge
+  // East-West central highway crossing the footbridge
   for (let x = 8; x <= 28; x++) {
     if (x === 13) continue; // Kept as WOOD_BRIDGE
     baseMap[18][x] = 'DIRT_PATH';
@@ -120,20 +173,28 @@ export function buildWorldData() {
     }
   }
 
-  // NW path branch towards Observatory
+  // NW path branch: Connects Spawn crossroads to Observatory approach
   for (let y = 10; y <= 16; y++) {
     baseMap[y][15] = 'COBBLESTONE';
   }
-  for (let x = 11; x <= 15; x++) {
+  for (let x = 12; x <= 15; x++) {
     baseMap[10][x] = 'COBBLESTONE';
   }
+  // Dedicated Observatory Approach Avenue leading directly to East entrance (11, 6..7)
+  for (let y = 6; y <= 10; y++) {
+    baseMap[y][12] = 'COBBLESTONE';
+  }
 
-  // NE path branch towards AI Workshop
+  // NE path branch: Connects Spawn crossroads to AI Workshop approach
   for (let y = 10; y <= 16; y++) {
     baseMap[y][22] = 'COBBLESTONE';
   }
-  for (let x = 22; x <= 26; x++) {
+  for (let x = 22; x <= 25; x++) {
     baseMap[10][x] = 'COBBLESTONE';
+  }
+  // Dedicated Workshop Approach Avenue leading directly to West entrance (26, 6..7)
+  for (let y = 6; y <= 10; y++) {
+    baseMap[y][25] = 'COBBLESTONE';
   }
 
   // --- 3. THE OBSERVATORY (NW: x: 3 to 11, y: 3 to 9) ---
@@ -142,16 +203,16 @@ export function buildWorldData() {
     for (let ox = 3; ox <= 11; ox++) {
       if (oy === 3 || oy === 9 || ox === 3 || ox === 11) {
         baseMap[oy][ox] = (ox + oy) % 2 === 0 ? 'STONE_BRICK' : 'COBBLE_MOSSY';
-        collisionMap[oy][ox] = true;
+        collisionMap[oy][ox] = true; // Continuous solid perimeter walls
       } else {
         baseMap[oy][ox] = 'OBSERVATORY_FLOOR';
       }
     }
   }
-  // Observatory doorway on East wall (facing the road)
-  baseMap[6][11] = 'COBBLESTONE';
+  // Purpose-designed Observatory Stately Stone Portal on East wall (facing approach avenue at x: 12)
+  baseMap[6][11] = 'OBSERVATORY_ENTRANCE';
   collisionMap[6][11] = false;
-  baseMap[7][11] = 'COBBLESTONE';
+  baseMap[7][11] = 'OBSERVATORY_ENTRANCE';
   collisionMap[7][11] = false;
 
   // --- 4. THE AI WORKSHOP (NE: x: 26 to 34, y: 3 to 9) ---
@@ -160,16 +221,16 @@ export function buildWorldData() {
     for (let wx = 26; wx <= 34; wx++) {
       if (wy === 3 || wy === 9 || wx === 26 || wx === 34) {
         baseMap[wy][wx] = 'WOOD_PLANKS';
-        collisionMap[wy][wx] = true;
+        collisionMap[wy][wx] = true; // Continuous solid perimeter walls
       } else {
         baseMap[wy][wx] = 'WORKSHOP_FLOOR';
       }
     }
   }
-  // Workshop doorway on West wall (facing the road)
-  baseMap[6][26] = 'WOOD_PLANKS';
+  // Purpose-designed AI Workshop Timber Portal on West wall (facing approach avenue at x: 25)
+  baseMap[6][26] = 'WORKSHOP_ENTRANCE';
   collisionMap[6][26] = false;
-  baseMap[7][26] = 'WOOD_PLANKS';
+  baseMap[7][26] = 'WORKSHOP_ENTRANCE';
   collisionMap[7][26] = false;
 
   // --- 5. THE SAVE ROOM (SW: x: 3 to 11, y: 16 to 23) ---
@@ -178,7 +239,7 @@ export function buildWorldData() {
     for (let sx = 3; sx <= 11; sx++) {
       if (sy === 16 || sy === 23 || sx === 3 || sx === 11) {
         baseMap[sy][sx] = 'COBBLESTONE';
-        collisionMap[sy][sx] = true;
+        collisionMap[sy][sx] = true; // Continuous solid perimeter walls
       } else {
         // Velvet runner rug down the center of the room
         if (sx >= 6 && sx <= 8 && sy >= 18 && sy <= 21) {
@@ -189,11 +250,14 @@ export function buildWorldData() {
       }
     }
   }
-  // Save Room doorway on East wall
-  baseMap[19][11] = 'COBBLESTONE';
+  // Purpose-designed Sanctuary Arch on East wall (aligned with highway at y: 18..19)
+  baseMap[18][11] = 'SAVEROOM_ENTRANCE';
+  collisionMap[18][11] = false;
+  baseMap[19][11] = 'SAVEROOM_ENTRANCE';
   collisionMap[19][11] = false;
+  // Ensure y: 20 is sealed with solid cobblestone
   baseMap[20][11] = 'COBBLESTONE';
-  collisionMap[20][11] = false;
+  collisionMap[20][11] = true;
 
   // --- 6. REDSTONE LAB (SE: x: 26 to 34, y: 16 to 23) ---
   // Architecture: Dark basalt masonry with conduit channels and logic circuitry
@@ -201,31 +265,60 @@ export function buildWorldData() {
     for (let rx = 26; rx <= 34; rx++) {
       if (ry === 16 || ry === 23 || rx === 26 || rx === 34) {
         baseMap[ry][rx] = 'STONE_BRICK';
-        collisionMap[ry][rx] = true;
+        collisionMap[ry][rx] = true; // Continuous solid perimeter walls
       } else {
         baseMap[ry][rx] = 'LAB_FLOOR';
       }
     }
   }
-  // Redstone Lab doorway on West wall
-  baseMap[19][26] = 'STONE_BRICK';
+  // Purpose-designed Fortified Basalt Portal on West wall (aligned with highway at y: 18..19)
+  baseMap[18][26] = 'REDSTONE_ENTRANCE';
+  collisionMap[18][26] = false;
+  baseMap[19][26] = 'REDSTONE_ENTRANCE';
   collisionMap[19][26] = false;
+  // Ensure y: 20 is sealed with solid stone brick
   baseMap[20][26] = 'STONE_BRICK';
-  collisionMap[20][26] = false;
+  collisionMap[20][26] = true;
 
   // Redstone floor wire connecting core (30,18) to lamp (30,21)
   baseMap[19][30] = 'REDSTONE_WIRE_OFF';
   baseMap[20][30] = 'REDSTONE_WIRE_OFF';
 
-  // --- 7. THE NETHER GATE / EXIT PORTAL (North: x: 16 to 21, y: 2 to 5) ---
+  // --- 7. THE NETHER GATE CITADEL (North: x: 16 to 21, y: 2 to 5) ---
+  // Fortress Bastion Platform & Perimeter Walls
   for (let py = 2; py <= 5; py++) {
     for (let px = 16; px <= 21; px++) {
       baseMap[py][px] = 'COBBLESTONE';
     }
   }
-  // Imposing Obsidian Portal Arch
-  baseMap[2][18] = 'OBSIDIAN';
-  baseMap[2][19] = 'OBSIDIAN';
+  // Solid Obsidian Citadel Perimeter (North, West, and East walls)
+  for (let px = 16; px <= 21; px++) {
+    baseMap[2][px] = 'OBSIDIAN';
+    collisionMap[2][px] = true; // Solid North Citadel Wall
+  }
+  for (let py = 2; py <= 5; py++) {
+    baseMap[py][16] = 'OBSIDIAN';
+    collisionMap[py][16] = true; // Solid West Citadel Wall
+    baseMap[py][21] = 'OBSIDIAN';
+    collisionMap[py][21] = true; // Solid East Citadel Wall
+  }
+  // South Citadel Wall & Flanking Bastion Pillars
+  baseMap[5][16] = 'OBSIDIAN';
+  collisionMap[5][16] = true; // SW Bastion Tower
+  baseMap[5][17] = 'OBSIDIAN';
+  collisionMap[5][17] = true; // West Gatepost
+  baseMap[5][20] = 'OBSIDIAN';
+  collisionMap[5][20] = true; // East Gatepost
+  baseMap[5][21] = 'OBSIDIAN';
+  collisionMap[5][21] = true; // SE Bastion Tower
+
+  // Grand Runic Obsidian Gate Entrance (facing North-South highway at y: 6)
+  baseMap[5][18] = 'PORTAL_GATE';
+  collisionMap[5][18] = false;
+  baseMap[5][19] = 'PORTAL_GATE';
+  collisionMap[5][19] = false;
+
+  // Obsidian Inner Portal Frame & Vortex
   baseMap[3][17] = 'OBSIDIAN';
   baseMap[4][17] = 'OBSIDIAN';
   baseMap[3][20] = 'OBSIDIAN';
@@ -235,8 +328,6 @@ export function buildWorldData() {
   baseMap[4][18] = 'PORTAL';
   baseMap[4][19] = 'PORTAL';
 
-  collisionMap[2][18] = true;
-  collisionMap[2][19] = true;
   collisionMap[3][17] = true;
   collisionMap[4][17] = true;
   collisionMap[3][20] = true;
@@ -316,19 +407,19 @@ export function getInteractableObjects() {
       data: {
         title: '🛰️ AirLytics NCR — Environmental Intelligence',
         subtitle: 'Smart India Hackathon (SIH26082) · Ministry of Earth Sciences / NCMRWF',
-        badges: ['72-Hour AQI Forecast', '68 CPCB Stations Mesh', '61.12 µg/m³ RMSE Baseline', 'API-Grounded AI Assistant'],
+        badges: ['72-Hour AQI Forecast', '68 CPCB Stations Mesh', '61.12 µg/m³ Evaluated RMSE', 'API-Grounded AI Assistant'],
         stats: [
           { value: '68 Stations', label: 'CPCB Mesh Coverage' },
           { value: '72 Hours', label: 'Predictive Horizon' },
-          { value: '61.12 µg/m³', label: 'RMSE Baseline' },
+          { value: '61.12 µg/m³', label: 'Evaluated Benchmark RMSE' },
           { value: '8 Endpoints', label: 'Grounded Assistant' }
         ],
-        description: 'A 72-hour air quality forecast engine for Delhi NCR designed with absolute data provenance—traceable to individual monitoring stations, valid hourly observations, and CPCB arithmetic criteria.',
+        description: 'A 72-hour air quality forecast platform for Delhi-NCR with strict data provenance—traceable to individual monitoring stations, valid hourly observations, and CPCB arithmetic criteria.',
         highlights: [
-          'Live 68-station CPCB mesh adhering to strict 2014 rolling-window rules without silent neighbour interpolation.',
-          'Validated ML blend baseline at 61.12 µg/m³ RMSE (27% better than raw CAMS over 4M+ observations across an annual cycle).',
-          'NASA VIIRS satellite fire corridor tracking with transport alignment against meteorological wind vector fields.',
-          'API-grounded assistant strictly bounded to 8 read-only system endpoints with traceable tool calls and receipts.'
+          'CPCB Mesh: 68 continuous ambient stations strictly following 2014 arithmetic rolling rules (no synthetic interpolation).',
+          'Documented Evaluation: 61.12 µg/m³ RMSE ML blend baseline evaluated across 4,069,348 observations (27% improvement over CAMS).',
+          'Live Deployed Engine: Operational on Vercel with blend baseline and archive replay (deep model weights not loaded in serverless runtime).',
+          'Bounded Assistant: Read-only AI assistant restricted to 8 verified system endpoints with traceable tool calls and station citations.'
         ],
         stack: ['Python', 'FastAPI', 'TypeScript', 'React 19', 'Vite', 'Open-Meteo', 'NASA FIRMS'],
         links: [
@@ -495,11 +586,11 @@ export function getInteractableObjects() {
       }
     },
 
-    // 8C. SAVE ROOM LANTERN
+    // 8C. SAVE ROOM LANTERN (Mounted on North wall alcove beside entrance)
     {
       id: 'save_room_lantern',
       tileX: 10,
-      tileY: 18,
+      tileY: 17,
       name: 'Amber Glow Lantern',
       tileType: 'LANTERN',
       isSolid: true,

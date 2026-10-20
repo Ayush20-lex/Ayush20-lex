@@ -1147,6 +1147,22 @@ canvas#game-canvas {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #interact-prompt { animation: none; }
-  * { transition: none !important; }
+  #interact-prompt { animation: none !important; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
+
+/* High-Visibility Focus Indicators for Keyboard Accessibility */
+:focus-visible {
+  outline: 2.5px solid var(--gold-accent) !important;
+  outline-offset: 2px !important;
+}
+
+button:focus-visible, a:focus-visible {
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.45) !important;
+}
+

@@ -1,26 +1,22 @@
 <div align="center">
 
-<!-- AYUSHCRAFT WORLD BANNER -->
-<a href="https://ayush20-lex.github.io/Ayush20-lex/ayushcraft/index.html">
-  <img src="assets/ayushcraft-banner.svg" alt="AYUSHCRAFT — Interactive Developer World Banner" width="100%" />
-</a>
+<!-- AYUSHCRAFT WORLD BANNER (Primary Clickable Visual Entry) -->
+[![AYUSHCRAFT — Enter the Explorable 2D Developer World](assets/ayushcraft-banner.svg)](https://ayush20-lex.github.io/Ayush20-lex/ayushcraft/)
 
 # ⛏️ AYUSHCRAFT — An Explorable Developer World
 
-<!-- SINGLE PROMINENT PRIMARY CALL TO ACTION -->
-<a href="https://ayush20-lex.github.io/Ayush20-lex/ayushcraft/index.html">
-  <img src="https://img.shields.io/badge/%E2%96%B6%EF%B8%8F_ENTER_AYUSHCRAFT-Interactive_2D_World-2563eb?style=for-the-badge&logoColor=white" height="40" alt="Enter AyushCraft 2D World" />
-</a>
+<!-- PRIMARY CALL TO ACTION: DIRECT LAUNCH LINK -->
+<p align="center">
+  👉 <b><a href="https://ayush20-lex.github.io/Ayush20-lex/ayushcraft/">Launch AYUSHCRAFT in your browser</a></b> (No install required) ↗
+</p>
 
-<br /><br />
-
-<!-- UNDERSTATED SECONDARY NAVIGATION LINKS -->
-[🌐 AirLytics Demo](https://airlytics-ncr.vercel.app/) &nbsp;·&nbsp;
-[🐙 GitHub Repositories](https://github.com/Ayush20-lex?tab=repositories) &nbsp;·&nbsp;
-[💼 LinkedIn](https://www.linkedin.com/in/ayush-kumar-942081322/) &nbsp;·&nbsp;
-[✉️ Contact Email](mailto:ayushkumargbp@gmail.com)
-
-<br />
+<!-- SECONDARY & SUPPORTING NAVIGATION -->
+<p align="center">
+  <a href="https://airlytics-ncr.vercel.app/">🌐 <b>AirLytics Live Demo ↗</b></a> &nbsp;·&nbsp;
+  <a href="https://github.com/Ayush20-lex?tab=repositories">🐙 GitHub</a> &nbsp;·&nbsp;
+  <a href="https://www.linkedin.com/in/ayush-kumar-942081322/">💼 LinkedIn</a> &nbsp;·&nbsp;
+  <a href="mailto:ayushkumargbp@gmail.com">✉️ Email</a>
+</p>
 
 <p align="center">
   <b>Hey, I'm Ayush.</b> Computer Science & Engineering undergraduate based in India.<br />
@@ -30,7 +26,7 @@
 
 </div>
 
-> 📖 **Field Guide:** Prefer reading over walking? You don't have to enter the game! All project field notes, telemetry benchmarks, verified skills, and contact links are fully written out below. If you'd like to explore the interactive 2D world directly, click the **Enter AyushCraft** button above.
+> 📖 **Field Guide:** Prefer reading over walking? You don't have to enter the game! All project field notes, telemetry benchmarks, verified skills, and contact links are fully written out below. If you'd like to explore the interactive 2D world directly, click the **Launch AYUSHCRAFT** link or banner above.
 
 ---
 
@@ -60,22 +56,24 @@ My projects, verified technical skills, and personal lore are mapped across an i
   </a>
 </div>
 
-| Benchmark | Value | Context |
+| Capability / Benchmark | Value | Context & Operational Verification |
 | :--- | :--- | :--- |
-| **Regional Mesh** | **68 CPCB Stations** | Continuous ambient monitoring strictly following 2014 arithmetic rolling rules |
-| **Forecast Horizon** | **72 Hours** | Hourly predictions across PM2.5, PM10, NO2, and dominant pollutant criteria |
-| **Model Accuracy** | **61.12 µg/m³ RMSE** | Validated ML blend baseline evaluated over 4M+ historical observations |
-| **AI Assistant** | **8 Bounded Tools** | Read-only API assistant with traceable tool calls and station citations |
+| **Continuous Mesh** | **68 CPCB Stations** | Ambient monitoring grid following 2014 arithmetic rolling rules (no synthetic interpolation) |
+| **Predictive Horizon** | **72 Hours** | Hourly predictions across PM2.5, PM10, NO2, and dominant pollutant criteria |
+| **Evaluated Benchmark** | **61.12 µg/m³ RMSE** | Documented evaluation scored over 4M+ historical observations (27% better than CAMS) |
+| **Live Deployed Engine** | **Blend Baseline** | Operational on Vercel with archive replay (deep model weights not loaded in serverless instance) |
+| **Bounded AI Assistant** | **8 API Endpoints** | Read-only API assistant with traceable tool calls and monitoring station citations |
 
 - **Core Problem:** Raw telemetry from Central Pollution Control Board (CPCB) stations across Delhi-NCR is frequently fragmented, lagging, and lacks predictive foresight for citizen health decisions.
-- **Architectural Highlights:**
-  - Ingests real-time continuous ambient air-quality data across a regional 68-station grid without synthetic neighbour interpolation.
+- **Architectural Highlights (Repository):**
+  - Continuous ambient air-quality telemetry ingested across a regional 68-station grid without synthetic neighbour interpolation.
+  - Spatial-temporal model architecture pairing ConvLSTM feature extraction with temporal attention and dynamic GNN station adjacency graphs.
   - NASA VIIRS satellite active fire corridor tracking aligned against meteorological wind vector fields.
-  - Traceable AI assistant bounded to verified system endpoints with explicit audit receipts.
+  - Traceable AI assistant bounded to 8 verified system endpoints with explicit audit receipts.
 - **Verified Stack:** `Python` · `FastAPI` · `TypeScript` · `React 19` · `Vite` · `Open-Meteo` · `NASA FIRMS` · `Vercel`
 - **Project Links:**
-  - 🌐 [AirLytics Live Web Application ↗](https://airlytics-ncr.vercel.app/)
-  - 📦 [AirLytics GitHub Repository ↗](https://github.com/Ayush20-lex/airlytics-ncr)
+  - 🌐 [AirLytics Live Web Application ↗](https://airlytics-ncr.vercel.app/) *(Verified Public Service)*
+  - 📦 [AirLytics GitHub Repository ↗](https://github.com/Ayush20-lex/airlytics-ncr) *(Verified Public Repository)*
 
 ---
 

@@ -74,6 +74,8 @@ export class UIManager {
 
     // Global keyboard listener
     window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
       if (e.key === 'Escape') {
         this.closeModal();
       } else if (e.key === 'j' || e.key === 'J') {
@@ -111,6 +113,15 @@ export class UIManager {
   openSign(title, text) {
     audio.playInteract();
     this.activeModal = 'sign';
+
+    // Halt player motion immediately when opening dialog
+    if (this.game) {
+      this.game.input = { up: false, down: false, left: false, right: false };
+      if (this.game.player) {
+        this.game.player.isMoving = false;
+        this.game.player.targetPos = null;
+      }
+    }
 
     this.modalTitle.innerHTML = title;
 
@@ -163,6 +174,15 @@ export class UIManager {
   openModal(data) {
     audio.playInteract();
     this.activeModal = 'info';
+
+    // Halt player motion immediately when opening modal
+    if (this.game) {
+      this.game.input = { up: false, down: false, left: false, right: false };
+      if (this.game.player) {
+        this.game.player.isMoving = false;
+        this.game.player.targetPos = null;
+      }
+    }
 
     this.modalTitle.innerHTML = data.title || 'Information';
 
@@ -244,6 +264,15 @@ export class UIManager {
     audio.playInteract();
     this.activeModal = 'journal';
 
+    // Halt player motion immediately when opening journal
+    if (this.game) {
+      this.game.input = { up: false, down: false, left: false, right: false };
+      if (this.game.player) {
+        this.game.player.isMoving = false;
+        this.game.player.targetPos = null;
+      }
+    }
+
     this.modalTitle.innerHTML = `📖 Explorer’s Journal & Fast Travel`;
 
     this.modalBody.innerHTML = `
@@ -296,7 +325,7 @@ export class UIManager {
       `,
       'tab-airlytics': `
         <h3 class="section-heading">🛰️ AirLytics NCR (Smart India Hackathon SIH26082)</h3>
-        <p>A 72-hour air quality forecast for Delhi NCR designed with absolute data provenance—traceable to individual monitoring stations and CPCB 2014 arithmetic rules.</p>
+        <p>A 72-hour air quality forecast for Delhi-NCR designed with absolute data provenance—traceable to individual monitoring stations and CPCB 2014 arithmetic rolling rules.</p>
         
         <div class="panel-stats-grid">
           <div class="stat-card">
@@ -309,7 +338,7 @@ export class UIManager {
           </div>
           <div class="stat-card">
             <div class="stat-value">61.12 µg/m³</div>
-            <div class="stat-label">RMSE Baseline</div>
+            <div class="stat-label">Evaluated Benchmark RMSE</div>
           </div>
           <div class="stat-card">
             <div class="stat-value">8 Endpoints</div>
@@ -318,10 +347,10 @@ export class UIManager {
         </div>
 
         <ul class="highlights-list">
-          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>68-Station CPCB Mesh:</strong> Strictly audited 24-hour rolling windows with dominant pollutant criteria.</div></li>
-          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>61.12 µg/m³ RMSE:</strong> ML blend baseline evaluated over 4M+ observations across an annual cycle.</div></li>
-          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>API-Grounded AI Assistant:</strong> Strictly bounded to 8 read-only API endpoints with verifiable tool calls.</div></li>
-          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>NASA VIIRS:</strong> Fire corridor tracking aligned with meteorological wind vector transport.</div></li>
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>68-Station CPCB Mesh:</strong> Continuous monitoring following arithmetic rolling rules without synthetic interpolation.</div></li>
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>Documented Evaluation:</strong> 61.12 µg/m³ RMSE ML blend baseline evaluated over 4M+ observations (27% better than CAMS).</div></li>
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>Live Deployed Engine:</strong> Operational on Vercel with blend baseline and archive replay (weights not loaded in serverless runtime).</div></li>
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>API-Grounded AI Assistant:</strong> Strictly bounded to 8 read-only API endpoints with verifiable receipts and citations.</div></li>
         </ul>
 
         <div class="link-buttons">
@@ -437,6 +466,15 @@ export class UIManager {
     this.activeModal = null;
     if (this.modalBackdrop) {
       this.modalBackdrop.classList.remove('open');
+    }
+    // Guarantee player motion is stopped and input is clean when returning to game
+    if (this.game) {
+      this.game.input = { up: false, down: false, left: false, right: false };
+      if (this.game.player) {
+        this.game.player.isMoving = false;
+        this.game.player.targetPos = null;
+      }
+      this.game.canvas?.focus();
     }
   }
 

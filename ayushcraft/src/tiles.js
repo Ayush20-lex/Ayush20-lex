@@ -19,25 +19,44 @@ function createTileCanvas(width = TILE_SIZE, height = TILE_SIZE) {
 export function generateTileAtlas() {
   const tiles = {};
 
-  // 1. GRASS — Natural Meadow Base
+  // 1. GRASS — Natural Meadow Base (Soft, calm blade texturing)
   {
     const { canvas, ctx } = createTileCanvas();
     ctx.fillStyle = '#499a39';
     ctx.fillRect(0, 0, 32, 32);
-    // Darker soil & shade specks
+    // Subtle blade shadows (small 2x2 and 2x3 pixels, no blocky blotches)
     ctx.fillStyle = '#3c852e';
-    ctx.fillRect(4, 6, 4, 4);
-    ctx.fillRect(18, 16, 5, 4);
-    ctx.fillRect(24, 6, 4, 3);
-    ctx.fillRect(8, 22, 5, 4);
-    // Lighter blade highlights
-    ctx.fillStyle = '#5cba48';
-    ctx.fillRect(6, 4, 3, 3);
-    ctx.fillRect(16, 12, 3, 3);
-    ctx.fillRect(2, 18, 3, 3);
-    ctx.fillRect(26, 22, 3, 3);
-    ctx.fillRect(12, 26, 3, 3);
+    ctx.fillRect(6, 8, 2, 3);
+    ctx.fillRect(20, 14, 2, 3);
+    ctx.fillRect(10, 22, 2, 2);
+    ctx.fillRect(26, 26, 2, 2);
+    // Subtle sunlit blade highlights
+    ctx.fillStyle = '#59b544';
+    ctx.fillRect(8, 7, 2, 2);
+    ctx.fillRect(22, 13, 2, 2);
+    ctx.fillRect(12, 21, 2, 2);
+    ctx.fillRect(28, 25, 2, 2);
     tiles['GRASS'] = canvas;
+  }
+
+  // 1A. GRASS_VAR2 — Alternate Subtle Blade Grain (Breaks up tiling repetition)
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#499a39';
+    ctx.fillRect(0, 0, 32, 32);
+    // Offset blade accents
+    ctx.fillStyle = '#3c852e';
+    ctx.fillRect(14, 6, 2, 3);
+    ctx.fillRect(4, 16, 2, 3);
+    ctx.fillRect(24, 18, 2, 2);
+    ctx.fillRect(16, 26, 2, 2);
+    // Highlights
+    ctx.fillStyle = '#59b544';
+    ctx.fillRect(16, 5, 2, 2);
+    ctx.fillRect(6, 15, 2, 2);
+    ctx.fillRect(26, 17, 2, 2);
+    ctx.fillRect(18, 25, 2, 2);
+    tiles['GRASS_VAR2'] = canvas;
   }
 
   // 1B. GRASS_FLOWERS — Wild Meadow Poppies & Buttercups
@@ -46,16 +65,16 @@ export function generateTileAtlas() {
     ctx.drawImage(tiles['GRASS'], 0, 0);
     // Red Poppies
     ctx.fillStyle = '#dc2626';
-    ctx.fillRect(6, 8, 4, 4);
-    ctx.fillRect(22, 18, 4, 4);
+    ctx.fillRect(8, 10, 4, 4);
+    ctx.fillRect(22, 16, 3, 3);
     ctx.fillStyle = '#fef08a'; // Pollen center
-    ctx.fillRect(7, 9, 2, 2);
-    ctx.fillRect(23, 19, 2, 2);
+    ctx.fillRect(9, 11, 2, 2);
+    ctx.fillRect(23, 17, 1, 1);
     // Yellow Buttercup
     ctx.fillStyle = '#eab308';
-    ctx.fillRect(14, 22, 4, 4);
+    ctx.fillRect(15, 22, 3, 3);
     ctx.fillStyle = '#f97316';
-    ctx.fillRect(15, 23, 2, 2);
+    ctx.fillRect(16, 23, 1, 1);
     tiles['GRASS_FLOWERS'] = canvas;
   }
 
@@ -65,29 +84,27 @@ export function generateTileAtlas() {
     ctx.drawImage(tiles['GRASS'], 0, 0);
     // White Daisies
     ctx.fillStyle = '#f8fafc';
-    ctx.fillRect(8, 14, 4, 4);
-    ctx.fillRect(20, 6, 4, 4);
-    ctx.fillRect(24, 24, 3, 3);
+    ctx.fillRect(10, 12, 4, 4);
+    ctx.fillRect(22, 8, 3, 3);
     ctx.fillStyle = '#f59e0b'; // Gold center
-    ctx.fillRect(9, 15, 2, 2);
-    ctx.fillRect(21, 7, 2, 2);
-    ctx.fillRect(25, 25, 1, 1);
+    ctx.fillRect(11, 13, 2, 2);
+    ctx.fillRect(23, 9, 1, 1);
     tiles['GRASS_FLOWERS_WHITE'] = canvas;
   }
 
-  // 1D. GRASS_TALL — Bushy Grass Tufts
+  // 1D. GRASS_TALL — Bushy Grass Reeds & Tufts
   {
     const { canvas, ctx } = createTileCanvas();
     ctx.drawImage(tiles['GRASS'], 0, 0);
     ctx.fillStyle = '#2d6a22';
-    // Tall blades
-    ctx.fillRect(10, 10, 2, 12);
-    ctx.fillRect(14, 8, 2, 14);
-    ctx.fillRect(18, 11, 2, 11);
+    // Tall graceful blades
+    ctx.fillRect(11, 12, 2, 10);
+    ctx.fillRect(15, 9, 2, 13);
+    ctx.fillRect(19, 13, 2, 9);
     ctx.fillStyle = '#6ee755';
-    ctx.fillRect(11, 8, 1, 6);
-    ctx.fillRect(15, 6, 1, 7);
-    ctx.fillRect(19, 9, 1, 5);
+    ctx.fillRect(12, 10, 1, 5);
+    ctx.fillRect(16, 7, 1, 6);
+    ctx.fillRect(20, 11, 1, 4);
     tiles['GRASS_TALL'] = canvas;
   }
 
@@ -97,15 +114,15 @@ export function generateTileAtlas() {
     ctx.drawImage(tiles['GRASS'], 0, 0);
     // River pebbles
     ctx.fillStyle = '#64748b';
-    ctx.fillRect(8, 16, 5, 4);
-    ctx.fillRect(20, 10, 4, 3);
+    ctx.fillRect(9, 16, 4, 3);
+    ctx.fillRect(21, 12, 3, 2);
     ctx.fillStyle = '#94a3b8';
-    ctx.fillRect(9, 16, 3, 2);
-    ctx.fillRect(21, 10, 2, 1);
+    ctx.fillRect(10, 16, 2, 1);
+    ctx.fillRect(22, 12, 1, 1);
     tiles['GRASS_PEBBLE'] = canvas;
   }
 
-  // 1F. GRASS_MOSSY — Shaded Forest Floor
+  // 1F. GRASS_MOSSY — Shaded Forest Floor & Riverbank Turf
   {
     const { canvas, ctx } = createTileCanvas();
     ctx.fillStyle = '#37772b';
@@ -115,6 +132,7 @@ export function generateTileAtlas() {
     ctx.fillRect(16, 14, 14, 12);
     ctx.fillStyle = '#4d993e';
     ctx.fillRect(6, 18, 6, 6);
+    ctx.fillRect(20, 6, 6, 5);
     tiles['GRASS_MOSSY'] = canvas;
   }
 
@@ -370,6 +388,122 @@ export function generateTileAtlas() {
     tiles['SAVEROOM_RUG'] = canvas;
   }
 
+  // 6E. OBSERVATORY_ENTRANCE — Stately Stone Research Portal
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#1e2438';
+    ctx.fillRect(0, 0, 32, 32);
+    // Heavy chiseled stone frame lintel / jambs
+    ctx.fillStyle = '#3a3d4a';
+    ctx.fillRect(0, 0, 32, 4);
+    ctx.fillRect(0, 28, 32, 4);
+    // Polished brass threshold track
+    ctx.fillStyle = '#d97706';
+    ctx.fillRect(0, 14, 32, 4);
+    ctx.fillStyle = '#fbbf24';
+    ctx.fillRect(4, 15, 24, 2);
+    // Stately brass corner studs
+    ctx.fillStyle = '#f59e0b';
+    ctx.fillRect(2, 6, 3, 3);
+    ctx.fillRect(2, 23, 3, 3);
+    ctx.fillRect(27, 6, 3, 3);
+    ctx.fillRect(27, 23, 3, 3);
+    // Cyan optical glint
+    ctx.fillStyle = '#38bdf8';
+    ctx.fillRect(15, 15, 2, 2);
+    tiles['OBSERVATORY_ENTRANCE'] = canvas;
+  }
+
+  // 6F. WORKSHOP_ENTRANCE — Heavy Carved Timber Portal with Iron Brackets
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#9e6442';
+    ctx.fillRect(0, 0, 32, 32);
+    // Heavy oak doorframe jambs
+    ctx.fillStyle = '#452613';
+    ctx.fillRect(0, 0, 32, 5);
+    ctx.fillRect(0, 27, 32, 5);
+    // Forged iron reinforcement brackets
+    ctx.fillStyle = '#1e293b';
+    ctx.fillRect(0, 2, 6, 6);
+    ctx.fillRect(0, 24, 6, 6);
+    ctx.fillRect(26, 2, 6, 6);
+    ctx.fillRect(26, 24, 6, 6);
+    // Warm cedar threshold plate
+    ctx.fillStyle = '#b45309';
+    ctx.fillRect(4, 13, 24, 6);
+    ctx.fillStyle = '#fef3c7';
+    ctx.fillRect(6, 15, 20, 2);
+    tiles['WORKSHOP_ENTRANCE'] = canvas;
+  }
+
+  // 6G. REDSTONE_ENTRANCE — Fortified Basalt Portal with Active Conduit Threshold
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#1c1c24';
+    ctx.fillRect(0, 0, 32, 32);
+    // Reinforced stone brick masonry jambs
+    ctx.fillStyle = '#343640';
+    ctx.fillRect(0, 0, 32, 5);
+    ctx.fillRect(0, 27, 32, 5);
+    // Heavy iron threshold bevels
+    ctx.fillStyle = '#4b5563';
+    ctx.fillRect(0, 5, 4, 22);
+    ctx.fillRect(28, 5, 4, 22);
+    // Active glowing redstone conduit strip embedded in sill
+    ctx.fillStyle = 'rgba(239, 68, 68, 0.35)';
+    ctx.fillRect(4, 11, 24, 10);
+    ctx.fillStyle = '#ef4444';
+    ctx.fillRect(0, 14, 32, 4);
+    ctx.fillStyle = '#fecaca';
+    ctx.fillRect(8, 15, 16, 2);
+    tiles['REDSTONE_ENTRANCE'] = canvas;
+  }
+
+  // 6H. SAVEROOM_ENTRANCE — Sanctuary Stone Arch with Velvet Carpet Threshold
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#2d2e38';
+    ctx.fillRect(0, 0, 32, 32);
+    // Cobblestone arch jambs
+    ctx.fillStyle = '#3c3d47';
+    ctx.fillRect(0, 0, 32, 4);
+    ctx.fillRect(0, 28, 32, 4);
+    // Royal velvet carpet runner spilling through the entrance
+    ctx.fillStyle = '#1e3a8a';
+    ctx.fillRect(0, 6, 32, 20);
+    // Embroidered gold borders on the velvet runner
+    ctx.fillStyle = '#f59e0b';
+    ctx.fillRect(0, 6, 32, 2);
+    ctx.fillRect(0, 24, 32, 2);
+    // Silver Hallownest diamond crest
+    ctx.fillStyle = '#93c5fd';
+    ctx.fillRect(14, 14, 4, 4);
+    // Warm lantern light glow
+    ctx.fillStyle = 'rgba(254, 240, 138, 0.15)';
+    ctx.fillRect(0, 0, 32, 32);
+    tiles['SAVEROOM_ENTRANCE'] = canvas;
+  }
+
+  // 6I. PORTAL_GATE — Runic Obsidian Gate Threshold
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#646675';
+    ctx.fillRect(0, 0, 32, 32);
+    // Obsidian gate pillars on borders
+    ctx.fillStyle = '#141121';
+    ctx.fillRect(0, 0, 6, 32);
+    ctx.fillRect(26, 0, 6, 32);
+    // Interdimensional rune inlay in cobblestone
+    ctx.fillStyle = '#6b3ea8';
+    ctx.fillRect(8, 12, 16, 8);
+    ctx.fillStyle = '#a855f7';
+    ctx.fillRect(11, 14, 10, 4);
+    ctx.fillStyle = '#e9d5ff';
+    ctx.fillRect(15, 15, 2, 2);
+    tiles['PORTAL_GATE'] = canvas;
+  }
+
   // 7. OBSIDIAN — Nether Portal Framing
   {
     const { canvas, ctx } = createTileCanvas();
@@ -458,6 +592,34 @@ export function generateTileAtlas() {
     ctx.fillRect(20, 38, 4, 2);
     ctx.fillRect(40, 38, 4, 2);
     tiles['TREE_PINE'] = canvas;
+  }
+
+  // 9C. TREE BIRCH TOP (Canopy 64x64 — Varied oval silhouette with lighter foliage)
+  {
+    const { canvas, ctx } = createTileCanvas(64, 64);
+    // Base shadow
+    ctx.fillStyle = '#17471b';
+    ctx.beginPath();
+    ctx.ellipse(32, 33, 22, 26, 0, 0, Math.PI * 2);
+    ctx.fill();
+    // Mid foliage body
+    ctx.fillStyle = '#2f8736';
+    ctx.beginPath();
+    ctx.ellipse(32, 29, 20, 24, 0, 0, Math.PI * 2);
+    ctx.fill();
+    // Clustered light birch leaf highlights
+    ctx.fillStyle = '#52ba5a';
+    ctx.beginPath();
+    ctx.arc(26, 20, 10, 0, Math.PI * 2);
+    ctx.arc(38, 22, 9, 0, Math.PI * 2);
+    ctx.arc(32, 34, 10, 0, Math.PI * 2);
+    ctx.fill();
+    // Sunlit bright tips
+    ctx.fillStyle = '#82ee8a';
+    ctx.fillRect(22, 16, 5, 3);
+    ctx.fillRect(35, 18, 5, 3);
+    ctx.fillRect(28, 27, 4, 3);
+    tiles['TREE_BIRCH'] = canvas;
   }
 
   // 10. TREE TRUNK

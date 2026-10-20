@@ -23,25 +23,44 @@ function createTileCanvas(width = TILE_SIZE, height = TILE_SIZE) {
 function generateTileAtlas() {
   const tiles = {};
 
-  // 1. GRASS — Natural Meadow Base
+  // 1. GRASS — Natural Meadow Base (Soft, calm blade texturing)
   {
     const { canvas, ctx } = createTileCanvas();
     ctx.fillStyle = '#499a39';
     ctx.fillRect(0, 0, 32, 32);
-    // Darker soil & shade specks
+    // Subtle blade shadows (small 2x2 and 2x3 pixels, no blocky blotches)
     ctx.fillStyle = '#3c852e';
-    ctx.fillRect(4, 6, 4, 4);
-    ctx.fillRect(18, 16, 5, 4);
-    ctx.fillRect(24, 6, 4, 3);
-    ctx.fillRect(8, 22, 5, 4);
-    // Lighter blade highlights
-    ctx.fillStyle = '#5cba48';
-    ctx.fillRect(6, 4, 3, 3);
-    ctx.fillRect(16, 12, 3, 3);
-    ctx.fillRect(2, 18, 3, 3);
-    ctx.fillRect(26, 22, 3, 3);
-    ctx.fillRect(12, 26, 3, 3);
+    ctx.fillRect(6, 8, 2, 3);
+    ctx.fillRect(20, 14, 2, 3);
+    ctx.fillRect(10, 22, 2, 2);
+    ctx.fillRect(26, 26, 2, 2);
+    // Subtle sunlit blade highlights
+    ctx.fillStyle = '#59b544';
+    ctx.fillRect(8, 7, 2, 2);
+    ctx.fillRect(22, 13, 2, 2);
+    ctx.fillRect(12, 21, 2, 2);
+    ctx.fillRect(28, 25, 2, 2);
     tiles['GRASS'] = canvas;
+  }
+
+  // 1A. GRASS_VAR2 — Alternate Subtle Blade Grain (Breaks up tiling repetition)
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#499a39';
+    ctx.fillRect(0, 0, 32, 32);
+    // Offset blade accents
+    ctx.fillStyle = '#3c852e';
+    ctx.fillRect(14, 6, 2, 3);
+    ctx.fillRect(4, 16, 2, 3);
+    ctx.fillRect(24, 18, 2, 2);
+    ctx.fillRect(16, 26, 2, 2);
+    // Highlights
+    ctx.fillStyle = '#59b544';
+    ctx.fillRect(16, 5, 2, 2);
+    ctx.fillRect(6, 15, 2, 2);
+    ctx.fillRect(26, 17, 2, 2);
+    ctx.fillRect(18, 25, 2, 2);
+    tiles['GRASS_VAR2'] = canvas;
   }
 
   // 1B. GRASS_FLOWERS — Wild Meadow Poppies & Buttercups
@@ -50,16 +69,16 @@ function generateTileAtlas() {
     ctx.drawImage(tiles['GRASS'], 0, 0);
     // Red Poppies
     ctx.fillStyle = '#dc2626';
-    ctx.fillRect(6, 8, 4, 4);
-    ctx.fillRect(22, 18, 4, 4);
+    ctx.fillRect(8, 10, 4, 4);
+    ctx.fillRect(22, 16, 3, 3);
     ctx.fillStyle = '#fef08a'; // Pollen center
-    ctx.fillRect(7, 9, 2, 2);
-    ctx.fillRect(23, 19, 2, 2);
+    ctx.fillRect(9, 11, 2, 2);
+    ctx.fillRect(23, 17, 1, 1);
     // Yellow Buttercup
     ctx.fillStyle = '#eab308';
-    ctx.fillRect(14, 22, 4, 4);
+    ctx.fillRect(15, 22, 3, 3);
     ctx.fillStyle = '#f97316';
-    ctx.fillRect(15, 23, 2, 2);
+    ctx.fillRect(16, 23, 1, 1);
     tiles['GRASS_FLOWERS'] = canvas;
   }
 
@@ -69,29 +88,27 @@ function generateTileAtlas() {
     ctx.drawImage(tiles['GRASS'], 0, 0);
     // White Daisies
     ctx.fillStyle = '#f8fafc';
-    ctx.fillRect(8, 14, 4, 4);
-    ctx.fillRect(20, 6, 4, 4);
-    ctx.fillRect(24, 24, 3, 3);
+    ctx.fillRect(10, 12, 4, 4);
+    ctx.fillRect(22, 8, 3, 3);
     ctx.fillStyle = '#f59e0b'; // Gold center
-    ctx.fillRect(9, 15, 2, 2);
-    ctx.fillRect(21, 7, 2, 2);
-    ctx.fillRect(25, 25, 1, 1);
+    ctx.fillRect(11, 13, 2, 2);
+    ctx.fillRect(23, 9, 1, 1);
     tiles['GRASS_FLOWERS_WHITE'] = canvas;
   }
 
-  // 1D. GRASS_TALL — Bushy Grass Tufts
+  // 1D. GRASS_TALL — Bushy Grass Reeds & Tufts
   {
     const { canvas, ctx } = createTileCanvas();
     ctx.drawImage(tiles['GRASS'], 0, 0);
     ctx.fillStyle = '#2d6a22';
-    // Tall blades
-    ctx.fillRect(10, 10, 2, 12);
-    ctx.fillRect(14, 8, 2, 14);
-    ctx.fillRect(18, 11, 2, 11);
+    // Tall graceful blades
+    ctx.fillRect(11, 12, 2, 10);
+    ctx.fillRect(15, 9, 2, 13);
+    ctx.fillRect(19, 13, 2, 9);
     ctx.fillStyle = '#6ee755';
-    ctx.fillRect(11, 8, 1, 6);
-    ctx.fillRect(15, 6, 1, 7);
-    ctx.fillRect(19, 9, 1, 5);
+    ctx.fillRect(12, 10, 1, 5);
+    ctx.fillRect(16, 7, 1, 6);
+    ctx.fillRect(20, 11, 1, 4);
     tiles['GRASS_TALL'] = canvas;
   }
 
@@ -101,15 +118,15 @@ function generateTileAtlas() {
     ctx.drawImage(tiles['GRASS'], 0, 0);
     // River pebbles
     ctx.fillStyle = '#64748b';
-    ctx.fillRect(8, 16, 5, 4);
-    ctx.fillRect(20, 10, 4, 3);
+    ctx.fillRect(9, 16, 4, 3);
+    ctx.fillRect(21, 12, 3, 2);
     ctx.fillStyle = '#94a3b8';
-    ctx.fillRect(9, 16, 3, 2);
-    ctx.fillRect(21, 10, 2, 1);
+    ctx.fillRect(10, 16, 2, 1);
+    ctx.fillRect(22, 12, 1, 1);
     tiles['GRASS_PEBBLE'] = canvas;
   }
 
-  // 1F. GRASS_MOSSY — Shaded Forest Floor
+  // 1F. GRASS_MOSSY — Shaded Forest Floor & Riverbank Turf
   {
     const { canvas, ctx } = createTileCanvas();
     ctx.fillStyle = '#37772b';
@@ -119,6 +136,7 @@ function generateTileAtlas() {
     ctx.fillRect(16, 14, 14, 12);
     ctx.fillStyle = '#4d993e';
     ctx.fillRect(6, 18, 6, 6);
+    ctx.fillRect(20, 6, 6, 5);
     tiles['GRASS_MOSSY'] = canvas;
   }
 
@@ -374,6 +392,122 @@ function generateTileAtlas() {
     tiles['SAVEROOM_RUG'] = canvas;
   }
 
+  // 6E. OBSERVATORY_ENTRANCE — Stately Stone Research Portal
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#1e2438';
+    ctx.fillRect(0, 0, 32, 32);
+    // Heavy chiseled stone frame lintel / jambs
+    ctx.fillStyle = '#3a3d4a';
+    ctx.fillRect(0, 0, 32, 4);
+    ctx.fillRect(0, 28, 32, 4);
+    // Polished brass threshold track
+    ctx.fillStyle = '#d97706';
+    ctx.fillRect(0, 14, 32, 4);
+    ctx.fillStyle = '#fbbf24';
+    ctx.fillRect(4, 15, 24, 2);
+    // Stately brass corner studs
+    ctx.fillStyle = '#f59e0b';
+    ctx.fillRect(2, 6, 3, 3);
+    ctx.fillRect(2, 23, 3, 3);
+    ctx.fillRect(27, 6, 3, 3);
+    ctx.fillRect(27, 23, 3, 3);
+    // Cyan optical glint
+    ctx.fillStyle = '#38bdf8';
+    ctx.fillRect(15, 15, 2, 2);
+    tiles['OBSERVATORY_ENTRANCE'] = canvas;
+  }
+
+  // 6F. WORKSHOP_ENTRANCE — Heavy Carved Timber Portal with Iron Brackets
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#9e6442';
+    ctx.fillRect(0, 0, 32, 32);
+    // Heavy oak doorframe jambs
+    ctx.fillStyle = '#452613';
+    ctx.fillRect(0, 0, 32, 5);
+    ctx.fillRect(0, 27, 32, 5);
+    // Forged iron reinforcement brackets
+    ctx.fillStyle = '#1e293b';
+    ctx.fillRect(0, 2, 6, 6);
+    ctx.fillRect(0, 24, 6, 6);
+    ctx.fillRect(26, 2, 6, 6);
+    ctx.fillRect(26, 24, 6, 6);
+    // Warm cedar threshold plate
+    ctx.fillStyle = '#b45309';
+    ctx.fillRect(4, 13, 24, 6);
+    ctx.fillStyle = '#fef3c7';
+    ctx.fillRect(6, 15, 20, 2);
+    tiles['WORKSHOP_ENTRANCE'] = canvas;
+  }
+
+  // 6G. REDSTONE_ENTRANCE — Fortified Basalt Portal with Active Conduit Threshold
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#1c1c24';
+    ctx.fillRect(0, 0, 32, 32);
+    // Reinforced stone brick masonry jambs
+    ctx.fillStyle = '#343640';
+    ctx.fillRect(0, 0, 32, 5);
+    ctx.fillRect(0, 27, 32, 5);
+    // Heavy iron threshold bevels
+    ctx.fillStyle = '#4b5563';
+    ctx.fillRect(0, 5, 4, 22);
+    ctx.fillRect(28, 5, 4, 22);
+    // Active glowing redstone conduit strip embedded in sill
+    ctx.fillStyle = 'rgba(239, 68, 68, 0.35)';
+    ctx.fillRect(4, 11, 24, 10);
+    ctx.fillStyle = '#ef4444';
+    ctx.fillRect(0, 14, 32, 4);
+    ctx.fillStyle = '#fecaca';
+    ctx.fillRect(8, 15, 16, 2);
+    tiles['REDSTONE_ENTRANCE'] = canvas;
+  }
+
+  // 6H. SAVEROOM_ENTRANCE — Sanctuary Stone Arch with Velvet Carpet Threshold
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#2d2e38';
+    ctx.fillRect(0, 0, 32, 32);
+    // Cobblestone arch jambs
+    ctx.fillStyle = '#3c3d47';
+    ctx.fillRect(0, 0, 32, 4);
+    ctx.fillRect(0, 28, 32, 4);
+    // Royal velvet carpet runner spilling through the entrance
+    ctx.fillStyle = '#1e3a8a';
+    ctx.fillRect(0, 6, 32, 20);
+    // Embroidered gold borders on the velvet runner
+    ctx.fillStyle = '#f59e0b';
+    ctx.fillRect(0, 6, 32, 2);
+    ctx.fillRect(0, 24, 32, 2);
+    // Silver Hallownest diamond crest
+    ctx.fillStyle = '#93c5fd';
+    ctx.fillRect(14, 14, 4, 4);
+    // Warm lantern light glow
+    ctx.fillStyle = 'rgba(254, 240, 138, 0.15)';
+    ctx.fillRect(0, 0, 32, 32);
+    tiles['SAVEROOM_ENTRANCE'] = canvas;
+  }
+
+  // 6I. PORTAL_GATE — Runic Obsidian Gate Threshold
+  {
+    const { canvas, ctx } = createTileCanvas();
+    ctx.fillStyle = '#646675';
+    ctx.fillRect(0, 0, 32, 32);
+    // Obsidian gate pillars on borders
+    ctx.fillStyle = '#141121';
+    ctx.fillRect(0, 0, 6, 32);
+    ctx.fillRect(26, 0, 6, 32);
+    // Interdimensional rune inlay in cobblestone
+    ctx.fillStyle = '#6b3ea8';
+    ctx.fillRect(8, 12, 16, 8);
+    ctx.fillStyle = '#a855f7';
+    ctx.fillRect(11, 14, 10, 4);
+    ctx.fillStyle = '#e9d5ff';
+    ctx.fillRect(15, 15, 2, 2);
+    tiles['PORTAL_GATE'] = canvas;
+  }
+
   // 7. OBSIDIAN — Nether Portal Framing
   {
     const { canvas, ctx } = createTileCanvas();
@@ -462,6 +596,34 @@ function generateTileAtlas() {
     ctx.fillRect(20, 38, 4, 2);
     ctx.fillRect(40, 38, 4, 2);
     tiles['TREE_PINE'] = canvas;
+  }
+
+  // 9C. TREE BIRCH TOP (Canopy 64x64 — Varied oval silhouette with lighter foliage)
+  {
+    const { canvas, ctx } = createTileCanvas(64, 64);
+    // Base shadow
+    ctx.fillStyle = '#17471b';
+    ctx.beginPath();
+    ctx.ellipse(32, 33, 22, 26, 0, 0, Math.PI * 2);
+    ctx.fill();
+    // Mid foliage body
+    ctx.fillStyle = '#2f8736';
+    ctx.beginPath();
+    ctx.ellipse(32, 29, 20, 24, 0, 0, Math.PI * 2);
+    ctx.fill();
+    // Clustered light birch leaf highlights
+    ctx.fillStyle = '#52ba5a';
+    ctx.beginPath();
+    ctx.arc(26, 20, 10, 0, Math.PI * 2);
+    ctx.arc(38, 22, 9, 0, Math.PI * 2);
+    ctx.arc(32, 34, 10, 0, Math.PI * 2);
+    ctx.fill();
+    // Sunlit bright tips
+    ctx.fillStyle = '#82ee8a';
+    ctx.fillRect(22, 16, 5, 3);
+    ctx.fillRect(35, 18, 5, 3);
+    ctx.fillRect(28, 27, 4, 3);
+    tiles['TREE_BIRCH'] = canvas;
   }
 
   // 10. TREE TRUNK
@@ -1061,22 +1223,12 @@ function buildWorldData() {
     baseMap[y] = [];
     collisionMap[y] = [];
     for (let x = 0; x < MAP_WIDTH; x++) {
-      // Natural grass variation
-      const r = random();
-      if (r < 0.62) {
-        baseMap[y][x] = 'GRASS';
-      } else if (r < 0.74) {
-        baseMap[y][x] = 'GRASS_FLOWERS';
-      } else if (r < 0.83) {
-        baseMap[y][x] = 'GRASS_FLOWERS_WHITE';
-      } else if (r < 0.92) {
-        baseMap[y][x] = 'GRASS_TALL';
-      } else {
-        baseMap[y][x] = 'GRASS_PEBBLE';
-      }
+      // Coherent meadow base with subtle deterministic micro-variation
+      // Alternating GRASS and GRASS_VAR2 prevents repetitive wallpaper grid
+      baseMap[y][x] = ((x * 7 + y * 13) % 5 === 0) ? 'GRASS_VAR2' : 'GRASS';
       collisionMap[y][x] = false;
 
-      // Outer world boundary walls (Stone Brick with moss)
+      // Outer world boundary walls (Stone Brick with weathered mossy accents)
       if (x === 0 || x === MAP_WIDTH - 1 || y === 0 || y === MAP_HEIGHT - 1) {
         baseMap[y][x] = (x + y) % 3 === 0 ? 'COBBLE_MOSSY' : 'STONE_BRICK';
         collisionMap[y][x] = true;
@@ -1084,7 +1236,7 @@ function buildWorldData() {
     }
   }
 
-  // --- 1. NATURAL WINDING RIVER & SHORE ---
+  // --- 1. NATURAL WINDING RIVER & SHORELINE TRANSITIONS ---
   // A scenic winding river separating the western sanctuaries from spawn
   const riverTiles = [
     // North source
@@ -1109,24 +1261,87 @@ function buildWorldData() {
     }
   });
 
-  // Shoreline sand/grass edges alongside the river
+  // Shoreline organic riverbank transitions (mossy turf, reeds, and river pebbles)
   riverTiles.forEach(([rx, ry]) => {
-    if (rx > 1 && baseMap[ry][rx - 1] === 'GRASS' && random() > 0.4) {
-      baseMap[ry][rx - 1] = 'GRASS_MOSSY';
+    // West bank
+    if (rx > 1 && (baseMap[ry][rx - 1] === 'GRASS' || baseMap[ry][rx - 1] === 'GRASS_VAR2')) {
+      const bankR = (rx * 11 + ry * 17) % 7;
+      if (bankR === 0 || bankR === 1) {
+        baseMap[ry][rx - 1] = 'GRASS_TALL'; // River reeds
+      } else if (bankR === 2 || bankR === 3) {
+        baseMap[ry][rx - 1] = 'GRASS_MOSSY'; // Lush shaded turf
+      } else if (bankR === 4) {
+        baseMap[ry][rx - 1] = 'GRASS_PEBBLE'; // Rounded river stone
+      }
     }
-    if (rx < MAP_WIDTH - 2 && baseMap[ry][rx + 1] === 'GRASS' && random() > 0.4) {
-      baseMap[ry][rx + 1] = 'GRASS_MOSSY';
+    // East bank
+    if (rx < MAP_WIDTH - 2 && (baseMap[ry][rx + 1] === 'GRASS' || baseMap[ry][rx + 1] === 'GRASS_VAR2')) {
+      const bankR = (rx * 13 + ry * 19) % 7;
+      if (bankR === 0 || bankR === 1) {
+        baseMap[ry][rx + 1] = 'GRASS_MOSSY';
+      } else if (bankR === 2) {
+        baseMap[ry][rx + 1] = 'GRASS_TALL';
+      } else if (bankR === 3) {
+        baseMap[ry][rx + 1] = 'GRASS_PEBBLE';
+      }
+    }
+  });
+
+  // Tall grass reeds along outer perimeter walls (where grass grows tall against masonry)
+  for (let x = 1; x < MAP_WIDTH - 1; x++) {
+    if (baseMap[1][x] === 'GRASS' && x % 4 === 0) baseMap[1][x] = 'GRASS_TALL';
+    if (baseMap[MAP_HEIGHT - 2][x] === 'GRASS' && x % 4 === 2) baseMap[MAP_HEIGHT - 2][x] = 'GRASS_TALL';
+  }
+  for (let y = 1; y < MAP_HEIGHT - 1; y++) {
+    if (baseMap[y][1] === 'GRASS' && y % 4 === 1) baseMap[y][1] = 'GRASS_TALL';
+    if (baseMap[y][MAP_WIDTH - 2] === 'GRASS' && y % 4 === 3) baseMap[y][MAP_WIDTH - 2] = 'GRASS_TALL';
+  }
+
+  // --- INTENTIONAL SCENIC FLOWER CLUSTERS ---
+  // Cluster A: Spawn Meadow Garden (Framing the fountain plaza and bench)
+  const spawnGarden = [
+    [16, 15, 'GRASS_FLOWERS'], [21, 15, 'GRASS_FLOWERS_WHITE'],
+    [16, 21, 'GRASS_FLOWERS_WHITE'], [21, 21, 'GRASS_FLOWERS'],
+    [15, 17, 'GRASS_FLOWERS'], [22, 17, 'GRASS_FLOWERS_WHITE'],
+    [16, 16, 'GRASS_TALL'], [21, 16, 'GRASS_TALL']
+  ];
+  spawnGarden.forEach(([gx, gy, type]) => {
+    if (baseMap[gy][gx] === 'GRASS' || baseMap[gy][gx] === 'GRASS_VAR2') {
+      baseMap[gy][gx] = type;
+    }
+  });
+
+  // Cluster B: Scenic Riverbank Meadow Bend (West of river, near y: 10-14)
+  const riverMeadow = [
+    [11, 11, 'GRASS_FLOWERS'], [10, 12, 'GRASS_FLOWERS_WHITE'],
+    [11, 13, 'GRASS_FLOWERS'], [12, 11, 'GRASS_TALL'],
+    [10, 14, 'GRASS_PEBBLE']
+  ];
+  riverMeadow.forEach(([gx, gy, type]) => {
+    if (baseMap[gy][gx] === 'GRASS' || baseMap[gy][gx] === 'GRASS_VAR2') {
+      baseMap[gy][gx] = type;
+    }
+  });
+
+  // Cluster C: Observatory Meadow Verge (North-West meadow corner)
+  const obsMeadow = [
+    [10, 10, 'GRASS_FLOWERS_WHITE'], [9, 11, 'GRASS_FLOWERS'],
+    [12, 10, 'GRASS_TALL'], [8, 11, 'GRASS_MOSSY']
+  ];
+  obsMeadow.forEach(([gx, gy, type]) => {
+    if (baseMap[gy][gx] === 'GRASS' || baseMap[gy][gx] === 'GRASS_VAR2') {
+      baseMap[gy][gx] = type;
     }
   });
 
   // --- 2. HIGHWAYS, COBBLE PATHS & CROSSROADS ---
-  // Central North-South highway (connecting Nether Gate to Spawn)
+  // Central North-South highway (connecting Nether Gate Citadel to Spawn & South)
   for (let y = 6; y <= 21; y++) {
     baseMap[y][18] = 'DIRT_PATH';
     baseMap[y][19] = 'DIRT_PATH';
   }
 
-  // East-West central trail crossing the bridge
+  // East-West central highway crossing the footbridge
   for (let x = 8; x <= 28; x++) {
     if (x === 13) continue; // Kept as WOOD_BRIDGE
     baseMap[18][x] = 'DIRT_PATH';
@@ -1140,20 +1355,28 @@ function buildWorldData() {
     }
   }
 
-  // NW path branch towards Observatory
+  // NW path branch: Connects Spawn crossroads to Observatory approach
   for (let y = 10; y <= 16; y++) {
     baseMap[y][15] = 'COBBLESTONE';
   }
-  for (let x = 11; x <= 15; x++) {
+  for (let x = 12; x <= 15; x++) {
     baseMap[10][x] = 'COBBLESTONE';
   }
+  // Dedicated Observatory Approach Avenue leading directly to East entrance (11, 6..7)
+  for (let y = 6; y <= 10; y++) {
+    baseMap[y][12] = 'COBBLESTONE';
+  }
 
-  // NE path branch towards AI Workshop
+  // NE path branch: Connects Spawn crossroads to AI Workshop approach
   for (let y = 10; y <= 16; y++) {
     baseMap[y][22] = 'COBBLESTONE';
   }
-  for (let x = 22; x <= 26; x++) {
+  for (let x = 22; x <= 25; x++) {
     baseMap[10][x] = 'COBBLESTONE';
+  }
+  // Dedicated Workshop Approach Avenue leading directly to West entrance (26, 6..7)
+  for (let y = 6; y <= 10; y++) {
+    baseMap[y][25] = 'COBBLESTONE';
   }
 
   // --- 3. THE OBSERVATORY (NW: x: 3 to 11, y: 3 to 9) ---
@@ -1162,16 +1385,16 @@ function buildWorldData() {
     for (let ox = 3; ox <= 11; ox++) {
       if (oy === 3 || oy === 9 || ox === 3 || ox === 11) {
         baseMap[oy][ox] = (ox + oy) % 2 === 0 ? 'STONE_BRICK' : 'COBBLE_MOSSY';
-        collisionMap[oy][ox] = true;
+        collisionMap[oy][ox] = true; // Continuous solid perimeter walls
       } else {
         baseMap[oy][ox] = 'OBSERVATORY_FLOOR';
       }
     }
   }
-  // Observatory doorway on East wall (facing the road)
-  baseMap[6][11] = 'COBBLESTONE';
+  // Purpose-designed Observatory Stately Stone Portal on East wall (facing approach avenue at x: 12)
+  baseMap[6][11] = 'OBSERVATORY_ENTRANCE';
   collisionMap[6][11] = false;
-  baseMap[7][11] = 'COBBLESTONE';
+  baseMap[7][11] = 'OBSERVATORY_ENTRANCE';
   collisionMap[7][11] = false;
 
   // --- 4. THE AI WORKSHOP (NE: x: 26 to 34, y: 3 to 9) ---
@@ -1180,16 +1403,16 @@ function buildWorldData() {
     for (let wx = 26; wx <= 34; wx++) {
       if (wy === 3 || wy === 9 || wx === 26 || wx === 34) {
         baseMap[wy][wx] = 'WOOD_PLANKS';
-        collisionMap[wy][wx] = true;
+        collisionMap[wy][wx] = true; // Continuous solid perimeter walls
       } else {
         baseMap[wy][wx] = 'WORKSHOP_FLOOR';
       }
     }
   }
-  // Workshop doorway on West wall (facing the road)
-  baseMap[6][26] = 'WOOD_PLANKS';
+  // Purpose-designed AI Workshop Timber Portal on West wall (facing approach avenue at x: 25)
+  baseMap[6][26] = 'WORKSHOP_ENTRANCE';
   collisionMap[6][26] = false;
-  baseMap[7][26] = 'WOOD_PLANKS';
+  baseMap[7][26] = 'WORKSHOP_ENTRANCE';
   collisionMap[7][26] = false;
 
   // --- 5. THE SAVE ROOM (SW: x: 3 to 11, y: 16 to 23) ---
@@ -1198,7 +1421,7 @@ function buildWorldData() {
     for (let sx = 3; sx <= 11; sx++) {
       if (sy === 16 || sy === 23 || sx === 3 || sx === 11) {
         baseMap[sy][sx] = 'COBBLESTONE';
-        collisionMap[sy][sx] = true;
+        collisionMap[sy][sx] = true; // Continuous solid perimeter walls
       } else {
         // Velvet runner rug down the center of the room
         if (sx >= 6 && sx <= 8 && sy >= 18 && sy <= 21) {
@@ -1209,11 +1432,14 @@ function buildWorldData() {
       }
     }
   }
-  // Save Room doorway on East wall
-  baseMap[19][11] = 'COBBLESTONE';
+  // Purpose-designed Sanctuary Arch on East wall (aligned with highway at y: 18..19)
+  baseMap[18][11] = 'SAVEROOM_ENTRANCE';
+  collisionMap[18][11] = false;
+  baseMap[19][11] = 'SAVEROOM_ENTRANCE';
   collisionMap[19][11] = false;
+  // Ensure y: 20 is sealed with solid cobblestone
   baseMap[20][11] = 'COBBLESTONE';
-  collisionMap[20][11] = false;
+  collisionMap[20][11] = true;
 
   // --- 6. REDSTONE LAB (SE: x: 26 to 34, y: 16 to 23) ---
   // Architecture: Dark basalt masonry with conduit channels and logic circuitry
@@ -1221,31 +1447,60 @@ function buildWorldData() {
     for (let rx = 26; rx <= 34; rx++) {
       if (ry === 16 || ry === 23 || rx === 26 || rx === 34) {
         baseMap[ry][rx] = 'STONE_BRICK';
-        collisionMap[ry][rx] = true;
+        collisionMap[ry][rx] = true; // Continuous solid perimeter walls
       } else {
         baseMap[ry][rx] = 'LAB_FLOOR';
       }
     }
   }
-  // Redstone Lab doorway on West wall
-  baseMap[19][26] = 'STONE_BRICK';
+  // Purpose-designed Fortified Basalt Portal on West wall (aligned with highway at y: 18..19)
+  baseMap[18][26] = 'REDSTONE_ENTRANCE';
+  collisionMap[18][26] = false;
+  baseMap[19][26] = 'REDSTONE_ENTRANCE';
   collisionMap[19][26] = false;
+  // Ensure y: 20 is sealed with solid stone brick
   baseMap[20][26] = 'STONE_BRICK';
-  collisionMap[20][26] = false;
+  collisionMap[20][26] = true;
 
   // Redstone floor wire connecting core (30,18) to lamp (30,21)
   baseMap[19][30] = 'REDSTONE_WIRE_OFF';
   baseMap[20][30] = 'REDSTONE_WIRE_OFF';
 
-  // --- 7. THE NETHER GATE / EXIT PORTAL (North: x: 16 to 21, y: 2 to 5) ---
+  // --- 7. THE NETHER GATE CITADEL (North: x: 16 to 21, y: 2 to 5) ---
+  // Fortress Bastion Platform & Perimeter Walls
   for (let py = 2; py <= 5; py++) {
     for (let px = 16; px <= 21; px++) {
       baseMap[py][px] = 'COBBLESTONE';
     }
   }
-  // Imposing Obsidian Portal Arch
-  baseMap[2][18] = 'OBSIDIAN';
-  baseMap[2][19] = 'OBSIDIAN';
+  // Solid Obsidian Citadel Perimeter (North, West, and East walls)
+  for (let px = 16; px <= 21; px++) {
+    baseMap[2][px] = 'OBSIDIAN';
+    collisionMap[2][px] = true; // Solid North Citadel Wall
+  }
+  for (let py = 2; py <= 5; py++) {
+    baseMap[py][16] = 'OBSIDIAN';
+    collisionMap[py][16] = true; // Solid West Citadel Wall
+    baseMap[py][21] = 'OBSIDIAN';
+    collisionMap[py][21] = true; // Solid East Citadel Wall
+  }
+  // South Citadel Wall & Flanking Bastion Pillars
+  baseMap[5][16] = 'OBSIDIAN';
+  collisionMap[5][16] = true; // SW Bastion Tower
+  baseMap[5][17] = 'OBSIDIAN';
+  collisionMap[5][17] = true; // West Gatepost
+  baseMap[5][20] = 'OBSIDIAN';
+  collisionMap[5][20] = true; // East Gatepost
+  baseMap[5][21] = 'OBSIDIAN';
+  collisionMap[5][21] = true; // SE Bastion Tower
+
+  // Grand Runic Obsidian Gate Entrance (facing North-South highway at y: 6)
+  baseMap[5][18] = 'PORTAL_GATE';
+  collisionMap[5][18] = false;
+  baseMap[5][19] = 'PORTAL_GATE';
+  collisionMap[5][19] = false;
+
+  // Obsidian Inner Portal Frame & Vortex
   baseMap[3][17] = 'OBSIDIAN';
   baseMap[4][17] = 'OBSIDIAN';
   baseMap[3][20] = 'OBSIDIAN';
@@ -1255,8 +1510,6 @@ function buildWorldData() {
   baseMap[4][18] = 'PORTAL';
   baseMap[4][19] = 'PORTAL';
 
-  collisionMap[2][18] = true;
-  collisionMap[2][19] = true;
   collisionMap[3][17] = true;
   collisionMap[4][17] = true;
   collisionMap[3][20] = true;
@@ -1336,19 +1589,19 @@ function getInteractableObjects() {
       data: {
         title: '🛰️ AirLytics NCR — Environmental Intelligence',
         subtitle: 'Smart India Hackathon (SIH26082) · Ministry of Earth Sciences / NCMRWF',
-        badges: ['72-Hour AQI Forecast', '68 CPCB Stations Mesh', '61.12 µg/m³ RMSE Baseline', 'API-Grounded AI Assistant'],
+        badges: ['72-Hour AQI Forecast', '68 CPCB Stations Mesh', '61.12 µg/m³ Evaluated RMSE', 'API-Grounded AI Assistant'],
         stats: [
           { value: '68 Stations', label: 'CPCB Mesh Coverage' },
           { value: '72 Hours', label: 'Predictive Horizon' },
-          { value: '61.12 µg/m³', label: 'RMSE Baseline' },
+          { value: '61.12 µg/m³', label: 'Evaluated Benchmark RMSE' },
           { value: '8 Endpoints', label: 'Grounded Assistant' }
         ],
-        description: 'A 72-hour air quality forecast engine for Delhi NCR designed with absolute data provenance—traceable to individual monitoring stations, valid hourly observations, and CPCB arithmetic criteria.',
+        description: 'A 72-hour air quality forecast platform for Delhi-NCR with strict data provenance—traceable to individual monitoring stations, valid hourly observations, and CPCB arithmetic criteria.',
         highlights: [
-          'Live 68-station CPCB mesh adhering to strict 2014 rolling-window rules without silent neighbour interpolation.',
-          'Validated ML blend baseline at 61.12 µg/m³ RMSE (27% better than raw CAMS over 4M+ observations across an annual cycle).',
-          'NASA VIIRS satellite fire corridor tracking with transport alignment against meteorological wind vector fields.',
-          'API-grounded assistant strictly bounded to 8 read-only system endpoints with traceable tool calls and receipts.'
+          'CPCB Mesh: 68 continuous ambient stations strictly following 2014 arithmetic rolling rules (no synthetic interpolation).',
+          'Documented Evaluation: 61.12 µg/m³ RMSE ML blend baseline evaluated across 4,069,348 observations (27% improvement over CAMS).',
+          'Live Deployed Engine: Operational on Vercel with blend baseline and archive replay (deep model weights not loaded in serverless runtime).',
+          'Bounded Assistant: Read-only AI assistant restricted to 8 verified system endpoints with traceable tool calls and station citations.'
         ],
         stack: ['Python', 'FastAPI', 'TypeScript', 'React 19', 'Vite', 'Open-Meteo', 'NASA FIRMS'],
         links: [
@@ -1515,11 +1768,11 @@ function getInteractableObjects() {
       }
     },
 
-    // 8C. SAVE ROOM LANTERN
+    // 8C. SAVE ROOM LANTERN (Mounted on North wall alcove beside entrance)
     {
       id: 'save_room_lantern',
       tileX: 10,
-      tileY: 18,
+      tileY: 17,
       name: 'Amber Glow Lantern',
       tileType: 'LANTERN',
       isSolid: true,
@@ -1842,6 +2095,8 @@ class UIManager {
 
     // Global keyboard listener
     window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
       if (e.key === 'Escape') {
         this.closeModal();
       } else if (e.key === 'j' || e.key === 'J') {
@@ -1879,6 +2134,15 @@ class UIManager {
   openSign(title, text) {
     audio.playInteract();
     this.activeModal = 'sign';
+
+    // Halt player motion immediately when opening dialog
+    if (this.game) {
+      this.game.input = { up: false, down: false, left: false, right: false };
+      if (this.game.player) {
+        this.game.player.isMoving = false;
+        this.game.player.targetPos = null;
+      }
+    }
 
     this.modalTitle.innerHTML = title;
 
@@ -1931,6 +2195,15 @@ class UIManager {
   openModal(data) {
     audio.playInteract();
     this.activeModal = 'info';
+
+    // Halt player motion immediately when opening modal
+    if (this.game) {
+      this.game.input = { up: false, down: false, left: false, right: false };
+      if (this.game.player) {
+        this.game.player.isMoving = false;
+        this.game.player.targetPos = null;
+      }
+    }
 
     this.modalTitle.innerHTML = data.title || 'Information';
 
@@ -2012,6 +2285,15 @@ class UIManager {
     audio.playInteract();
     this.activeModal = 'journal';
 
+    // Halt player motion immediately when opening journal
+    if (this.game) {
+      this.game.input = { up: false, down: false, left: false, right: false };
+      if (this.game.player) {
+        this.game.player.isMoving = false;
+        this.game.player.targetPos = null;
+      }
+    }
+
     this.modalTitle.innerHTML = `📖 Explorer’s Journal & Fast Travel`;
 
     this.modalBody.innerHTML = `
@@ -2064,7 +2346,7 @@ class UIManager {
       `,
       'tab-airlytics': `
         <h3 class="section-heading">🛰️ AirLytics NCR (Smart India Hackathon SIH26082)</h3>
-        <p>A 72-hour air quality forecast for Delhi NCR designed with absolute data provenance—traceable to individual monitoring stations and CPCB 2014 arithmetic rules.</p>
+        <p>A 72-hour air quality forecast for Delhi-NCR designed with absolute data provenance—traceable to individual monitoring stations and CPCB 2014 arithmetic rolling rules.</p>
         
         <div class="panel-stats-grid">
           <div class="stat-card">
@@ -2077,7 +2359,7 @@ class UIManager {
           </div>
           <div class="stat-card">
             <div class="stat-value">61.12 µg/m³</div>
-            <div class="stat-label">RMSE Baseline</div>
+            <div class="stat-label">Evaluated Benchmark RMSE</div>
           </div>
           <div class="stat-card">
             <div class="stat-value">8 Endpoints</div>
@@ -2086,10 +2368,10 @@ class UIManager {
         </div>
 
         <ul class="highlights-list">
-          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>68-Station CPCB Mesh:</strong> Strictly audited 24-hour rolling windows with dominant pollutant criteria.</div></li>
-          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>61.12 µg/m³ RMSE:</strong> ML blend baseline evaluated over 4M+ observations across an annual cycle.</div></li>
-          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>API-Grounded AI Assistant:</strong> Strictly bounded to 8 read-only API endpoints with verifiable tool calls.</div></li>
-          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>NASA VIIRS:</strong> Fire corridor tracking aligned with meteorological wind vector transport.</div></li>
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>68-Station CPCB Mesh:</strong> Continuous monitoring following arithmetic rolling rules without synthetic interpolation.</div></li>
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>Documented Evaluation:</strong> 61.12 µg/m³ RMSE ML blend baseline evaluated over 4M+ observations (27% better than CAMS).</div></li>
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>Live Deployed Engine:</strong> Operational on Vercel with blend baseline and archive replay (weights not loaded in serverless runtime).</div></li>
+          <li><span class="bullet-gem">◆</span> <div class="highlight-text"><strong>API-Grounded AI Assistant:</strong> Strictly bounded to 8 read-only API endpoints with verifiable receipts and citations.</div></li>
         </ul>
 
         <div class="link-buttons">
@@ -2205,6 +2487,15 @@ class UIManager {
     this.activeModal = null;
     if (this.modalBackdrop) {
       this.modalBackdrop.classList.remove('open');
+    }
+    // Guarantee player motion is stopped and input is clean when returning to game
+    if (this.game) {
+      this.game.input = { up: false, down: false, left: false, right: false };
+      if (this.game.player) {
+        this.game.player.isMoving = false;
+        this.game.player.targetPos = null;
+      }
+      this.game.canvas?.focus();
     }
   }
 
@@ -2612,16 +2903,25 @@ class Game {
       }
     });
 
-    // 3. Render Tree Groves (Natural Oak & Evergreen Clusters)
+    // 3. Render Tree Groves (Natural Oak, Birch & Evergreen Clusters)
     const oakTrees = [
-      [15, 13], [22, 13], [14, 22], [22, 22],
-      [1, 1], [36, 1], [11, 7], [24, 7],
-      [11, 24], [24, 24]
+      [14, 12], [23, 12], [14, 22],
+      [1, 1], [36, 1], [4, 2], [33, 2]
     ];
     oakTrees.forEach(([tx, ty]) => {
       const oakImg = this.tiles['TREE_TOP'];
       if (oakImg) {
         this.ctx.drawImage(oakImg, tx * TILE_SIZE - 16, ty * TILE_SIZE - 28);
+      }
+    });
+
+    const birchTrees = [
+      [22, 22], [24, 24], [11, 24]
+    ];
+    birchTrees.forEach(([tx, ty]) => {
+      const birchImg = this.tiles['TREE_BIRCH'] || this.tiles['TREE_TOP'];
+      if (birchImg) {
+        this.ctx.drawImage(birchImg, tx * TILE_SIZE - 16, ty * TILE_SIZE - 28);
       }
     });
 
